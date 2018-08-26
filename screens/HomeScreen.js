@@ -5,6 +5,8 @@ import { Card, Button, SearchBar } from 'react-native-elements';
 import {Constants} from 'expo'
 import { createStackNavigator } from 'react-navigation';
 
+import ItemDetailScreen from './ItemDetailScreen'
+
 class HomeScreenContent extends React.Component {
   
   static navigationOptions = {
@@ -42,19 +44,6 @@ class HomeScreenContent extends React.Component {
         </View>
       </View>
     );
-  }
-}
-
-class ItemDetailScreen extends React.Component {
-  render() {
-    return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', borderWidth: 25, borderColor: 'orange'}}>
-        <Text>ItemDetailScreen</Text>
-        <Button title= "Go to Home" onPress={() => {
-          this.props.navigation.navigate('HomeContent')
-        }}/>
-      </View>
-    )
   }
 }
 
