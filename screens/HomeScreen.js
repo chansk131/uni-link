@@ -4,6 +4,7 @@ import { Card, Button, SearchBar } from 'react-native-elements';
 import { Constants } from 'expo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import { HeaderTitle } from '../components/HeaderTitle'
 import { HomeTitle } from '../components/HomeTitle'
 import { PopularSearch } from '../components/PopularSearch'
 import { RecentSearch } from '../components/RecentSearch'
@@ -11,7 +12,8 @@ import { RecentSearch } from '../components/RecentSearch'
 export default class Home extends React.Component {
 
   static navigationOptions = {
-    headerTitle: <SearchBar containerStyle={{ width: '100%', }} lightTheme placeholder='Type Here...' />,
+    headerStyle: {height: 100},
+    headerTitle: <HeaderTitle />,
     headerRight: <Ionicons name={'ios-mail'} size={25} color={'black'} />,
     headerRightContainerStyle: {marginRight: '1%'},
   }
