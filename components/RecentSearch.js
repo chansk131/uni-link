@@ -5,7 +5,7 @@ import { Constants } from "expo";
 
 import { ProductCard } from "../components/ProductCard";
 
-export const RecentSearch = () => (
+export const RecentSearch = props => (
   <View>
     <View style={{ marginBottom: 13 }}>
       <Text style={{ fontSize: 20, fontWeight: "bold", color: "#313131" }}>
@@ -15,13 +15,9 @@ export const RecentSearch = () => (
 
     <View style={{ height: 240 }}>
       <ScrollView horizontal={true} style={{ height: 240 }}>
-        <ProductCard />
-
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+        {Object.keys(props.products).map((key, index) => (
+          <ProductCard key={key} {...props.products[key]} />
+        ))}
       </ScrollView>
     </View>
   </View>

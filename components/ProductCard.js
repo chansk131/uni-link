@@ -3,7 +3,7 @@ import { Text, View, Image } from "react-native";
 import { Card, Button, SearchBar } from "react-native-elements";
 import { Constants } from "expo";
 
-export const ProductCard = () => (
+export const ProductCard = props => (
   <Card
     containerStyle={{
       marginLeft: 0,
@@ -20,11 +20,11 @@ export const ProductCard = () => (
       />
     </View>
     <View>
-      <Text style={{ fontSize: 10, color: "black" }}>Name of Product</Text>
+      <Text style={{ fontSize: 10, color: "black" }}>{props.name}</Text>
       <Text style={{ fontSize: 10, color: "black", fontWeight: "bold" }}>
-        $400.00
+        ${props.price}
       </Text>
-      <Text style={{ fontSize: 10, color: "black" }}>By User</Text>
+      <Text style={{ fontSize: 10, color: "black" }}>{props.user}</Text>
     </View>
   </Card>
 );
