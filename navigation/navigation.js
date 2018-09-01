@@ -1,7 +1,9 @@
 import React from "react";
+import { TouchableOpacity } from "react-native";
 import {
   createBottomTabNavigator,
-  createStackNavigator
+  createStackNavigator,
+  createDrawerNavigator
 } from "react-navigation";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -11,19 +13,117 @@ import AddItemScreen from "../screens/AddItemScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import UserScreen from "../screens/UserScreen";
 import ItemDetailScreen from "../screens/ItemDetailScreen";
+import MyAccountScreen from "../screens/MyAccountScreen";
+import MyOrderScreen from "../screens/MyOrderScreen";
+import AboutScreen from "../screens/AboutScreen";
+import HelpScreen from "../screens/HelpScreen";
 
-const HomeScreenNavigator = createStackNavigator({
-  HomeContent: HomeScreenContent,
+import { HeaderTitle } from "../components/HeaderTitle";
+
+const HomeScreenStackNavigator = createStackNavigator({
+  HomeContent: {
+    screen: HomeScreenContent,
+  },
   ItemDetail: ItemDetailScreen
+});
+
+const HomeScreenDrawerNavigator = createDrawerNavigator({
+  HomeStack: {
+    screen: HomeScreenStackNavigator
+  },
+  Account: {
+    screen: MyAccountScreen
+  },
+  Order: {
+    screen: MyOrderScreen
+  },
+  About: {
+    screen: AboutScreen
+  },
+  Help: {
+    screen: HelpScreen
+  }
+});
+
+const ExploreScreenDrawerNavigator = createDrawerNavigator({
+  ExploreStack: {
+    screen: ExploreScreen
+  },
+  Account: {
+    screen: MyAccountScreen
+  },
+  Order: {
+    screen: MyOrderScreen
+  },
+  About: {
+    screen: AboutScreen
+  },
+  Help: {
+    screen: HelpScreen
+  }
+});
+
+const AddItemScreenDrawerNavigator = createDrawerNavigator({
+  AddItemStack: {
+    screen: AddItemScreen
+  },
+  Account: {
+    screen: MyAccountScreen
+  },
+  Order: {
+    screen: MyOrderScreen
+  },
+  About: {
+    screen: AboutScreen
+  },
+  Help: {
+    screen: HelpScreen
+  }
+});
+
+const NotificationScreenDrawerNavigator = createDrawerNavigator({
+  NotificationStack: {
+    screen: NotificationScreen
+  },
+  Account: {
+    screen: MyAccountScreen
+  },
+  Order: {
+    screen: MyOrderScreen
+  },
+  About: {
+    screen: AboutScreen
+  },
+  Help: {
+    screen: HelpScreen
+  }
+});
+
+const UserScreenDrawerNavigator = createDrawerNavigator({
+  UserStack: {
+    screen: UserScreen
+  },
+  Account: {
+    screen: MyAccountScreen
+  },
+  Order: {
+    screen: MyOrderScreen
+  },
+  About: {
+    screen: AboutScreen
+  },
+  Help: {
+    screen: HelpScreen
+  }
 });
 
 export const TabNavigator = createBottomTabNavigator(
   {
-    Home: HomeScreenNavigator,
-    Explore: ExploreScreen,
-    Add: AddItemScreen,
-    Notification: NotificationScreen,
-    User: UserScreen
+    Home: HomeScreenDrawerNavigator,
+    Explore: ExploreScreenDrawerNavigator,
+    Add: AddItemScreenDrawerNavigator,
+    Notification: NotificationScreenDrawerNavigator,
+    User: UserScreenDrawerNavigator
   },
   {
     navigationOptions: ({ navigation }) => ({

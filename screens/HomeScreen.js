@@ -3,8 +3,10 @@ import { Text, View, ScrollView } from "react-native";
 import { Card, Button, SearchBar } from "react-native-elements";
 import { Constants } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { NavigationActions } from 'react-navigation';
 
-import { HeaderTitle } from "../components/HeaderTitle";
+
+import {HeaderTitle} from "../components/HeaderTitle";
 import { HomeTitle } from "../components/HomeTitle";
 import { PopularSearch } from "../components/PopularSearch";
 import { RecentSearch } from "../components/RecentSearch";
@@ -41,26 +43,6 @@ const props = {
       key: 7,
       name: "Furniture"
     }
-  ],
-  products: [
-    {
-      key: 1,
-      name: "ProductName1",
-      price: 401,
-      user: "Chan1"
-    },
-    {
-      key: 2,
-      name: "ProductName2",
-      price: 402,
-      user: "Chan2"
-    },
-    {
-      key: 3,
-      name: "ProductName3",
-      price: 403,
-      user: "Chan3"
-    }
   ]
 };
 
@@ -73,7 +55,7 @@ export default class Home extends React.Component {
 
   state = {
     products: null,
-    itemLoaded: false,
+    itemLoaded: false
   };
 
   componentDidMount() {
