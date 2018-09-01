@@ -18,8 +18,6 @@ import MyOrderScreen from "../screens/MyOrderScreen";
 import AboutScreen from "../screens/AboutScreen";
 import HelpScreen from "../screens/HelpScreen";
 
-import { HeaderTitle } from "../components/HeaderTitle";
-
 const HomeScreenStackNavigator = createStackNavigator({
   HomeContent: {
     screen: HomeScreenContent,
@@ -27,103 +25,13 @@ const HomeScreenStackNavigator = createStackNavigator({
   ItemDetail: ItemDetailScreen
 });
 
-const HomeScreenDrawerNavigator = createDrawerNavigator({
-  HomeStack: {
-    screen: HomeScreenStackNavigator
-  },
-  Account: {
-    screen: MyAccountScreen
-  },
-  Order: {
-    screen: MyOrderScreen
-  },
-  About: {
-    screen: AboutScreen
-  },
-  Help: {
-    screen: HelpScreen
-  }
-});
-
-const ExploreScreenDrawerNavigator = createDrawerNavigator({
-  ExploreStack: {
-    screen: ExploreScreen
-  },
-  Account: {
-    screen: MyAccountScreen
-  },
-  Order: {
-    screen: MyOrderScreen
-  },
-  About: {
-    screen: AboutScreen
-  },
-  Help: {
-    screen: HelpScreen
-  }
-});
-
-const AddItemScreenDrawerNavigator = createDrawerNavigator({
-  AddItemStack: {
-    screen: AddItemScreen
-  },
-  Account: {
-    screen: MyAccountScreen
-  },
-  Order: {
-    screen: MyOrderScreen
-  },
-  About: {
-    screen: AboutScreen
-  },
-  Help: {
-    screen: HelpScreen
-  }
-});
-
-const NotificationScreenDrawerNavigator = createDrawerNavigator({
-  NotificationStack: {
-    screen: NotificationScreen
-  },
-  Account: {
-    screen: MyAccountScreen
-  },
-  Order: {
-    screen: MyOrderScreen
-  },
-  About: {
-    screen: AboutScreen
-  },
-  Help: {
-    screen: HelpScreen
-  }
-});
-
-const UserScreenDrawerNavigator = createDrawerNavigator({
-  UserStack: {
-    screen: UserScreen
-  },
-  Account: {
-    screen: MyAccountScreen
-  },
-  Order: {
-    screen: MyOrderScreen
-  },
-  About: {
-    screen: AboutScreen
-  },
-  Help: {
-    screen: HelpScreen
-  }
-});
-
 export const TabNavigator = createBottomTabNavigator(
   {
-    Home: HomeScreenDrawerNavigator,
-    Explore: ExploreScreenDrawerNavigator,
-    Add: AddItemScreenDrawerNavigator,
-    Notification: NotificationScreenDrawerNavigator,
-    User: UserScreenDrawerNavigator
+    Home: HomeScreenStackNavigator,
+    Explore: ExploreScreen,
+    Add: AddItemScreen,
+    Notification: NotificationScreen,
+    User: UserScreen
   },
   {
     navigationOptions: ({ navigation }) => ({

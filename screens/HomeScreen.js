@@ -64,7 +64,6 @@ export default class Home extends React.Component {
       .then(response => response.json())
       .then(results => {
         this.setState({ products: results, itemLoaded: true });
-        console.log(this.state);
       });
   }
 
