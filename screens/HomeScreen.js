@@ -68,7 +68,6 @@ export default class Home extends React.Component {
   static navigationOptions = {
     headerStyle: { height: 100 },
     headerTitle: <HeaderTitle />,
-    headerRight: <Ionicons name={"ios-mail"} size={25} color={"black"} />,
     headerRightContainerStyle: { marginRight: "1%" }
   };
 
