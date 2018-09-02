@@ -16,7 +16,7 @@ export const RecentSearch = props => (
     <View style={{ height: 240 }}>
       <ScrollView horizontal={true} style={{ height: 240 }}>
         {Object.keys(props.products).map((key, index) => (
-          <ProductCard key={key} {...props.products[key]} />
+          <ProductCard navigation={props.navigation} key={key} {...props.products[key]} />
         ))}
       </ScrollView>
     </View>

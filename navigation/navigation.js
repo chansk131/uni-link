@@ -17,15 +17,21 @@ import MyAccountScreen from "../screens/MyAccountScreen";
 import MyOrderScreen from "../screens/MyOrderScreen";
 import AboutScreen from "../screens/AboutScreen";
 import HelpScreen from "../screens/HelpScreen";
+import {HeaderTitle} from "../components/HeaderTitle"
 
 const HomeScreenStackNavigator = createStackNavigator({
   HomeContent: {
     screen: HomeScreenContent,
+    navigationOptions: ({navigation}) => ({
+      headerStyle: { height: 100 },
+      headerTitle: <HeaderTitle navigation={navigation}/>,
+      headerRightContainerStyle: { marginRight: "1%" }
+    })
   },
   ItemDetail: ItemDetailScreen
 });
 
-export const TabNavigator = createBottomTabNavigator(
+const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeScreenStackNavigator,
     Explore: ExploreScreen,
@@ -61,3 +67,21 @@ export const TabNavigator = createBottomTabNavigator(
     }
   }
 );
+
+export const DrawerNavigator = createDrawerNavigator({
+  Home: {
+    screen: TabNavigator,
+  },
+  MyAccount: {
+    screen: MyAccountScreen
+  },
+  MyOrder: {
+    screen: MyOrderScreen
+  },
+  About: {
+    screen: AboutScreen
+  },
+  Help: {
+    screen: HelpScreen
+  }
+})

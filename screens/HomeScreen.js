@@ -47,11 +47,6 @@ const props = {
 };
 
 export default class Home extends React.Component {
-  static navigationOptions = {
-    headerStyle: { height: 100 },
-    headerTitle: <HeaderTitle />,
-    headerRightContainerStyle: { marginRight: "1%" }
-  };
 
   state = {
     products: null,
@@ -84,9 +79,10 @@ export default class Home extends React.Component {
           backgroundColor: "white"
         }}
       >
+      <Button title="gotodetail" onPress={()=>this.props.navigation.navigate("ItemDetail")} />
         <HomeTitle />
         <PopularSearch {...props} />
-        {this.state.itemLoaded ? <RecentSearch {...this.state} /> : null}
+        {this.state.itemLoaded ? <RecentSearch navigation={this.props.navigation} {...this.state} /> : null}
       </ScrollView>
     );
   }
