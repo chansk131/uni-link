@@ -7,7 +7,7 @@ export const HomeTitle = () => (
   <View>
     <View style={{ width: 160, height: 56 }}>
       <Text
-        style={{ fontFamily: "hira-kaku", fontSize: 30, fontWeight: "bold" }}
+        style={{ fontFamily: "poiret-one", fontSize: 30, fontWeight: "bold" }}
       >
         WELCOME
       </Text>

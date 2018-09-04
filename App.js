@@ -10,7 +10,7 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync({
-      "hira-kaku": require("./assets/fonts/HiraKakuStdN-W8.ttf")
+      "poiret-one": require("./assets/fonts/PoiretOne-Regular.ttf")
     });
 
     this.setState({ fontLoaded: true });
