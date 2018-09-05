@@ -43,7 +43,7 @@ export default class UserScreen extends React.Component {
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.btnContainer}>
-          <Text style={styles.btnText}>Wishlsit</Text>
+          <Text style={styles.btnText}>Wishlist</Text>
           <Text style={styles.btnText}>></Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btnContainer}>
