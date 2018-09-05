@@ -77,12 +77,8 @@ export default class Home extends React.Component {
           backgroundColor: "white"
         }}
       >
-        <Button
-          title="Go To CATEGORIES: waiting for Punch's design"
-          onPress={() => this.props.navigation.navigate("Categories")}
-        />
         <HomeTitle />
-        <PopularSearch {...props} />
+        <PopularSearch navigation={this.props.navigation} {...props} />
         {this.state.itemLoaded ? (
           <RecentSearch navigation={this.props.navigation} {...this.state} />
         ) : null}

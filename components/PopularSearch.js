@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet
 } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export const PopularSearch = props => (
   <View style={{ marginBottom: 32 }}>
@@ -18,7 +19,8 @@ export const PopularSearch = props => (
       style={{
         flexDirection: "row",
         flexWrap: "wrap",
-        alignContent: "flex-start"
+        alignContent: "flex-start",
+        marginBottom: 10
       }}
     >
       {props.populars.map(popular => (
@@ -30,6 +32,27 @@ export const PopularSearch = props => (
           <Text style={styles.btnText}>{popular.name}</Text>
         </TouchableOpacity>
       ))}
+    </View>
+    <View
+      style={{
+        flexDirection: "row",
+        alignContent: "flex-start",
+        marginBottom: 10
+      }}
+    >
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate("Categories")}
+        style={styles.btnMore}
+        underlayColor="#fff"
+      >
+        <Ionicons
+          style={{ marginRight: 3 }}
+          name={"ios-apps"}
+          size={12}
+          color={"black"}
+        />
+        <Text style={styles.btnText}>More Products</Text>
+      </TouchableOpacity>
     </View>
   </View>
 );
@@ -44,6 +67,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#EBEBEB",
     borderRadius: 10,
     borderWidth: 0
+  },
+  btnMore: {
+    flexDirection: "row",
+    marginHorizontal: 2,
+    marginTop: 2,
+    paddingHorizontal: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: "white",
+    borderRadius: 10,
+    borderWidth: 0,
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: "grey",
+    shadowOpacity: 0.5,
+    elevation: 3
   },
   btnText: {
     fontSize: 10,
