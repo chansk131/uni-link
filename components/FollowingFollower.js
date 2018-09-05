@@ -26,7 +26,7 @@ export const Followers = () => (
         shadowOffset: { width: 0, height: 2 },
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10,
-        shadowOpacity: 0.8,
+        shadowOpacity: 0.5,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
@@ -45,7 +45,7 @@ export const Followers = () => (
         borderBottomRightRadius: 10,
         //shadowColor: 'grey',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
+        shadowOpacity: 0.5,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
