@@ -42,9 +42,9 @@ const HomeScreenStackNavigator = createStackNavigator({
   ItemDetail: ItemDetailScreen
 });
 
-const UserScreenStackNavigator = createStackNavigator({
+const SellingScreenStackNavigator = createStackNavigator({
   HomeContent: {
-    screen: UserScreen,
+    screen: SellingScreen,
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
         backgroundColor: "white",
@@ -62,11 +62,11 @@ const UserScreenStackNavigator = createStackNavigator({
 const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeScreenStackNavigator,
-    Selling: SellingScreen,
+    Selling: SellingScreenStackNavigator,
     Add: AddItemScreen,
     Notifications: NotificationScreen,
     User: {
-      screen: UserScreenStackNavigator,
+      screen: UserScreen,
       navigationOptions: { tabBarLabel: "My U-Links" }
     }
   },
