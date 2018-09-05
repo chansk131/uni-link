@@ -102,5 +102,31 @@ key
   - is_available
   - rating
   - category
-  - favorite
+  - favoriteCount
+
+User
+key
+  - name
+  - email
+  - password
+  - pic
+  - prefPlace: prefered place
+  - university
+  - std_id_pic: ID card photo
+  - exp_date: expiry date
+  - is_active
+  - is_not_blocked
+  - recent search
+    - product_id
+    - ...
+  - category count
+    - a: 5
+  - group
+    - group_id
+
+Group
+key
+  - name
+  - user
+    - user_id
 */
