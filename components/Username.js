@@ -40,7 +40,7 @@ export const Username = () => (
                 startingValue={5}
                 style={{ paddingVertical: 4 }}
             /> 
-            <Text style = {{ fontSize: 14}}>(rating #%)</Text>
+            <Text style = {{ fontSize: 14}}>  (rating #%)</Text>
         </View>
     <View>
         <Text style={{ fontSize: 14}}>Member since:</Text>
