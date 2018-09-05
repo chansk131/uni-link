@@ -16,7 +16,7 @@ export default class UserScreen extends React.Component {
         }}
       >
         <View style={{ flexDirection: "row" }}>
-          <View style={{ width: 100, height: 100 }}>
+          <View style={{ width: "40%", height: 100 }}>
             <Text>UserProfilePic</Text>
           </View>
           <View>

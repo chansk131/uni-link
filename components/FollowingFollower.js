@@ -6,7 +6,7 @@ import { Constants } from "expo";
 export const Followers = () => (
   <View
     style={{
-      width: 200,
+      width: 160,
       height: 30,
       padding: 2,
       backgroundColor: "white"
@@ -15,13 +15,13 @@ export const Followers = () => (
     <View
       style={{
         flexDirection: "row",
-        width: 200,
+        width: 160,
         height: 30
       }}
     >
       <View
         style={{
-          width: 100,
+          width: 80,
           height: 30,
           backgroundColor: "white",
           //borderColor: '#ddd',
@@ -38,12 +38,12 @@ export const Followers = () => (
         }}
       >
         <Text style={{ fontSize: 14 }}>100</Text>
-        <Text style={{ fontSize: 14 }}>Following</Text>
+        <Text style={{ fontSize: 10 }}>Following</Text>
       </View>
 
       <View
         style={{
-          width: 100,
+          width: 80,
           height: 30,
           backgroundColor: "white",
           //borderColor: '#ddd',
@@ -60,7 +60,7 @@ export const Followers = () => (
         }}
       >
         <Text style={{ fontSize: 14 }}>100</Text>
-        <Text style={{ fontSize: 14 }}>Followers</Text>
+        <Text style={{ fontSize: 10 }}>Followers</Text>
       </View>
     </View>
   </View>
