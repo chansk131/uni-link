@@ -1,6 +1,5 @@
 import React from "react";
-import { Text, View, ScrollView, Image, TouchableOpacity } from "react-native";
-import { Card, Button, SearchBar, Rating } from "react-native-elements";
+import { Text, View, TouchableOpacity } from "react-native";
 import { Constants } from "expo";
 
 export const Followers = () => (
@@ -8,60 +7,35 @@ export const Followers = () => (
     style={{
       width: 160,
       height: 30,
-      padding: 2,
-      backgroundColor: "white"
+      backgroundColor: "white",
+      flexDirection: "row",
+      borderRadius: 10,
+      shadowColor: "grey",
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.5,
+      elevation: 2,
+      justifyContent: "center",
+      alignItems: "center"
     }}
   >
-    <View
+    <TouchableOpacity
       style={{
-        flexDirection: "row",
-        width: 160,
-        height: 30
+        alignItems: "center",
+        justifyContent: "center",
+        borderRightColor: "#808080",
+        borderRightWidth: 0.3,
+        flex: 1
       }}
     >
-      <View
-        style={{
-          width: 80,
-          height: 30,
-          backgroundColor: "white",
-          //borderColor: '#ddd',
-          borderBottomWidth: 0,
-          //shadowColor: 'grey',
-          shadowOffset: { width: 0, height: 2 },
-          borderTopLeftRadius: 10,
-          borderBottomLeftRadius: 10,
-          shadowOpacity: 0.5,
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          elevation: 3
-        }}
-      >
-        <Text style={{ fontSize: 14 }}>100</Text>
-        <Text style={{ fontSize: 10 }}>Following</Text>
-      </View>
+      <Text style={{ fontSize: 14 }}>100</Text>
+      <Text style={{ fontSize: 10 }}>Followers</Text>
+    </TouchableOpacity>
 
-      <View
-        style={{
-          width: 80,
-          height: 30,
-          backgroundColor: "white",
-          //borderColor: '#ddd',
-          borderBottomWidth: 0,
-          borderTopRightRadius: 10,
-          borderBottomRightRadius: 10,
-          //shadowColor: 'grey',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.5,
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          elevation: 3
-        }}
-      >
-        <Text style={{ fontSize: 14 }}>100</Text>
-        <Text style={{ fontSize: 10 }}>Followers</Text>
-      </View>
-    </View>
+    <TouchableOpacity
+      style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+    >
+      <Text style={{ fontSize: 14 }}>100</Text>
+      <Text style={{ fontSize: 10 }}>Followers</Text>
+    </TouchableOpacity>
   </View>
 );

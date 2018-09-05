@@ -5,7 +5,7 @@ import { Constants } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export const HeaderProfile = ({ navigation }) => (
-  <View style={{ flex: 1 }}>
+  <View style={{ flex: 1,  }}>
     <View style={{ flex: 1, flexDirection: "row" }}>
       <TouchableOpacity
         onPress={() => navigation.toggleDrawer()}

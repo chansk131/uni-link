@@ -13,19 +13,17 @@ export default class UserScreen extends React.Component {
         style={{
           flex: 1,
           backgroundColor: "white",
-          padding: "5%"
+          padding: "7%"
         }}
       >
         <View style={{ flexDirection: "row" }}>
-          <View style={{ width: "40%", height: 76}}>
+          <View style={{ width: "40%", height: 76 }}>
             <ProfilePic />
           </View>
-          <View> 
+          <View>
             <Username />
             <Followers />
           </View>
-          
-        
         </View>
       </View>
     );
