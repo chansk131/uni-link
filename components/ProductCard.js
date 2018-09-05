@@ -7,9 +7,7 @@ export const ProductCard = props => (
   <TouchableOpacity
     onPress={() =>
       props.navigation.navigate("ItemDetail", {
-        name: props.name,
-        price: props.price,
-        user: props.user
+        products: props
       })
     }
   >
@@ -25,7 +23,7 @@ export const ProductCard = props => (
       <View style={{ marginBottom: 4 }}>
         <Image
           style={{ width: 160, height: 120, borderRadius: 10 }}
-          source={require("../assets/images/placeholder.png")}
+          source={{ uri: props.pic }}
         />
       </View>
       <View>

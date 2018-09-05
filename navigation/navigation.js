@@ -35,6 +35,7 @@ const HomeScreenStackNavigator = createStackNavigator({
       headerRightContainerStyle: { marginRight: "1%" }
     })
   },
+  Categories: ExploreScreen,
   ItemDetail: ItemDetailScreen
 });
 

@@ -3,10 +3,9 @@ import { Text, View, ScrollView } from "react-native";
 import { Card, Button, SearchBar } from "react-native-elements";
 import { Constants } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions } from "react-navigation";
 
-
-import {HeaderTitle} from "../components/HeaderTitle";
+import { HeaderTitle } from "../components/HeaderTitle";
 import { HomeTitle } from "../components/HomeTitle";
 import { PopularSearch } from "../components/PopularSearch";
 import { RecentSearch } from "../components/RecentSearch";
@@ -47,7 +46,6 @@ const props = {
 };
 
 export default class Home extends React.Component {
-
   state = {
     products: null,
     itemLoaded: false
@@ -79,10 +77,15 @@ export default class Home extends React.Component {
           backgroundColor: "white"
         }}
       >
-      <Button title="gotodetail" onPress={()=>this.props.navigation.navigate("ItemDetail")} />
+        <Button
+          title="Go To CATEGORIES: waiting for Punch's design"
+          onPress={() => this.props.navigation.navigate("Categories")}
+        />
         <HomeTitle />
         <PopularSearch {...props} />
-        {this.state.itemLoaded ? <RecentSearch navigation={this.props.navigation} {...this.state} /> : null}
+        {this.state.itemLoaded ? (
+          <RecentSearch navigation={this.props.navigation} {...this.state} />
+        ) : null}
       </ScrollView>
     );
   }
