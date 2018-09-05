@@ -18,6 +18,7 @@ import MyOrderScreen from "../screens/MyOrderScreen";
 import AboutScreen from "../screens/AboutScreen";
 import HelpScreen from "../screens/HelpScreen";
 import { HeaderTitle } from "../components/HeaderTitle";
+import { HeaderProfile } from "../components/HeaderProfile";
 
 const HomeScreenStackNavigator = createStackNavigator({
   HomeContent: {
@@ -39,13 +40,30 @@ const HomeScreenStackNavigator = createStackNavigator({
   ItemDetail: ItemDetailScreen
 });
 
+const UserScreenStackNavigator = createStackNavigator({
+  HomeContent: {
+    screen: UserScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: "white",
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: "grey",
+        shadowOpacity: 0.5
+      },
+      headerTitle: <HeaderProfile navigation={navigation} />,
+      headerRightContainerStyle: { marginRight: "1%" }
+    })
+  }
+});
+
 const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeScreenStackNavigator,
     Explore: ExploreScreen,
     Add: AddItemScreen,
     Notification: NotificationScreen,
-    User: UserScreen
+    User: UserScreenStackNavigator
   },
   {
     navigationOptions: ({ navigation }) => ({
