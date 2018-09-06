@@ -1,8 +1,9 @@
 import React from "react";
 import { Font } from "expo";
+import { SafeAreaView } from "react-native";
 import { Provider } from "react-redux";
 
-import { DrawerNavigator } from "./navigation/navigation";
+import { SwitchNavigator } from "./navigation/navigation";
 import store from "./redux/store";
 
 export default class App extends React.Component {
@@ -21,7 +22,9 @@ export default class App extends React.Component {
   render() {
     return this.state.fontLoaded ? (
       <Provider store={store}>
-        <DrawerNavigator />
+        <SafeAreaView style={{ flex: 1 }}>
+          <SwitchNavigator />
+        </SafeAreaView>
       </Provider>
     ) : null;
   }

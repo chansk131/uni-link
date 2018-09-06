@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { connect } from "react-redux";
+import { Constants } from "expo";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Username } from "../components/Username";
@@ -13,7 +14,8 @@ class UserScreen extends React.Component {
       <View
         style={{
           flex: 1,
-          backgroundColor: "white"
+          backgroundColor: "white",
+          paddingTop: Constants.statusBarHeight
         }}
       >
         <View

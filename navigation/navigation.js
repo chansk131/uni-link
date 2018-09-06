@@ -10,11 +10,14 @@ import {
   createBottomTabNavigator,
   createStackNavigator,
   createDrawerNavigator,
+  createSwitchNavigator,
   DrawerItems,
   BottomTabBar
 } from "react-navigation";
+import { Constants } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+import LoginScreen from "../screens/LoginScreen";
 import HomeScreenContent from "../screens/HomeScreen";
 import ExploreScreen from "../screens/ExploreScreen";
 import SellingScreen from "../screens/SellingScreen";
@@ -141,7 +144,8 @@ const CustomDrawerComponent = props => (
           alignItems: "center",
           justifyContent: "center",
           height: 50,
-          backgroundColor: "black"
+          backgroundColor: "black",
+          paddingTop: Constants.statusBarHeight
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
@@ -153,7 +157,7 @@ const CustomDrawerComponent = props => (
   </SafeAreaView>
 );
 
-export const DrawerNavigator = createDrawerNavigator(
+const DrawerNavigator = createDrawerNavigator(
   {
     Home: {
       screen: TabNavigator,
@@ -198,3 +202,8 @@ export const DrawerNavigator = createDrawerNavigator(
     }
   }
 );
+
+export const SwitchNavigator = createSwitchNavigator({
+  Login: LoginScreen,
+  Home: DrawerNavigator
+});
