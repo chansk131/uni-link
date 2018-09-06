@@ -1,7 +1,6 @@
 import React from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Card, Button, SearchBar, Rating } from "react-native-elements";
-import { Constants } from "expo";
 
 export const ProductCard = props => (
   <TouchableOpacity
@@ -11,34 +10,39 @@ export const ProductCard = props => (
       })
     }
   >
-    <Card
-      containerStyle={{
-        marginLeft: 0,
-        borderRadius: 10,
-        height: 200,
-        width: 180,
-        padding: 10
-      }}
-    >
-      <View style={{ marginBottom: 4 }}>
-        <Image
-          style={{ width: 160, height: 120, borderRadius: 10 }}
-          source={{ uri: props.pic }}
-        />
-      </View>
+    <Card containerStyle={styles.cardContainer}>
+      <Image style={styles.imageContainer} source={{ uri: props.pic }} />
       <View>
-        <Text style={{ fontSize: 10, color: "black" }}>{props.name}</Text>
-        <Text style={{ fontSize: 10, color: "black", fontWeight: "bold" }}>
-          ${props.price}
-        </Text>
-        <Text style={{ fontSize: 10, color: "black" }}>{props.user}</Text>
+        <Text style={styles.txt}>{props.name}</Text>
+        <Text style={styles.txtPrice}>${props.price}</Text>
+        <Text style={styles.txt}>{props.user}</Text>
         <Rating
           imageSize={10}
           readonly
-          startingValue={5}
+          startingValue={props.rating}
           style={{ paddingVertical: 4 }}
         />
       </View>
     </Card>
   </TouchableOpacity>
 );
+
+const styles = StyleSheet.create({
+  cardContainer: {
+    marginLeft: 0,
+    borderRadius: 10,
+    height: 210,
+    width: 180,
+    padding: 10
+  },
+  imageContainer: {
+    width: 160,
+    height: 120,
+    borderRadius: 10,
+    marginBottom: 4
+  },
+  txt: { fontSize: 10, color: "black" },
+  txtPrice: { fontSize: 10, color: "black", fontWeight: "bold" }
+});
+
+// TODO: make the position of price, ratings, user the same for all products when having long name

@@ -1,6 +1,5 @@
 import React from "react";
-import { Text, View, ScrollView } from "react-native";
-import { Card, Button, SearchBar } from "react-native-elements";
+import { Text, View, ScrollView, StyleSheet, Button } from "react-native";
 import { Constants } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { NavigationActions } from "react-navigation";
@@ -66,15 +65,7 @@ export default class Home extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <SearchBarHeader />
-        <ScrollView
-          style={{
-            flex: 1,
-            paddingLeft: "7%",
-            paddingRight: "7%",
-            paddingTop: 18,
-            backgroundColor: "white"
-          }}
-        >
+        <ScrollView style={styles.container}>
           <HomeTitle />
           <PopularSearch navigation={this.props.navigation} {...this.state} />
           {this.state.itemLoaded ? (
@@ -91,3 +82,13 @@ export default class Home extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingLeft: "7%",
+    paddingRight: "7%",
+    paddingTop: 18,
+    backgroundColor: "white"
+  }
+});

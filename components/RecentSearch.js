@@ -1,24 +1,31 @@
 import React from "react";
-import { Text, View, ScrollView } from "react-native";
-import { Card, Button, SearchBar } from "react-native-elements";
-import { Constants } from "expo";
+import { Text, View, ScrollView, StyleSheet } from "react-native";
 
 import { ProductCard } from "../components/ProductCard";
 
 export const RecentSearch = props => (
   <View>
-    <View style={{ marginBottom: 13 }}>
-      <Text style={{ fontSize: 20, fontWeight: "bold", color: "#313131" }}>
-        RECENT SEARCH
-      </Text>
-    </View>
+    <Text style={styles.recentFont}>RECENT SEARCH</Text>
 
     <View style={{ height: 240 }}>
       <ScrollView horizontal={true} style={{ height: 240 }}>
         {Object.keys(props.products).map((key, index) => (
-          <ProductCard navigation={props.navigation} key={key} {...props.products[key]} />
+          <ProductCard
+            navigation={props.navigation}
+            key={key}
+            {...props.products[key]}
+          />
         ))}
       </ScrollView>
     </View>
   </View>
 );
+
+const styles = StyleSheet.create({
+  recentFont: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#313131",
+    marginBottom: 13
+  }
+});
