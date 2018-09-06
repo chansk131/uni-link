@@ -18,6 +18,8 @@ import ItemDetailScreen from "../screens/ItemDetailScreen";
 import MyAccountScreen from "../screens/MyAccountScreen";
 import MyOrderScreen from "../screens/MyOrderScreen";
 import AboutScreen from "../screens/AboutScreen";
+import WishListScreen from "../screens/WishListScreen";
+import RecentlyViewedScreen from "../screens/RecentlyViewedScreen";
 import HelpScreen from "../screens/HelpScreen";
 import { HeaderTitle } from "../components/HeaderTitle";
 import { HeaderProfile } from "../components/HeaderProfile";
@@ -43,7 +45,7 @@ const HomeScreenStackNavigator = createStackNavigator({
 });
 
 const SellingScreenStackNavigator = createStackNavigator({
-  HomeContent: {
+  SellingContent: {
     screen: SellingScreen,
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
@@ -59,6 +61,20 @@ const SellingScreenStackNavigator = createStackNavigator({
   }
 });
 
+const UserScreenStackNavigator = createStackNavigator({
+  UserContent: {
+    screen: UserScreen,
+    navigationOptions: ({ navigation }) => ({
+      header: null
+    })
+  },
+  WishList: { screen: WishListScreen },
+  MyOrder: { screen: MyOrderScreen },
+  RecentlyViewed: { screen: RecentlyViewedScreen },
+  Selling: { screen: SellingScreen },
+  Help: { screen: HelpScreen }
+});
+
 const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeScreenStackNavigator,
@@ -66,7 +82,7 @@ const TabNavigator = createBottomTabNavigator(
     Add: AddItemScreen,
     Notifications: NotificationScreen,
     User: {
-      screen: UserScreen,
+      screen: UserScreenStackNavigator,
       navigationOptions: { tabBarLabel: "My U-Links" }
     }
   },

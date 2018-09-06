@@ -55,30 +55,45 @@ class UserScreen extends React.Component {
             <Text style={styles.btnText}>MESSAGE</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.btnContainer}>
-          <Text style={styles.btnText}>Wishlist</Text>
-          <Text style={styles.btnText}>></Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btnContainer}>
-          <Text style={styles.btnText}>My Order</Text>
-          <Text style={styles.btnText}>></Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btnContainer}>
-          <Text style={styles.btnText}>Recently Viewed</Text>
-          <Text style={styles.btnText}>></Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btnContainer}>
-          <Text style={styles.btnText}>Selling</Text>
-          <Text style={styles.btnText}>></Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btnContainer}>
-          <Text style={styles.btnText}>FAQ</Text>
-          <Text style={styles.btnText}>></Text>
-        </TouchableOpacity>
+        <MenuButton
+          goto={"WishList"}
+          navigation={this.props.navigation}
+          name={"Wishlist"}
+        />
+        <MenuButton
+          goto={"MyOrder"}
+          navigation={this.props.navigation}
+          name={"My Order"}
+        />
+        <MenuButton
+          goto={"RecentlyViewed"}
+          navigation={this.props.navigation}
+          name={"Recently Viewed"}
+        />
+        <MenuButton
+          goto={"Selling"}
+          navigation={this.props.navigation}
+          name={"Selling"}
+        />
+        <MenuButton
+          goto={"Help"}
+          navigation={this.props.navigation}
+          name={"FAQ"}
+        />
       </View>
     );
   }
 }
+
+const MenuButton = props => (
+  <TouchableOpacity
+    onPress={() => props.navigation.navigate(props.goto)}
+    style={styles.btnContainer}
+  >
+    <Text style={styles.btnText}>{props.name}</Text>
+    <Text style={styles.btnText}>></Text>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   btnContainer: {
