@@ -1,23 +1,37 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Constants } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-export const SearchBarHeader = props => (
-  <View style={styles.container}>
-    <SearchBar
-      clearIcon
-      round
-      inputStyle={styles.searchBarInput}
-      containerStyle={styles.searchBarContainer}
-      placeholder="Type Here..."
-    />
-  </View>
-);
+export default class Search extends React.Component {
+  state = {
+    search: ""
+  };
+
+  handleSearchChange = search => {
+    this.setState({ search });
+    this.props.handleSearch(search);
+  };
+
+  render() {
+    return (
+      <View style={styles.searchContainer}>
+        <SearchBar
+          onChangeText={this.handleSearchChange}
+          clearIcon
+          round
+          inputStyle={styles.searchBarInput}
+          containerStyle={styles.searchBarContainer}
+          placeholder="Type Here..."
+        />
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
-  container: {
+  searchContainer: {
     backgroundColor: "white",
     borderBottomWidth: 0,
     shadowOffset: { width: 1, height: 1 },

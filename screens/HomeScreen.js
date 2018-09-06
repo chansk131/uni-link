@@ -1,10 +1,12 @@
 import React from "react";
 import { Text, View, ScrollView, StyleSheet, Button } from "react-native";
+import { SearchBar } from "react-native-elements";
 import { Constants } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { NavigationActions } from "react-navigation";
 
-import { SearchBarHeader } from "../components/header/SearchBarHeader";
+// import Search from "../components/header/Search";
+// import { SearchBarHeader } from "../components/header/SearchBarHeader";
 import { HomeTitle } from "../components/home/HomeTitle";
 import { PopularSearch } from "../components/home/PopularSearch";
 import { RecentSearch } from "../components/home/RecentSearch";
@@ -13,6 +15,7 @@ import { fetchUsers } from "../api";
 
 export default class Home extends React.Component {
   state = {
+    search: "",
     products: null,
     itemLoaded: false,
     populars: [
@@ -61,10 +64,23 @@ export default class Home extends React.Component {
   //   this.setState({products: results, itemLoaded: true})
   // };
 
+  handleSearchChange = search => {
+    this.setState({ search });
+  };
+
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <SearchBarHeader />
+        <View style={styles.searchContainer}>
+          <SearchBar
+            onChangeText={this.handleSearchChange}
+            clearIcon
+            round
+            inputStyle={styles.searchBarInput}
+            containerStyle={styles.searchBarContainer}
+            placeholder="Type Here..."
+          />
+        </View>
         <ScrollView style={styles.container}>
           <HomeTitle />
           <PopularSearch navigation={this.props.navigation} {...this.state} />
@@ -90,5 +106,28 @@ const styles = StyleSheet.create({
     paddingRight: "7%",
     paddingTop: 18,
     backgroundColor: "white"
+  },
+  searchContainer: {
+    backgroundColor: "white",
+    borderBottomWidth: 0,
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: "grey",
+    shadowOpacity: 0.5,
+    elevation: 3
+  },
+  searchBarInput: {
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "#C9C9C9"
+  },
+  searchBarContainer: {
+    backgroundColor: "white",
+    width: "100%",
+    borderBottomWidth: 0,
+    borderTopWidth: 0,
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: "grey",
+    shadowOpacity: 0.5,
+    elevation: 3
   }
 });
