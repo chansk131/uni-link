@@ -79,6 +79,12 @@ export default class Home extends React.Component {
         {this.state.itemLoaded ? (
           <RecentSearch navigation={this.props.navigation} {...this.state} />
         ) : null}
+        <Button
+          style={{ marginBottom: 50 }}
+          onPress={() => this.props.navigation.navigate("Seller")}
+          title={"goToSellerScreen"}
+        />
+        <View style={{ height: 50 }} />
       </ScrollView>
     );
   }

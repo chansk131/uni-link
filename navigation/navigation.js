@@ -1,10 +1,17 @@
 import React from "react";
-import { Text, SafeAreaView, ScrollView, View } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  ScrollView,
+  View,
+  TouchableOpacity
+} from "react-native";
 import {
   createBottomTabNavigator,
   createStackNavigator,
   createDrawerNavigator,
-  DrawerItems
+  DrawerItems,
+  BottomTabBar
 } from "react-navigation";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -21,6 +28,7 @@ import AboutScreen from "../screens/AboutScreen";
 import WishListScreen from "../screens/WishListScreen";
 import RecentlyViewedScreen from "../screens/RecentlyViewedScreen";
 import HelpScreen from "../screens/HelpScreen";
+import SellerScreen from "../screens/SellerScreen";
 import { HeaderTitle } from "../components/HeaderTitle";
 import { HeaderProfile } from "../components/HeaderProfile";
 
@@ -41,7 +49,11 @@ const HomeScreenStackNavigator = createStackNavigator({
     })
   },
   Categories: ExploreScreen,
-  ItemDetail: ItemDetailScreen
+  ItemDetail: ItemDetailScreen,
+  Seller: {
+    screen: SellerScreen,
+    navigationOptions: {}
+  }
 });
 
 const SellingScreenStackNavigator = createStackNavigator({
@@ -71,7 +83,6 @@ const UserScreenStackNavigator = createStackNavigator({
   WishList: { screen: WishListScreen },
   MyOrder: { screen: MyOrderScreen },
   RecentlyViewed: { screen: RecentlyViewedScreen },
-  Selling: { screen: SellingScreen },
   Help: { screen: HelpScreen }
 });
 
@@ -109,7 +120,15 @@ const TabNavigator = createBottomTabNavigator(
       }
     }),
     tabBarOptions: {
-      activeTintColor: "black"
+      activeTintColor: "black",
+      style: {
+        backgroundColor: "white",
+        borderTopWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: "grey",
+        shadowOpacity: 0.5,
+        elevation: 5
+      }
     }
   }
 );
