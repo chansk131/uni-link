@@ -4,8 +4,20 @@ import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Username } from "../components/Username";
 import { Followers } from "../components/FollowingFollower";
+import { ProfilePic } from "../components/ProfilePic";
 
 export default class UserScreen extends React.Component {
+  state = {
+    user: {
+      username: "chan",
+      rating: 90,
+      created_at: "21 Sept 2018",
+      location: "Bristol",
+      followers: 100,
+      following: 200
+    }
+  };
+
   render() {
     return (
       <View
@@ -16,11 +28,22 @@ export default class UserScreen extends React.Component {
       >
         <View
           style={{
-            height: 160,
+            height: 180,
             borderBottomColor: "#707070",
-            borderBottomWidth: 0.5
+            borderBottomWidth: 0.5,
+            padding: "7%"
           }}
-        />
+        >
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ width: "40%", height: 76 }}>
+              <ProfilePic />
+            </View>
+            <View>
+              <Username {...this.state} />
+              <Followers {...this.state} />
+            </View>
+          </View>
+        </View>
         <View
           style={{
             height: 40,

@@ -12,43 +12,40 @@ import { RecentSearch } from "../components/RecentSearch";
 
 import { fetchUsers } from "../api";
 
-const props = {
-  populars: [
-    {
-      key: 1,
-      name: "Accommodation"
-    },
-    {
-      key: 2,
-      name: "Jewelry"
-    },
-    {
-      key: 3,
-      name: "Engineering"
-    },
-    {
-      key: 4,
-      name: "Kitchen Supplies"
-    },
-    {
-      key: 5,
-      name: "Gloves"
-    },
-    {
-      key: 6,
-      name: "Textbooks"
-    },
-    {
-      key: 7,
-      name: "Furniture"
-    }
-  ]
-};
-
 export default class Home extends React.Component {
   state = {
     products: null,
-    itemLoaded: false
+    itemLoaded: false,
+    populars: [
+      {
+        key: 1,
+        name: "Accommodation"
+      },
+      {
+        key: 2,
+        name: "Jewelry"
+      },
+      {
+        key: 3,
+        name: "Engineering"
+      },
+      {
+        key: 4,
+        name: "Kitchen Supplies"
+      },
+      {
+        key: 5,
+        name: "Gloves"
+      },
+      {
+        key: 6,
+        name: "Textbooks"
+      },
+      {
+        key: 7,
+        name: "Furniture"
+      }
+    ]
   };
 
   componentDidMount() {
@@ -78,7 +75,7 @@ export default class Home extends React.Component {
         }}
       >
         <HomeTitle />
-        <PopularSearch navigation={this.props.navigation} {...props} />
+        <PopularSearch navigation={this.props.navigation} {...this.state} />
         {this.state.itemLoaded ? (
           <RecentSearch navigation={this.props.navigation} {...this.state} />
         ) : null}

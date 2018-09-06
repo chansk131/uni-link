@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { Constants } from "expo";
 
-export const Followers = () => (
+export const Followers = ({ user }) => (
   <View
     style={{
       width: 160,
@@ -27,14 +27,14 @@ export const Followers = () => (
         flex: 1
       }}
     >
-      <Text style={{ fontSize: 14 }}>100</Text>
-      <Text style={{ fontSize: 10 }}>Followers</Text>
+      <Text style={{ fontSize: 14 }}>{user.following}</Text>
+      <Text style={{ fontSize: 10 }}>Following</Text>
     </TouchableOpacity>
 
     <TouchableOpacity
       style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
     >
-      <Text style={{ fontSize: 14 }}>100</Text>
+      <Text style={{ fontSize: 14 }}>{user.followers}</Text>
       <Text style={{ fontSize: 10 }}>Followers</Text>
     </TouchableOpacity>
   </View>

@@ -4,9 +4,9 @@ import { Card, Button, SearchBar, Rating } from "react-native-elements";
 import { Constants } from "expo";
 //import { StarsRating } from "../components/StarRating";
 
-export const Username = () => (
+export const Username = ({ user }) => (
   <View style={{ marginBottom: 5 }}>
-    <Text style={{ fontSize: 14, color: "#313131" }}>Username</Text>
+    <Text style={{ fontSize: 14, color: "#313131" }}>{user.username}</Text>
     <View
       style={{
         flexDirection: "row",
@@ -16,12 +16,19 @@ export const Username = () => (
       <Rating
         imageSize={10}
         readonly
-        startingValue={5}
+        startingValue={user.rating / 20}
         style={{ paddingRight: 5 }}
       />
-      <Text style={{ fontSize: 14, color: "#313131" }}>(rating: 100%)</Text>
+      <Text style={{ fontSize: 14, color: "#313131" }}>
+        (rating: {user.rating}
+        %)
+      </Text>
     </View>
-    <Text style={{ fontSize: 14, color: "#313131" }}>Member since</Text>
-    <Text style={{ fontSize: 14, color: "#313131" }}>Location:</Text>
+    <Text style={{ fontSize: 14, color: "#313131" }}>
+      Member since {user.created_at}
+    </Text>
+    <Text style={{ fontSize: 14, color: "#313131" }}>
+      Location: {user.location}
+    </Text>
   </View>
 );
