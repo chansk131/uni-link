@@ -7,11 +7,8 @@ import { Username } from "../components/Username";
 import { Followers } from "../components/FollowingFollower";
 import { ProfilePic } from "../components/ProfilePic";
 
-import store from "../redux/store";
-
 class UserScreen extends React.Component {
   render() {
-    const user = store.getState().user;
     return (
       <View
         style={{
