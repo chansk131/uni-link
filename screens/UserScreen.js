@@ -1,24 +1,17 @@
 import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { connect } from "react-redux";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Username } from "../components/Username";
 import { Followers } from "../components/FollowingFollower";
 import { ProfilePic } from "../components/ProfilePic";
 
-export default class UserScreen extends React.Component {
-  state = {
-    user: {
-      username: "chan",
-      rating: 90,
-      created_at: "21 Sept 2018",
-      location: "Bristol",
-      followers: 100,
-      following: 200
-    }
-  };
+import store from "../redux/store";
 
+class UserScreen extends React.Component {
   render() {
+    const user = store.getState().user;
     return (
       <View
         style={{
@@ -39,8 +32,8 @@ export default class UserScreen extends React.Component {
               <ProfilePic />
             </View>
             <View>
-              <Username {...this.state} />
-              <Followers {...this.state} />
+              <Username user={this.props.user} />
+              <Followers user={this.props.user} />
             </View>
           </View>
         </View>
@@ -131,3 +124,8 @@ const styles = StyleSheet.create({
     fontSize: 15
   }
 });
+
+const mapStateToProps = state => ({
+  user: state.user
+});
+export default connect(mapStateToProps)(UserScreen);

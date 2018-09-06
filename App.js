@@ -1,7 +1,9 @@
 import React from "react";
 import { Font } from "expo";
+import { Provider } from "react-redux";
 
 import { DrawerNavigator } from "./navigation/navigation";
+import store from "./redux/store";
 
 export default class App extends React.Component {
   state = {
@@ -17,6 +19,10 @@ export default class App extends React.Component {
   }
 
   render() {
-    return this.state.fontLoaded ? <DrawerNavigator /> : null;
+    return this.state.fontLoaded ? (
+      <Provider store={store}>
+        <DrawerNavigator />
+      </Provider>
+    ) : null;
   }
 }
