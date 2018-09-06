@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, ScrollView, StyleSheet } from "react-native";
 
-import { ProductCard } from "../components/ProductCard";
+import { ProductCard } from "../ProductCard";
 
 export const RecentSearch = props => (
   <View>

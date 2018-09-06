@@ -4,10 +4,10 @@ import { Constants } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { NavigationActions } from "react-navigation";
 
-import { SearchBarHeader } from "../components/Header/SearchBarHeader";
-import { HomeTitle } from "../components/HomeTitle";
-import { PopularSearch } from "../components/PopularSearch";
-import { RecentSearch } from "../components/RecentSearch";
+import { SearchBarHeader } from "../components/header/SearchBarHeader";
+import { HomeTitle } from "../components/home/HomeTitle";
+import { PopularSearch } from "../components/home/PopularSearch";
+import { RecentSearch } from "../components/home/RecentSearch";
 
 import { fetchUsers } from "../api";
 

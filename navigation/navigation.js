@@ -36,8 +36,7 @@ import {
   HamburgerHeader,
   MessageHeader,
   LogoHeader
-} from "../components/Header/HeaderIcons";
-import { HeaderProfile } from "../components/HeaderProfile";
+} from "../components/header/HeaderIcons";
 
 const HomeScreenStackNavigator = createStackNavigator({
   HomeContent: {

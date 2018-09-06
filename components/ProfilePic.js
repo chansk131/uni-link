@@ -1,28 +1,27 @@
 import React from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
-import { Constants } from "expo";
+import { Image, TouchableOpacity, StyleSheet } from "react-native";
 
 export const ProfilePic = props => (
-  <TouchableOpacity
-    style={{
-      width: 84,
-      height: 84,
-      borderRadius: 42,
-      shadowColor: "grey",
-      shadowOffset: { width: 0, height: 3 },
-      shadowOpacity: 0.5,
-      elevation: 5,
-      borderWidth: 0,
-      marginLeft: 25
-    }}
-  >
-    <Image
-      style={{
-        width: 84,
-        height: 84,
-        borderRadius: 42
-      }}
-      source={require("../assets/icon.png")}
-    />
+  <TouchableOpacity style={styles.container}>
+    <Image style={styles.image} source={require("../assets/icon.png")} />
   </TouchableOpacity>
 );
+
+const styles = StyleSheet.create({
+  container: {
+    width: 84,
+    height: 84,
+    borderRadius: 42,
+    shadowColor: "grey",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    elevation: 5,
+    borderWidth: 0,
+    marginLeft: 25
+  },
+  image: {
+    width: 84,
+    height: 84,
+    borderRadius: 42
+  }
+});
