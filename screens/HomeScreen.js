@@ -5,7 +5,7 @@ import { Constants } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { NavigationActions } from "react-navigation";
 
-import { HeaderTitle } from "../components/HeaderTitle";
+import { SearchBarHeader } from "../components/Header/SearchBarHeader";
 import { HomeTitle } from "../components/HomeTitle";
 import { PopularSearch } from "../components/PopularSearch";
 import { RecentSearch } from "../components/RecentSearch";
@@ -64,28 +64,30 @@ export default class Home extends React.Component {
 
   render() {
     return (
-      <ScrollView
-        style={{
-          flex: 1,
-          paddingTop: Constants.statusBarHeight,
-          paddingLeft: "7%",
-          paddingRight: "7%",
-          paddingTop: 18,
-          backgroundColor: "white"
-        }}
-      >
-        <HomeTitle />
-        <PopularSearch navigation={this.props.navigation} {...this.state} />
-        {this.state.itemLoaded ? (
-          <RecentSearch navigation={this.props.navigation} {...this.state} />
-        ) : null}
-        <Button
-          style={{ marginBottom: 50 }}
-          onPress={() => this.props.navigation.navigate("Seller")}
-          title={"goToSellerScreen"}
-        />
-        <View style={{ height: 50 }} />
-      </ScrollView>
+      <View style={{ flex: 1 }}>
+        <SearchBarHeader />
+        <ScrollView
+          style={{
+            flex: 1,
+            paddingLeft: "7%",
+            paddingRight: "7%",
+            paddingTop: 18,
+            backgroundColor: "white"
+          }}
+        >
+          <HomeTitle />
+          <PopularSearch navigation={this.props.navigation} {...this.state} />
+          {this.state.itemLoaded ? (
+            <RecentSearch navigation={this.props.navigation} {...this.state} />
+          ) : null}
+          <Button
+            style={{ marginBottom: 50 }}
+            onPress={() => this.props.navigation.navigate("Seller")}
+            title={"goToSellerScreen"}
+          />
+          <View style={{ height: 50 }} />
+        </ScrollView>
+      </View>
     );
   }
 }

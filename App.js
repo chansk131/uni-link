@@ -22,9 +22,7 @@ export default class App extends React.Component {
   render() {
     return this.state.fontLoaded ? (
       <Provider store={store}>
-        <SafeAreaView style={{ flex: 1 }}>
-          <SwitchNavigator />
-        </SafeAreaView>
+        <SwitchNavigator />
       </Provider>
     ) : null;
   }

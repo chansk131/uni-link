@@ -32,23 +32,26 @@ import WishListScreen from "../screens/WishListScreen";
 import RecentlyViewedScreen from "../screens/RecentlyViewedScreen";
 import HelpScreen from "../screens/HelpScreen";
 import SellerScreen from "../screens/SellerScreen";
-import { HeaderTitle } from "../components/HeaderTitle";
+import {
+  HamburgerHeader,
+  MessageHeader,
+  LogoHeader
+} from "../components/Header/HeaderIcons";
 import { HeaderProfile } from "../components/HeaderProfile";
 
 const HomeScreenStackNavigator = createStackNavigator({
   HomeContent: {
     screen: HomeScreenContent,
+    headerLayoutPreset: "left",
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
-        height: 100,
         backgroundColor: "white",
         borderBottomWidth: 0,
-        shadowOffset: { width: 1, height: 1 },
-        shadowColor: "grey",
-        shadowOpacity: 0.5
+        elevation: 3
       },
-      headerTitle: <HeaderTitle navigation={navigation} />,
-      headerRightContainerStyle: { marginRight: "1%" }
+      headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeader />,
+      headerRight: <MessageHeader navigation={navigation} />
     })
   },
   Categories: ExploreScreen,
@@ -62,16 +65,19 @@ const HomeScreenStackNavigator = createStackNavigator({
 const SellingScreenStackNavigator = createStackNavigator({
   SellingContent: {
     screen: SellingScreen,
+    headerLayoutPreset: "left",
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
         backgroundColor: "white",
         borderBottomWidth: 0,
         shadowOffset: { width: 1, height: 1 },
         shadowColor: "grey",
-        shadowOpacity: 0.5
+        shadowOpacity: 0.5,
+        elevation: 3
       },
-      headerTitle: <HeaderProfile navigation={navigation} />,
-      headerRightContainerStyle: { marginRight: "1%" }
+      headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeader />,
+      headerRight: <MessageHeader navigation={navigation} />
     })
   }
 });
