@@ -7,6 +7,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Username } from "../components/Username";
 import { Followers } from "../components/FollowingFollower";
 import { ProfilePic } from "../components/ProfilePic";
+import { MenuButton } from "../components/setting/MenuButton";
 
 class UserScreen extends React.Component {
   render() {
@@ -87,30 +88,7 @@ class UserScreen extends React.Component {
   }
 }
 
-const MenuButton = props => (
-  <TouchableOpacity
-    onPress={() => props.navigation.navigate(props.goto)}
-    style={styles.btnContainer}
-  >
-    <Text style={styles.btnText}>{props.name}</Text>
-    <Text style={styles.btnText}>></Text>
-  </TouchableOpacity>
-);
-
 const styles = StyleSheet.create({
-  btnContainer: {
-    height: 60,
-    borderBottomColor: "#707070",
-    borderBottomWidth: 0.5,
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 30,
-    flexDirection: "row"
-  },
-  btnText: {
-    fontWeight: "bold",
-    fontSize: 20
-  },
   btnSettingContainer: {
     flex: 1,
     height: 40,
