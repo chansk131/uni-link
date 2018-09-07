@@ -4,6 +4,9 @@ import { SearchBar } from "react-native-elements";
 import { Constants } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+import store from "../../redux/store";
+import { updateSearch } from "../../redux/actions";
+
 export default class Search extends React.Component {
   state = {
     search: ""
@@ -11,7 +14,20 @@ export default class Search extends React.Component {
 
   handleSearchChange = search => {
     this.setState({ search });
-    this.props.handleSearch(search);
+    store.dispatch(
+      updateSearch({
+        searchTxt: search
+      })
+    );
+  };
+
+  handleSearchCleared = () => {
+    this.setState({ search: "" });
+    store.dispatch(
+      updateSearch({
+        searchTxt: ""
+      })
+    );
   };
 
   render() {
@@ -19,6 +35,8 @@ export default class Search extends React.Component {
       <View style={styles.searchContainer}>
         <SearchBar
           onChangeText={this.handleSearchChange}
+          onClearText={this.handleSearchCleared}
+          value={this.state.search}
           clearIcon
           round
           inputStyle={styles.searchBarInput}
