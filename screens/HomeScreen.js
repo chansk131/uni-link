@@ -1,19 +1,27 @@
-import React from "react";
-import { Text, View, ScrollView, StyleSheet, Button } from "react-native";
-import { SearchBar } from "react-native-elements";
-import { Constants } from "expo";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { connect } from "react-redux";
-import { NavigationActions } from "react-navigation";
+import React from 'react'
+import {
+  Text,
+  View,
+  ScrollView,
+  StyleSheet,
+  Button,
+  Image,
+  FlatList,
+} from 'react-native'
+import { SearchBar } from 'react-native-elements'
+import { Constants } from 'expo'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import { connect } from 'react-redux'
+import { NavigationActions } from 'react-navigation'
 
-import Search from "../components/header/Search";
-import NewSearch from "../components/header/Search";
+import Search from '../components/header/Search'
+import NewSearch from '../components/header/Search'
 // import { SearchBarHeader } from "../components/header/SearchBarHeader";
-import { HomeTitle } from "../components/home/HomeTitle";
-import { PopularSearch } from "../components/home/PopularSearch";
-import { RecentSearch } from "../components/home/RecentSearch";
+import { HomeTitle } from '../components/home/HomeTitle'
+import { PopularSearch } from '../components/home/PopularSearch'
+import { RecentSearch } from '../components/home/RecentSearch'
 
-import { fetchUsers } from "../api";
+import { fetchUsers } from '../api'
 
 class Home extends React.Component {
   state = {
@@ -22,42 +30,49 @@ class Home extends React.Component {
     populars: [
       {
         key: 1,
-        name: "Accommodation"
+        name: 'Accommodation',
       },
       {
         key: 2,
-        name: "Jewelry"
+        name: 'Jewelry',
       },
       {
         key: 3,
-        name: "Engineering"
+        name: 'Engineering',
       },
       {
         key: 4,
-        name: "Kitchen Supplies"
+        name: 'Kitchen Supplies',
       },
       {
         key: 5,
-        name: "Gloves"
+        name: 'Gloves',
       },
       {
         key: 6,
-        name: "Textbooks"
+        name: 'Textbooks',
       },
       {
         key: 7,
-        name: "Furniture"
-      }
-    ]
-  };
+        name: 'Furniture',
+      },
+    ],
+  }
 
   componentDidMount() {
     // this.getUsers();
-    fetch("https://uni-link-9f8f5.firebaseio.com/products.json")
+    fetch('https://uni-link-9f8f5.firebaseio.com/products.json')
       .then(response => response.json())
       .then(results => {
-        this.setState({ products: results, itemLoaded: true });
-      });
+        let resultsArr = []
+        Object.keys(results).forEach(function(key) {
+          resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
+        })
+        return resultsArr
+      })
+      .then(resultsArr => {
+        this.setState({ products: resultsArr, itemLoaded: true })
+      })
   }
 
   // getUsers = async () => {
@@ -81,7 +96,7 @@ class Home extends React.Component {
           <View style={{ height: 50 }} />
         </ScrollView>
       </View>
-    );
+    )
   }
 }
 
@@ -96,50 +111,97 @@ const DefaultHome = props => (
     ) : null}
     <Button
       style={{ marginBottom: 50 }}
-      onPress={() => props.navigation.navigate("Seller")}
-      title={"goToSellerScreen"}
+      onPress={() => props.navigation.navigate('Seller')}
+      title={'goToSellerScreen'}
     />
   </View>
-);
+)
 
 const SearchHome = props => (
-  <View>
-    <Text>Search Result for {JSON.stringify(props.data.search)}</Text>
+  <View
+    style={{
+      flex: 1,
+      paddingHorizontal: '5%',
+    }}
+  >
+    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+      Search Result for {JSON.stringify(props.data.search)}
+    </Text>
+    <ProductSearchView />
   </View>
-);
+)
+
+const ProductSearchView = props => (
+  <View>
+    {/* <ScrollView>
+      <ProductCardHalfPage />
+      <ProductCardHalfPage />
+      <ProductCardHalfPage />
+      <ProductCardHalfPage />
+    </ScrollView> */}
+    <FlatList
+      numColumns={2}
+      renderItem={({ item }) => <ProductCardHalfPage {...item} />}
+      data={[
+        { key: 'a' },
+        { key: 'b' },
+        { key: 'c' },
+        { key: 'd' },
+        { key: 'e' },
+        { key: 'f' },
+        { key: 'g' },
+        { key: 'h' },
+        { key: 'i' },
+        { key: 'j' },
+        { key: 'k' },
+      ]}
+    />
+    <Text>SimilarSearch</Text>
+  </View>
+)
+
+const ProductCardHalfPage = props => (
+  <View>
+    <Text>ProductCard</Text>
+    <Image
+      style={{ width: 143, height: 80 }}
+      source={require('../assets/images/placeholder.png')}
+    />
+  </View>
+)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 18,
-    backgroundColor: "white"
+    backgroundColor: 'white',
   },
   searchContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderBottomWidth: 0,
     shadowOffset: { width: 1, height: 1 },
-    shadowColor: "grey",
+    shadowColor: 'grey',
     shadowOpacity: 0.5,
-    elevation: 3
+    elevation: 3,
   },
   searchBarInput: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: "#C9C9C9"
+    borderColor: '#C9C9C9',
   },
   searchBarContainer: {
-    backgroundColor: "white",
-    width: "100%",
+    backgroundColor: 'white',
+    width: '100%',
     borderBottomWidth: 0,
     borderTopWidth: 0,
     shadowOffset: { width: 1, height: 1 },
-    shadowColor: "grey",
+    shadowColor: 'grey',
     shadowOpacity: 0.5,
-    elevation: 3
-  }
-});
+    elevation: 3,
+  },
+})
 
 const mapStateToProps = state => ({
-  search: state.search.searchTxt
-});
-export default connect(mapStateToProps)(Home);
+  search: state.search.searchTxt,
+})
+export default connect(mapStateToProps)(Home)

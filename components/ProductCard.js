@@ -1,12 +1,12 @@
-import React from "react";
-import { Text, View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { Card, Button, SearchBar, Rating } from "react-native-elements";
+import React from 'react'
+import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { Card, Button, SearchBar, Rating } from 'react-native-elements'
 
 export const ProductCard = props => (
   <TouchableOpacity
     onPress={() =>
-      props.navigation.navigate("ItemDetail", {
-        products: props
+      props.navigation.navigate('ItemDetail', {
+        products: props,
       })
     }
   >
@@ -25,7 +25,7 @@ export const ProductCard = props => (
       </View>
     </Card>
   </TouchableOpacity>
-);
+)
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -34,16 +34,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 210,
     width: 176,
-    padding: 8
+    padding: 8,
   },
   imageContainer: {
     width: 160,
     height: 120,
     borderRadius: 10,
-    marginBottom: 4
+    marginBottom: 4,
   },
-  txt: { fontSize: 10, color: "black" },
-  txtPrice: { fontSize: 10, color: "black", fontWeight: "bold" }
-});
+  txt: { fontSize: 10, color: 'black' },
+  txtPrice: { fontSize: 10, color: 'black', fontWeight: 'bold' },
+})
 
 // TODO: make the position of price, ratings, user the same for all products when having long name

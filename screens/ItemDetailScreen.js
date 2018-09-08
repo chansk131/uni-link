@@ -1,17 +1,17 @@
-import React from "react";
-import { Text, ScrollView, View, Image } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import React from 'react'
+import { Text, ScrollView, View, Image } from 'react-native'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 export default class ItemDetail extends React.Component {
   render() {
-    const { navigation } = this.props;
-    const products = navigation.getParam("products");
+    const { navigation } = this.props
+    const products = navigation.getParam('products')
     return (
       <ScrollView>
         <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
         >
-          <Text>key</Text>
+          <Text>{products.keyFirebase}</Text>
           <Text>{products.name}</Text>
           <Text>{products.price}</Text>
           <Text>{products.description}</Text>
@@ -25,6 +25,6 @@ export default class ItemDetail extends React.Component {
           <Text>{products.user}</Text>
         </View>
       </ScrollView>
-    );
+    )
   }
 }
