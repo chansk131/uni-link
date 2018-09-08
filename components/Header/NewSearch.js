@@ -1,6 +1,5 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { SearchBar } from "react-native-elements";
 import { Constants } from "expo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -32,16 +31,25 @@ export default class Search extends React.Component {
 
   render() {
     return (
-      <SearchBar
-        onChangeText={this.handleSearchChange}
-        onClearText={this.handleSearchCleared}
-        value={this.state.search}
-        clearIcon
-        round
-        inputStyle={styles.searchBarInput}
-        containerStyle={styles.searchBarContainer}
-        placeholder="Type Here..."
-      />
+      <View>
+        <SearchBar
+          onChangeText={this.handleSearchChange}
+          onClearText={this.handleSearchCleared}
+          value={this.state.search}
+          clearIcon
+          round
+          inputStyle={styles.searchBarInput}
+          containerStyle={styles.searchBarContainer}
+          placeholder="Type Here..."
+        />
+        <View style={{ flex: 1 }}>
+          <TextInput
+            style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+            onChangeText={this.handleSearchChange}
+            value={this.state.search}
+          />
+        </View>
+      </View>
     );
   }
 }

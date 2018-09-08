@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity
 } from "react-native";
+import { Badge } from "react-native-elements";
 import {
   createBottomTabNavigator,
   createStackNavigator,

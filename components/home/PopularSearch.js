@@ -9,7 +9,7 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export const PopularSearch = props => (
-  <View style={{ marginBottom: 32 }}>
+  <View style={{ marginBottom: 32, paddingHorizontal: "5%" }}>
     <View style={{ marginBottom: 16 }}>
       <Text style={{ fontSize: 20, fontWeight: "bold", color: "#313131" }}>
         POPULAR SEARCH

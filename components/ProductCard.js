@@ -30,10 +30,11 @@ export const ProductCard = props => (
 const styles = StyleSheet.create({
   cardContainer: {
     marginLeft: 0,
+    marginRight: 6,
     borderRadius: 10,
     height: 210,
-    width: 180,
-    padding: 10
+    width: 176,
+    padding: 8
   },
   imageContainer: {
     width: 160,

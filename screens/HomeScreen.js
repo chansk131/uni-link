@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
 
 import Search from "../components/header/Search";
+import NewSearch from "../components/header/Search";
 // import { SearchBarHeader } from "../components/header/SearchBarHeader";
 import { HomeTitle } from "../components/home/HomeTitle";
 import { PopularSearch } from "../components/home/PopularSearch";
@@ -71,7 +72,7 @@ class Home extends React.Component {
           <Search />
         </View>
         <ScrollView style={styles.container}>
-          <Text>55555 {JSON.stringify(this.props.search)}</Text>
+          {/* <Text>55555 {JSON.stringify(this.props.search)}</Text> */}
           {this.props.search ? (
             <SearchHome data={this.props} />
           ) : (
@@ -86,8 +87,10 @@ class Home extends React.Component {
 
 const DefaultHome = props => (
   <View>
-    <HomeTitle />
-    <PopularSearch navigation={props.navigation} {...props.data} />
+    <View>
+      <HomeTitle />
+      <PopularSearch navigation={props.navigation} {...props.data} />
+    </View>
     {props.data.itemLoaded ? (
       <RecentSearch navigation={props.navigation} {...props.data} />
     ) : null}
@@ -108,8 +111,6 @@ const SearchHome = props => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: "7%",
-    paddingRight: "7%",
     paddingTop: 18,
     backgroundColor: "white"
   },

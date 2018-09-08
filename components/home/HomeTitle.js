@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from "react-native";
 import { Constants } from "expo";
 
 export const HomeTitle = () => (
-  <View>
+  <View style={{ paddingHorizontal: "5%" }}>
     <Text style={styles.welcomeFont}>WELCOME</Text>
     <View style={styles.horizontalLine} />
     <View style={{ marginBottom: 23 }}>
