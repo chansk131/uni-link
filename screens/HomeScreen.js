@@ -132,13 +132,7 @@ const SearchHome = props => (
 )
 
 const ProductSearchView = props => (
-  <View>
-    {/* <ScrollView>
-      <ProductCardHalfPage />
-      <ProductCardHalfPage />
-      <ProductCardHalfPage />
-      <ProductCardHalfPage />
-    </ScrollView> */}
+  <View style={{ flex: 1 }}>
     <FlatList
       numColumns={2}
       renderItem={({ item }) => <ProductCardHalfPage {...item} />}
@@ -161,12 +155,28 @@ const ProductSearchView = props => (
 )
 
 const ProductCardHalfPage = props => (
-  <View>
-    <Text>ProductCard</Text>
+  <View
+    style={{
+      flex: 1,
+      aspectRatio: 1.15,
+      minHeight: 140,
+      maxHeight: 304,
+      backgroundColor: 'white',
+    }}
+  >
     <Image
-      style={{ width: 143, height: 80 }}
+      style={{
+        maxWidth: '90%',
+        maxHeight: '60%',
+        borderRadius: 10,
+        aspectRatio: 1.78,
+      }}
       source={require('../assets/images/placeholder.png')}
     />
+    <Text style={{ fontSize: 10 }}>ProductName</Text>
+    <Text style={{ fontSize: 10, fontWeight: 'bold' }}>£400.00</Text>
+    <Text style={{ fontSize: 10 }}>By User</Text>
+    <Text style={{ fontSize: 10 }}>Rating</Text>
   </View>
 )
 
