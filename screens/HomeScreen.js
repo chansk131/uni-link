@@ -72,7 +72,9 @@ class Home extends React.Component {
         </View>
         <ScrollView style={styles.container}>
           <Text>55555 {JSON.stringify(this.props.search)}</Text>
-          {this.props.search ? null : (
+          {this.props.search ? (
+            <SearchHome data={this.props} />
+          ) : (
             <DefaultHome data={this.state} navigation={this.props.navigation} />
           )}
           <View style={{ height: 50 }} />
@@ -94,6 +96,12 @@ const DefaultHome = props => (
       onPress={() => props.navigation.navigate("Seller")}
       title={"goToSellerScreen"}
     />
+  </View>
+);
+
+const SearchHome = props => (
+  <View>
+    <Text>Search Result for {JSON.stringify(props.data.search)}</Text>
   </View>
 );
 
