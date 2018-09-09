@@ -1,13 +1,13 @@
-import React from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-import { connect } from "react-redux";
-import { Constants } from "expo";
+import React from 'react'
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
+import { Constants } from 'expo'
 
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { Username } from "../components/Username";
-import { Followers } from "../components/FollowingFollower";
-import { ProfilePic } from "../components/ProfilePic";
-import { MenuButton } from "../components/setting/MenuButton";
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Username } from '../components/Username'
+import { Followers } from '../components/FollowingFollower'
+import { ProfilePic } from '../components/ProfilePic'
+import { MenuButton } from '../components/setting/MenuButton'
 
 class UserScreen extends React.Component {
   render() {
@@ -15,20 +15,20 @@ class UserScreen extends React.Component {
       <View
         style={{
           flex: 1,
-          backgroundColor: "white",
-          paddingTop: Constants.statusBarHeight
+          backgroundColor: 'white',
+          paddingTop: Constants.statusBarHeight,
         }}
       >
         <View
           style={{
             height: 180,
-            borderBottomColor: "#707070",
+            borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            padding: "7%"
+            padding: '7%',
           }}
         >
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ width: "40%", height: 76 }}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ width: '40%', height: 76 }}>
               <ProfilePic />
             </View>
             <View>
@@ -40,9 +40,9 @@ class UserScreen extends React.Component {
         <View
           style={{
             height: 40,
-            borderBottomColor: "#707070",
+            borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            flexDirection: "row"
+            flexDirection: 'row',
           }}
         >
           <TouchableOpacity style={styles.btnSettingContainer}>
@@ -59,32 +59,37 @@ class UserScreen extends React.Component {
           </TouchableOpacity>
         </View>
         <MenuButton
-          goto={"WishList"}
+          goto={'WishList'}
           navigation={this.props.navigation}
-          name={"Wishlist"}
+          name={'Wishlist'}
         />
         <MenuButton
-          goto={"MyOrder"}
+          goto={'MyOrder'}
           navigation={this.props.navigation}
-          name={"My Order"}
+          name={'My Order'}
         />
         <MenuButton
-          goto={"RecentlyViewed"}
+          goto={'RecentlyViewed'}
           navigation={this.props.navigation}
-          name={"Recently Viewed"}
+          name={'Recently Viewed'}
         />
         <MenuButton
-          goto={"Selling"}
+          goto={'Selling'}
           navigation={this.props.navigation}
-          name={"Selling"}
+          name={'Selling'}
         />
         <MenuButton
-          goto={"Help"}
+          goto={'Help'}
           navigation={this.props.navigation}
-          name={"FAQ"}
+          name={'FAQ'}
+        />
+        <MenuButton
+          goto={'Login'}
+          navigation={this.props.navigation}
+          name={'LOGIN'}
         />
       </View>
-    );
+    )
   }
 }
 
@@ -92,32 +97,32 @@ const styles = StyleSheet.create({
   btnSettingContainer: {
     flex: 1,
     height: 40,
-    borderBottomColor: "#707070",
+    borderBottomColor: '#707070',
     borderBottomWidth: 0.5,
-    borderRightColor: "#707070",
+    borderRightColor: '#707070',
     borderRightWidth: 0.5,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   btnMessageContainer: {
     flex: 1,
     height: 40,
-    borderBottomColor: "#707070",
+    borderBottomColor: '#707070',
     borderBottomWidth: 0.5,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   btnSmallText: {
-    fontWeight: "bold",
-    fontSize: 15
-  }
-});
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+})
 
 const mapStateToProps = state => ({
-  user: state.user
-});
-export default connect(mapStateToProps)(UserScreen);
+  user: state.user,
+})
+export default connect(mapStateToProps)(UserScreen)

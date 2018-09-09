@@ -1,99 +1,100 @@
-import React from "react";
+import React from 'react'
 import {
   Text,
   SafeAreaView,
   ScrollView,
   View,
-  TouchableOpacity
-} from "react-native";
-import { Badge } from "react-native-elements";
+  TouchableOpacity,
+} from 'react-native'
+import { Badge } from 'react-native-elements'
 import {
   createBottomTabNavigator,
   createStackNavigator,
   createDrawerNavigator,
   createSwitchNavigator,
   DrawerItems,
-  BottomTabBar
-} from "react-navigation";
-import { Constants } from "expo";
-import Ionicons from "react-native-vector-icons/Ionicons";
+  BottomTabBar,
+} from 'react-navigation'
+import { Constants } from 'expo'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import LoginScreen from "../screens/LoginScreen";
-import HomeScreenContent from "../screens/HomeScreen";
-import ExploreScreen from "../screens/ExploreScreen";
-import SellingScreen from "../screens/SellingScreen";
-import AddItemScreen from "../screens/AddItemScreen";
-import NotificationScreen from "../screens/NotificationScreen";
-import UserScreen from "../screens/UserScreen";
-import ItemDetailScreen from "../screens/ItemDetailScreen";
-import MyAccountScreen from "../screens/MyAccountScreen";
-import MyOrderScreen from "../screens/MyOrderScreen";
-import AboutScreen from "../screens/AboutScreen";
-import WishListScreen from "../screens/WishListScreen";
-import RecentlyViewedScreen from "../screens/RecentlyViewedScreen";
-import HelpScreen from "../screens/HelpScreen";
-import SellerScreen from "../screens/SellerScreen";
+import LoginScreen from '../screens/LoginScreen'
+import HomeScreenContent from '../screens/HomeScreen'
+import ExploreScreen from '../screens/ExploreScreen'
+import SellingScreen from '../screens/SellingScreen'
+import AddItemScreen from '../screens/AddItemScreen'
+import NotificationScreen from '../screens/NotificationScreen'
+import UserScreen from '../screens/UserScreen'
+import ItemDetailScreen from '../screens/ItemDetailScreen'
+import MyAccountScreen from '../screens/MyAccountScreen'
+import MyOrderScreen from '../screens/MyOrderScreen'
+import AboutScreen from '../screens/AboutScreen'
+import WishListScreen from '../screens/WishListScreen'
+import RecentlyViewedScreen from '../screens/RecentlyViewedScreen'
+import HelpScreen from '../screens/HelpScreen'
+import SellerScreen from '../screens/SellerScreen'
 import {
   HamburgerHeader,
   MessageHeader,
-  LogoHeader
-} from "../components/header/HeaderIcons";
+  LogoHeader,
+} from '../components/header/HeaderIcons'
 
 const HomeScreenStackNavigator = createStackNavigator({
   HomeContent: {
     screen: HomeScreenContent,
-    headerLayoutPreset: "left",
+    headerLayoutPreset: 'left',
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "white",
+        backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 3
+        elevation: 3,
       },
       headerLeft: <HamburgerHeader navigation={navigation} />,
       headerTitle: <LogoHeader />,
-      headerRight: <MessageHeader navigation={navigation} />
-    })
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
   },
   Categories: ExploreScreen,
   ItemDetail: ItemDetailScreen,
   Seller: {
     screen: SellerScreen,
-    navigationOptions: {}
-  }
-});
+    navigationOptions: {},
+  },
+})
 
 const SellingScreenStackNavigator = createStackNavigator({
   SellingContent: {
     screen: SellingScreen,
-    headerLayoutPreset: "left",
+    headerLayoutPreset: 'left',
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "white",
+        backgroundColor: 'white',
         borderBottomWidth: 0,
         shadowOffset: { width: 1, height: 1 },
-        shadowColor: "grey",
+        shadowColor: 'grey',
         shadowOpacity: 0.5,
-        elevation: 3
+        elevation: 3,
       },
       headerLeft: <HamburgerHeader navigation={navigation} />,
       headerTitle: <LogoHeader />,
-      headerRight: <MessageHeader navigation={navigation} />
-    })
-  }
-});
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
+})
 
 const UserScreenStackNavigator = createStackNavigator({
   UserContent: {
     screen: UserScreen,
     navigationOptions: ({ navigation }) => ({
-      header: null
-    })
+      header: null,
+    }),
   },
   WishList: { screen: WishListScreen },
   MyOrder: { screen: MyOrderScreen },
   RecentlyViewed: { screen: RecentlyViewedScreen },
-  Help: { screen: HelpScreen }
-});
+  Help: { screen: HelpScreen },
+  Login: LoginScreen,
+})
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -103,24 +104,24 @@ const TabNavigator = createBottomTabNavigator(
     Notifications: NotificationScreen,
     User: {
       screen: UserScreenStackNavigator,
-      navigationOptions: { tabBarLabel: "My U-Links" }
-    }
+      navigationOptions: { tabBarLabel: 'My U-Links' },
+    },
   },
   {
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        if (routeName === "Home") {
-          iconName = `ios-home${focused ? "" : "-outline"}`;
-        } else if (routeName === "Selling") {
-          iconName = `ios-pricetag${focused ? "" : "-outline"}`;
-        } else if (routeName === "Add") {
-          iconName = `ios-add${focused ? "" : "-outline"}`;
-        } else if (routeName === "Notifications") {
-          iconName = `ios-notifications${focused ? "" : "-outline"}`;
-        } else if (routeName === "User") {
-          iconName = `ios-person${focused ? "" : "-outline"}`;
+        const { routeName } = navigation.state
+        let iconName
+        if (routeName === 'Home') {
+          iconName = `ios-home${focused ? '' : '-outline'}`
+        } else if (routeName === 'Selling') {
+          iconName = `ios-pricetag${focused ? '' : '-outline'}`
+        } else if (routeName === 'Add') {
+          iconName = `ios-add${focused ? '' : '-outline'}`
+        } else if (routeName === 'Notifications') {
+          iconName = `ios-notifications${focused ? '' : '-outline'}`
+        } else if (routeName === 'User') {
+          iconName = `ios-person${focused ? '' : '-outline'}`
         }
 
         // You can return any component that you like here! We usually use an
@@ -144,91 +145,86 @@ const TabNavigator = createBottomTabNavigator(
               <Text style={{ color: "white", fontSize: 9 }}>4</Text>
             </View> */}
           </View>
-        );
-      }
+        )
+      },
     }),
     tabBarOptions: {
-      activeTintColor: "black",
+      activeTintColor: 'black',
       style: {
-        backgroundColor: "white",
+        backgroundColor: 'white',
         borderTopWidth: 0,
         shadowOffset: { width: 1, height: 1 },
-        shadowColor: "grey",
+        shadowColor: 'grey',
         shadowOpacity: 0.5,
-        elevation: 5
-      }
-    }
+        elevation: 5,
+      },
+    },
   }
-);
+)
 
 const CustomDrawerComponent = props => (
   <SafeAreaView style={{ flex: 1 }}>
     <ScrollView>
       <View
         style={{
-          alignItems: "center",
-          justifyContent: "center",
+          alignItems: 'center',
+          justifyContent: 'center',
           height: 50,
-          backgroundColor: "black",
-          paddingTop: Constants.statusBarHeight
+          backgroundColor: 'black',
+          paddingTop: Constants.statusBarHeight,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>
           WELCOME BACK
         </Text>
       </View>
       <DrawerItems {...props} />
     </ScrollView>
   </SafeAreaView>
-);
+)
 
-const DrawerNavigator = createDrawerNavigator(
+export const DrawerNavigator = createDrawerNavigator(
   {
     Home: {
       screen: TabNavigator,
       navigationOptions: {
-        drawerLabel: "HOME"
-      }
+        drawerLabel: 'HOME',
+      },
     },
     MyAccount: {
       screen: MyAccountScreen,
       navigationOptions: {
-        drawerLabel: "MY ACCOUNT"
-      }
+        drawerLabel: 'MY ACCOUNT',
+      },
     },
     MyOrder: {
       screen: MyOrderScreen,
       navigationOptions: {
-        drawerLabel: "MY ORDER"
-      }
+        drawerLabel: 'MY ORDER',
+      },
     },
     About: {
       screen: AboutScreen,
       navigationOptions: {
-        drawerLabel: "ABOUT"
-      }
+        drawerLabel: 'ABOUT',
+      },
     },
     Help: {
       screen: HelpScreen,
       navigationOptions: {
-        drawerLabel: "HELP / FAQ"
-      }
-    }
+        drawerLabel: 'HELP / FAQ',
+      },
+    },
   },
   {
     contentComponent: CustomDrawerComponent,
     contentOptions: {
-      labelStyle: { fontWeight: "bold", fontSize: 15, textAlign: "center" },
+      labelStyle: { fontWeight: 'bold', fontSize: 15, textAlign: 'center' },
       itemStyle: {
-        borderColor: "#707070",
+        borderColor: '#707070',
         borderBottomWidth: 0.5,
-        alignItems: "center"
-      }
-    }
+        alignItems: 'center',
+      },
+    },
   }
-);
-
-export const SwitchNavigator = createSwitchNavigator({
-  Login: LoginScreen,
-  Home: DrawerNavigator
-});
+)
