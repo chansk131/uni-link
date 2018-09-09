@@ -8,18 +8,15 @@ import {
   Image,
   FlatList,
 } from 'react-native'
-import { SearchBar } from 'react-native-elements'
 import { Constants } from 'expo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 
 import Search from '../components/header/Search'
-import NewSearch from '../components/header/Search'
-// import { SearchBarHeader } from "../components/header/SearchBarHeader";
-import { HomeTitle } from '../components/home/HomeTitle'
-import { PopularSearch } from '../components/home/PopularSearch'
-import { RecentSearch } from '../components/home/RecentSearch'
+
+import { DefaultHome } from './Home/DefaultHome'
+import { SearchHome } from './Home/SearchHome'
 
 import { fetchUsers } from '../api'
 
@@ -99,86 +96,6 @@ class Home extends React.Component {
     )
   }
 }
-
-const DefaultHome = props => (
-  <View>
-    <View>
-      <HomeTitle />
-      <PopularSearch navigation={props.navigation} {...props.data} />
-    </View>
-    {props.data.itemLoaded ? (
-      <RecentSearch navigation={props.navigation} {...props.data} />
-    ) : null}
-    <Button
-      style={{ marginBottom: 50 }}
-      onPress={() => props.navigation.navigate('Seller')}
-      title={'goToSellerScreen'}
-    />
-  </View>
-)
-
-const SearchHome = props => (
-  <View
-    style={{
-      flex: 1,
-      paddingHorizontal: '5%',
-    }}
-  >
-    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-      Search Result for {JSON.stringify(props.data.search)}
-    </Text>
-    <ProductSearchView />
-  </View>
-)
-
-const ProductSearchView = props => (
-  <View style={{ flex: 1 }}>
-    <FlatList
-      numColumns={2}
-      renderItem={({ item }) => <ProductCardHalfPage {...item} />}
-      data={[
-        { key: 'a' },
-        { key: 'b' },
-        { key: 'c' },
-        { key: 'd' },
-        { key: 'e' },
-        { key: 'f' },
-        { key: 'g' },
-        { key: 'h' },
-        { key: 'i' },
-        { key: 'j' },
-        { key: 'k' },
-      ]}
-    />
-    <Text>SimilarSearch</Text>
-  </View>
-)
-
-const ProductCardHalfPage = props => (
-  <View
-    style={{
-      flex: 1,
-      aspectRatio: 1.15,
-      minHeight: 140,
-      maxHeight: 304,
-      backgroundColor: 'white',
-    }}
-  >
-    <Image
-      style={{
-        maxWidth: '90%',
-        maxHeight: '60%',
-        borderRadius: 10,
-        aspectRatio: 1.78,
-      }}
-      source={require('../assets/images/placeholder.png')}
-    />
-    <Text style={{ fontSize: 10 }}>ProductName</Text>
-    <Text style={{ fontSize: 10, fontWeight: 'bold' }}>£400.00</Text>
-    <Text style={{ fontSize: 10 }}>By User</Text>
-    <Text style={{ fontSize: 10 }}>Rating</Text>
-  </View>
-)
 
 const styles = StyleSheet.create({
   container: {
