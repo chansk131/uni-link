@@ -23,6 +23,7 @@ const userReducer = (state = {}, action) => {
           token: action.payload.idToken || false,
           refToken: action.payload.refreshToken || false,
         },
+        loginErr: false,
       }
     case LOG_IN_REJECTED:
       return { ...state, userData: {}, loginErr: action.payload }
@@ -34,6 +35,7 @@ const userReducer = (state = {}, action) => {
           token: action.payload.idToken || false,
           refToken: action.payload.refreshToken || false,
         },
+        loginErr: false,
       }
     case SIGN_UP_REJECTED:
       return { ...state, userData: {}, loginErr: action.payload }

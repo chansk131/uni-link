@@ -7,6 +7,7 @@ import store from '../../redux/store'
 import { bindActionCreators } from 'redux'
 
 import { login } from '../../api'
+import { setTokens } from '../../utils/misc'
 
 import Input from '../../components/forms/inputs'
 import ValidationRules from '../../components/forms/validationRules'
@@ -45,6 +46,22 @@ class LoginForm extends React.Component {
         },
       },
     },
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user.userData.token) {
+      this.manageAccess(nextProps.user.userData)
+    } else if (nextProps.user.loginErr) {
+      this.setState({ hasErrors: true })
+    }
+  }
+
+  manageAccess = userData => {
+    console.log(userData)
+    setTokens(userData, () => {
+      this.setState({ hasErrors: false })
+      this.props.navigation.navigate('Home')
+    })
   }
 
   updateInput = (name, value) => {
@@ -128,13 +145,6 @@ class LoginForm extends React.Component {
       this.setState({ hasErrors: true })
     }
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   // if (nextProps.token) {
-  //   //   this.props.navigation.navigate('Main')
-  //   // }
-  //   console.log(nextProps)
-  // }
 
   render() {
     return (
