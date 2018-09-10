@@ -1,7 +1,7 @@
-import { SIGNIN } from './utils/misc'
+import { SIGNIN, SIGNUP } from './utils/misc'
 
 export const login = async (username, password) => {
-  fetch(SIGNIN, {
+  const response = await fetch(SIGNIN, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
@@ -10,41 +10,32 @@ export const login = async (username, password) => {
       returnSecureToken: true,
     }),
   })
-    .then(response => response.json())
-    .then(response => {
-      console.log(response)
-    })
+  if (response) {
+    const result = await response.json()
+    if (result.error) {
+      throw new Error(result.error.message)
+    }
+    return result
+  }
 }
 
-// export const login = async (username, password) => {
-//   const response = await fetch(SIGNIN, {
-//     method: 'POST',
-//     headers: {'content-type': 'application/json'},
-//     body: JSON.stringify({email: username, password, returnSecureToken: true,}),
-//   })
+export const signup = async (username, password) => {
+  const response = await fetch(SIGNUP, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      email: username,
+      password: password,
+      returnSecureToken: true,
+    }),
+  })
+  if (response) {
+    const result = await response.json()
 
-//   if (response.ok) {
-//     const {token} = await response.json()
-//     return token
-//   }
-
-//   const errMessage = await response.text()
-//   throw new Error(errMessage)
-// }
-
-// fetch(
-//   'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyAV0Qrk7xTpgAInmQFmi7fQfVrm3kn-_W0',
-//   {
-//     method: 'POST',
-//     headers: { 'content-type': 'application/json' },
-//     body: JSON.stringify({
-//       email: formToSumit.email,
-//       password: formToSumit.password,
-//       returnSecureToken: true,
-//     }),
-//   }
-// )
-//   .then(response => response.json())
-//   .then(response => {
-//     console.log(response)
-//   })
+    console.log(result)
+    if (result.error) {
+      throw new Error(result.error.message)
+    }
+    return result
+  }
+}

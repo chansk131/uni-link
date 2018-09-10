@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
 
 import { connect } from 'react-redux'
-import { signUp, signIn, logInUser } from '../../redux/actions'
+import { signUp, signIn, logInUser, signUpUser } from '../../redux/actions'
 import store from '../../redux/store'
 import { bindActionCreators } from 'redux'
 
@@ -97,31 +97,32 @@ class LoginForm extends React.Component {
   //submission
   submitUser = () => {
     let isformValid = true
-    let formToSumit = {}
+    let formToSubmit = {}
     const formCopy = this.state.form
     for (let key in formCopy) {
       if (this.state.type === 'Login') {
         if (key !== 'confirmPassword') {
           isformValid = isformValid && formCopy[key].valid
-          formToSumit[key] = formCopy[key].value
+          formToSubmit[key] = formCopy[key].value
         }
       } else {
         isformValid = isformValid && formCopy[key].valid
-        formToSumit[key] = formCopy[key].value
+        formToSubmit[key] = formCopy[key].value
       }
     }
     if (isformValid) {
       if (this.state.type === 'Login') {
-        // this.props.signIn(formToSumit).then(() => {
-        //   console.log(this.props.User)
-        // })
-        ///////////////////
-        // login(formToSumit.email, formToSumit.password)
-        // this.props.logInUser(formToSumit.email, formToSumit.password)
+        this.props.logInUser(formToSubmit.email, formToSubmit.password)
+
+        // login(formToSubmit.email, formToSubmit.password)
+
+        // this.props.signIn(formToSubmit)
       } else {
-        this.props.signUp(formToSumit).then(() => {
-          console.log(this.props.user)
-        })
+        // this.props.signUp(formToSubmit).then(() => {
+        //   console.log(this.props.user)
+        // })
+
+        this.props.signUpUser(formToSubmit.email, formToSubmit.password)
       }
     } else {
       this.setState({ hasErrors: true })
@@ -158,6 +159,10 @@ class LoginForm extends React.Component {
 
         {this.confirmPassword()}
         {this.formHasErrors()}
+        {/* <Text>{JSON.stringify(this.props.user)}</Text> */}
+        {this.props.user.loginErr ? (
+          <Text>{this.props.user.loginErr}</Text>
+        ) : null}
 
         <View>
           <TouchableOpacity
@@ -225,13 +230,13 @@ const mapStateToProps = state => ({
   user: state.user,
 })
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signUp, signIn }, dispatch)
-}
+// function mapDispatchToProps(dispatch) {
+//   return bindActionCreators({ signUp, signIn }, dispatch)
+// }
 
 // export default LoginForm
 
 export default connect(
   mapStateToProps,
-  { logInUser }
+  { logInUser, signUpUser, signIn }
 )(LoginForm)
