@@ -1,6 +1,13 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
 
+import { connect } from 'react-redux'
+import { signUp, signIn, logInUser } from '../../redux/actions'
+import store from '../../redux/store'
+import { bindActionCreators } from 'redux'
+
+import { login } from '../../api'
+
 import Input from '../../components/forms/inputs'
 import ValidationRules from '../../components/forms/validationRules'
 
@@ -80,6 +87,54 @@ class LoginForm extends React.Component {
     })
   }
 
+  formHasErrors = () =>
+    this.state.hasErrors ? (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorLabel}>Oops, check your info</Text>
+      </View>
+    ) : null
+
+  //submission
+  submitUser = () => {
+    let isformValid = true
+    let formToSumit = {}
+    const formCopy = this.state.form
+    for (let key in formCopy) {
+      if (this.state.type === 'Login') {
+        if (key !== 'confirmPassword') {
+          isformValid = isformValid && formCopy[key].valid
+          formToSumit[key] = formCopy[key].value
+        }
+      } else {
+        isformValid = isformValid && formCopy[key].valid
+        formToSumit[key] = formCopy[key].value
+      }
+    }
+    if (isformValid) {
+      if (this.state.type === 'Login') {
+        // this.props.signIn(formToSumit).then(() => {
+        //   console.log(this.props.User)
+        // })
+        ///////////////////
+        // login(formToSumit.email, formToSumit.password)
+        // this.props.logInUser(formToSumit.email, formToSumit.password)
+      } else {
+        this.props.signUp(formToSumit).then(() => {
+          console.log(this.props.user)
+        })
+      }
+    } else {
+      this.setState({ hasErrors: true })
+    }
+  }
+
+  // componentWillReceiveProps(nextProps) {
+  //   // if (nextProps.token) {
+  //   //   this.props.navigation.navigate('Main')
+  //   // }
+  //   console.log(nextProps)
+  // }
+
   render() {
     return (
       <View style={styles.formInputContainer}>
@@ -102,6 +157,7 @@ class LoginForm extends React.Component {
         />
 
         {this.confirmPassword()}
+        {this.formHasErrors()}
 
         <View>
           <TouchableOpacity
@@ -110,7 +166,7 @@ class LoginForm extends React.Component {
               justifyContent: 'center',
               padding: 8,
             }}
-            onPress={() => alert('action')}
+            onPress={this.submitUser}
           >
             <Text style={{ color: '#fd9727', fontSize: 20 }}>
               {this.state.action}
@@ -138,9 +194,11 @@ class LoginForm extends React.Component {
               justifyContent: 'center',
               padding: 8,
             }}
-            onPress={() => alert('action')}
+            onPress={() => this.props.navigation.navigate('Home')}
           >
-            <Text style={{ color: 'lightgrey', fontSize: 20 }}>skip</Text>
+            <Text style={{ color: 'lightgrey', fontSize: 20 }}>
+              skip, go to Home page
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -153,6 +211,27 @@ const styles = StyleSheet.create({
     minHeight: 400,
     minWidth: 400,
   },
+  errorContainer: {
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  errorLabel: {
+    color: 'red',
+    fontWeight: 'bold',
+  },
 })
 
-export default LoginForm
+const mapStateToProps = state => ({
+  user: state.user,
+})
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ signUp, signIn }, dispatch)
+}
+
+// export default LoginForm
+
+export default connect(
+  mapStateToProps,
+  { logInUser }
+)(LoginForm)

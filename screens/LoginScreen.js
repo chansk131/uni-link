@@ -2,18 +2,16 @@ import React from 'react'
 import { Text, View, Button, TextInput } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import LoginPanel from './Login/loginPanel'
+import LoginForm from './Login/loginForm'
 
 export default class LoginScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#fff' }}>
         <Text>LoginScreen!</Text>
-        <LoginPanel />
-        <Button
-          onPress={() => this.props.navigation.navigate('Home')}
-          title="Home"
-        />
+        <View>
+          <LoginForm {...this.props} />
+        </View>
       </View>
     )
   }
