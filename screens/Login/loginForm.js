@@ -2,11 +2,9 @@ import React from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
 
 import { connect } from 'react-redux'
-import { signUp, signIn, logInUser, signUpUser } from '../../redux/actions'
+import { logInUser, signUpUser } from '../../redux/actions'
 import store from '../../redux/store'
-import { bindActionCreators } from 'redux'
 
-import { login } from '../../api'
 import { setTokens } from '../../utils/misc'
 
 import Input from '../../components/forms/inputs'
@@ -240,13 +238,7 @@ const mapStateToProps = state => ({
   user: state.user,
 })
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ signUp, signIn }, dispatch)
-// }
-
-// export default LoginForm
-
 export default connect(
   mapStateToProps,
-  { logInUser, signUpUser, signIn }
+  { logInUser, signUpUser }
 )(LoginForm)

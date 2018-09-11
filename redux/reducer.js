@@ -3,8 +3,6 @@ import { combineReducers } from 'redux'
 import {
   UPDATE_USER,
   UPDATE_SEARCH,
-  REGISTER_USER,
-  SIGN_USER,
   LOG_IN_FULFILLED,
   LOG_IN_REJECTED,
   SIGN_UP_FULFILLED,
@@ -43,52 +41,6 @@ const userReducer = (state = {}, action) => {
       return state
   }
 
-  // if (action.type === UPDATE_USER) return { ...action.payload }
-
-  // if (action.type === LOG_IN_FULFILLED) {
-  //   return {
-  //     ...state,
-  //     userData: {
-  //       uid: action.payload.localId || false,
-  //       token: action.payload.idToken || false,
-  //       refToken: action.payload.refreshToken || false,
-  //     },
-  //   }
-  // }
-
-  // if (action.type === SIGN_UP_FULFILLED) {
-  //   return {
-  //     ...state,
-  //     userData: {
-  //       uid: action.payload.localId || false,
-  //       token: action.payload.idToken || false,
-  //       refToken: action.payload.refreshToken || false,
-  //     },
-  //   }
-  // }
-
-  // if (action.type === REGISTER_USER) {
-  //   return {
-  //     ...state,
-  //     userData: {
-  //       uid: action.payload.localId || false,
-  //       token: action.payload.idToken || false,
-  //       refToken: action.payload.refreshToken || false,
-  //     },
-  //   }
-  // }
-
-  // if (action.type === SIGN_USER) {
-  //   return {
-  //     ...state,
-  //     userData: {
-  //       uid: action.payload.localId || false,
-  //       token: action.payload.idToken || false,
-  //       refToken: action.payload.refreshToken || false,
-  //     },
-  //   }
-  // }
-  // return state
 }
 
 const searchReducer = (state = {}, action) => {

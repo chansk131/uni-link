@@ -6,9 +6,6 @@ import { login, signup } from '../api'
 export const UPDATE_USER = 'UPDATE_USER'
 export const UPDATE_SEARCH = 'UPDATE_SEARCH'
 
-export const REGISTER_USER = 'REGISTER_USER'
-export const SIGN_USER = 'SIGN_USER'
-
 export const LOG_IN_SENT = 'LOG_IN_SENT'
 export const LOG_IN_FULFILLED = 'LOG_IN_FULFILLED'
 export const LOG_IN_REJECTED = 'LOG_IN_REJECTED'
@@ -45,56 +42,5 @@ export const signUpUser = (username, password) => async dispatch => {
     dispatch({ type: SIGN_UP_FULFILLED, payload: response })
   } catch (err) {
     dispatch({ type: SIGN_UP_REJECTED, payload: err.message })
-  }
-}
-
-export function signUp(data) {
-  const request = axios({
-    method: 'POST',
-    url: SIGNUP,
-    data: {
-      email: data.email,
-      password: data.password,
-      returnSecureToken: true,
-    },
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(response => {
-      return response.data
-    })
-    .catch(e => {
-      return false
-    })
-  return {
-    type: REGISTER_USER,
-    payload: request,
-  }
-}
-
-export function signIn(data) {
-  const request = axios({
-    method: 'POST',
-    url: SIGNIN,
-    data: {
-      email: data.email,
-      password: data.password,
-      returnSecureToken: true,
-    },
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(response => {
-      console.log(response.data)
-      return response.data
-    })
-    .catch(e => {
-      return false
-    })
-  return {
-    type: SIGN_USER,
-    payload: request,
   }
 }
