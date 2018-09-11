@@ -88,7 +88,7 @@ class Home extends React.Component {
           {this.props.search ? (
             <SearchHome data={this.props} />
           ) : (
-            <DefaultHome data={this.state} navigation={this.props.navigation} />
+            <DefaultHome data={this.state} navigation={this.props.navigation} signIn={this.props.user.userData?true:null} />
           )}
           <View style={{ height: 50 }} />
         </ScrollView>
@@ -130,5 +130,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   search: state.search.searchTxt,
+  user: state.user,
 })
 export default connect(mapStateToProps)(Home)
