@@ -30,13 +30,15 @@ import MyAccountScreen from '../screens/MyAccountScreen'
 import MyOrderScreen from '../screens/MyOrderScreen'
 import AboutScreen from '../screens/AboutScreen'
 import WishListScreen from '../screens/WishListScreen'
-import RecentlyViewedScreen from '../screens/RecentlyViewedScreen'
+import InviteFriendsScreen from '../screens/InviteFriendsScreen'
 import HelpScreen from '../screens/HelpScreen'
 import SellerScreen from '../screens/SellerScreen'
+import SettingScreen from '../screens/Setting/SettingScreen'
 import {
   HamburgerHeader,
   MessageHeader,
   LogoHeader,
+  LogoHeaderWithText,
 } from '../components/header/HeaderIcons'
 
 const HomeScreenStackNavigator = createStackNavigator({
@@ -91,9 +93,25 @@ const UserScreenStackNavigator = createStackNavigator({
   },
   WishList: { screen: WishListScreen },
   MyOrder: { screen: MyOrderScreen },
-  RecentlyViewed: { screen: RecentlyViewedScreen },
+  InviteFriends: { screen: InviteFriendsScreen },
   Help: { screen: HelpScreen },
   Login: LoginScreen,
+  Setting: {
+    screen: SettingScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeaderWithText text={'Setting'} />,
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
 })
 
 const TabNavigator = createBottomTabNavigator(
