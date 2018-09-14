@@ -1,92 +1,119 @@
-import React from "react";
-import { Text, View, TextInput, StyleSheet, Button } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Axios from "axios";
+import React from 'react'
+import { Text, View, TextInput, StyleSheet, Button } from 'react-native'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import Axios from 'axios'
+import * as firebase from 'firebase'
 
 export default class AddItemScreen extends React.Component {
   state = {
-    name: "",
-    price: "",
-    user: "chan",
-    location: "",
-    description: "",
-    category: "",
+    name: '',
+    price: '',
+    user: 'chan',
+    location: '',
+    description: '',
+    category: '',
     is_available: 1,
-    user_id: 1
-  };
+    user_id: 1,
+  }
+
+  componentDidMount() {
+    const uid = firebase.auth().currentUser.uid
+    this.setState({ uid })
+  }
 
   handleNameInput = name => {
-    this.setState({ name });
-  };
+    this.setState({ name })
+  }
   handlePriceInput = price => {
-    this.setState({ price });
-  };
+    this.setState({ price })
+  }
   handleLocationInput = location => {
-    this.setState({ location });
-  };
+    this.setState({ location })
+  }
   handleDescriptionInput = description => {
-    this.setState({ description });
-  };
+    this.setState({ description })
+  }
   handleCategoryInput = category => {
-    this.setState({ category });
-  };
+    this.setState({ category })
+  }
 
   addPost = () => {
-    const URL = "https://uni-link-9f8f5.firebaseio.com/products.json";
+    const URL = 'https://uni-link-9f8f5.firebaseio.com/products.json'
 
     Axios({
-      method: "POST",
+      method: 'POST',
       url: URL,
-      data: this.state
-    }).then(response => console.log(response.data));
-  };
+      data: this.state,
+    }).then(response => console.log(response.data))
+  }
+
+  writeNewPost = () => {
+    // A post entry.
+    var postData = this.state
+
+    // Get a key for a new Post.
+    var newPostKey = firebase
+      .database()
+      .ref()
+      .child('products')
+      .push().key
+
+    // Write the new post's data simultaneously in the posts list and the user's post list.
+    var updates = {}
+    updates['/products/' + newPostKey] = postData
+
+    return firebase
+      .database()
+      .ref()
+      .update(updates)
+  }
 
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <View style={{ width: "80%", height: "5%" }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ width: '80%', height: '5%' }}>
           <Text>Name</Text>
           <TextInput
-            style={{ borderColor: "black", borderWidth: 0.5, flex: 1 }}
+            style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
             value={this.state.name}
             onChangeText={this.handleNameInput}
           />
         </View>
-        <View style={{ width: "80%", height: "5%" }}>
+        <View style={{ width: '80%', height: '5%' }}>
           <Text>Price</Text>
           <TextInput
-            style={{ borderColor: "black", borderWidth: 0.5, flex: 1 }}
+            style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
             value={this.state.price}
             onChangeText={this.handlePriceInput}
           />
         </View>
-        <View style={{ width: "80%", height: "5%" }}>
+        <View style={{ width: '80%', height: '5%' }}>
           <Text>Location</Text>
           <TextInput
-            style={{ borderColor: "black", borderWidth: 0.5, flex: 1 }}
+            style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
             value={this.state.location}
             onChangeText={this.handleLocationInput}
           />
         </View>
-        <View style={{ width: "80%", height: "5%" }}>
+        <View style={{ width: '80%', height: '5%' }}>
           <Text>Description</Text>
           <TextInput
-            style={{ borderColor: "black", borderWidth: 0.5, flex: 1 }}
+            style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
             value={this.state.description}
             onChangeText={this.handleDescriptionInput}
           />
         </View>
-        <View style={{ width: "80%", height: "5%" }}>
+        <View style={{ width: '80%', height: '5%' }}>
           <Text>Category</Text>
           <TextInput
-            style={{ borderColor: "black", borderWidth: 0.5, flex: 1 }}
+            style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
             value={this.state.category}
             onChangeText={this.handleCategoryInput}
           />
         </View>
-        <Button onPress={this.addPost} title="Add" />
+        <Button onPress={this.writeNewPost} title="Add" />
       </View>
-    );
+    )
   }
 }
 

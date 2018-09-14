@@ -13,34 +13,9 @@ const userReducer = (state = {}, action) => {
   switch (action.type) {
     case UPDATE_USER:
       return { ...action.payload }
-    case LOG_IN_FULFILLED:
-      return {
-        ...state,
-        userData: {
-          uid: action.payload.localId || false,
-          token: action.payload.idToken || false,
-          refToken: action.payload.refreshToken || false,
-        },
-        loginErr: false,
-      }
-    case LOG_IN_REJECTED:
-      return { ...state, userData: {}, loginErr: action.payload }
-    case SIGN_UP_FULFILLED:
-      return {
-        ...state,
-        userData: {
-          uid: action.payload.localId || false,
-          token: action.payload.idToken || false,
-          refToken: action.payload.refreshToken || false,
-        },
-        loginErr: false,
-      }
-    case SIGN_UP_REJECTED:
-      return { ...state, userData: {}, loginErr: action.payload }
     default:
       return state
   }
-
 }
 
 const searchReducer = (state = {}, action) => {

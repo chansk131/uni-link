@@ -17,6 +17,15 @@ class SettingScreen extends React.Component {
           </TouchableOpacity>
         </View>
         <View style={[styles.groupBtnContainer, { marginTop: 25 }]}>
+          <TouchableOpacity
+            style={styles.btnContainer}
+            onPress={() => this.props.navigation.navigate('EditProfile')}
+          >
+            <Text style={styles.txt}>Edit Profile</Text>
+            <Text style={styles.txt}>></Text>
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.groupBtnContainer, { marginTop: 25 }]}>
           <TouchableOpacity style={styles.btnContainer}>
             <Text style={styles.txt}>Notifications</Text>
             <Text style={styles.txt}>></Text>

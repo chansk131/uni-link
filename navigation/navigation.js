@@ -34,6 +34,7 @@ import InviteFriendsScreen from '../screens/InviteFriendsScreen'
 import HelpScreen from '../screens/HelpScreen'
 import SellerScreen from '../screens/SellerScreen'
 import SettingScreen from '../screens/Setting/SettingScreen'
+import EditProfileScreen from '../screens/Setting/EditProfileScreen'
 import {
   HamburgerHeader,
   MessageHeader,
@@ -111,6 +112,16 @@ const UserScreenStackNavigator = createStackNavigator({
       headerTitle: <LogoHeaderWithText text={'Setting'} />,
       headerRight: <MessageHeader navigation={navigation} />,
     }),
+  },
+  EditProfile: {
+    screen: EditProfileScreen,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        elevation: 0,
+      },
+    },
   },
 })
 

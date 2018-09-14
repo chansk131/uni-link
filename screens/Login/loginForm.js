@@ -1,11 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
-
-import { connect } from 'react-redux'
-import { logInUser, signUpUser } from '../../redux/actions'
-import store from '../../redux/store'
-
-import { setTokens } from '../../utils/misc'
+import * as firebase from 'firebase'
 
 import Input from '../../components/forms/inputs'
 import ValidationRules from '../../components/forms/validationRules'
@@ -16,6 +11,7 @@ class LoginForm extends React.Component {
     action: 'Login',
     actionMode: 'Not a user, Register',
     hasErrors: false,
+    loginErr: '',
     form: {
       email: {
         value: '',
@@ -46,20 +42,58 @@ class LoginForm extends React.Component {
     },
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.user.userData.token) {
-      this.manageAccess(nextProps.user.userData)
-    } else if (nextProps.user.loginErr) {
-      this.setState({ hasErrors: true })
-    }
+  componentDidMount() {
+    this.listenForAuth()
   }
 
-  manageAccess = userData => {
-    console.log(userData)
-    setTokens(userData, () => {
-      this.setState({ hasErrors: false })
-      this.props.navigation.navigate('Home')
+  listenForAuth = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user != null) {
+        // User is signed in.
+        this.setState({ hasErrors: false, loginErr: '' })
+        // console.log(user)
+        this.props.navigation.navigate('Home')
+      } else {
+        console.log('Signed out')
+      }
     })
+  }
+
+  signup = (email, password) => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .catch(error => {
+        // Handle Errors here.
+        var errorCode = error.code
+        var errorMessage = error.message
+        this.setState({ hasErrors: true, loginErr: error.message })
+        // ...
+      })
+  }
+
+  login = (email, password) => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => {
+        // Handle Errors here.
+        var errorCode = error.code
+        var errorMessage = error.message
+        this.setState({ hasErrors: true, loginErr: error.message })
+      })
+  }
+
+  logout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(function() {
+        // Sign-out successful.
+      })
+      .catch(function(error) {
+        // An error happened.
+      })
   }
 
   updateInput = (name, value) => {
@@ -127,17 +161,9 @@ class LoginForm extends React.Component {
     }
     if (isformValid) {
       if (this.state.type === 'Login') {
-        this.props.logInUser(formToSubmit.email, formToSubmit.password)
-
-        // login(formToSubmit.email, formToSubmit.password)
-
-        // this.props.signIn(formToSubmit)
+        this.login(formToSubmit.email, formToSubmit.password)
       } else {
-        // this.props.signUp(formToSubmit).then(() => {
-        //   console.log(this.props.user)
-        // })
-
-        this.props.signUpUser(formToSubmit.email, formToSubmit.password)
+        this.signup(formToSubmit.email, formToSubmit.password)
       }
     } else {
       this.setState({ hasErrors: true })
@@ -168,9 +194,7 @@ class LoginForm extends React.Component {
         {this.confirmPassword()}
         {this.formHasErrors()}
         {/* <Text>{JSON.stringify(this.props.user)}</Text> */}
-        {this.props.user.loginErr ? (
-          <Text>{this.props.user.loginErr}</Text>
-        ) : null}
+        {this.state.loginErr ? <Text>{this.state.loginErr}</Text> : null}
 
         <View>
           <TouchableOpacity
@@ -214,6 +238,18 @@ class LoginForm extends React.Component {
             </Text>
           </TouchableOpacity>
         </View>
+        <View>
+          <TouchableOpacity
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 8,
+            }}
+            onPress={this.logout}
+          >
+            <Text style={{ color: 'lightgrey', fontSize: 20 }}>Log Out</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -234,11 +270,4 @@ const styles = StyleSheet.create({
   },
 })
 
-const mapStateToProps = state => ({
-  user: state.user,
-})
-
-export default connect(
-  mapStateToProps,
-  { logInUser, signUpUser }
-)(LoginForm)
+export default LoginForm

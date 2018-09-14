@@ -36,7 +36,6 @@ export const RecentFeedback2 = () => (
           <Text style={{ fontSize: 12 }}>Negative %</Text>
         </View>
       </View>
-      z
       <View
         style={{
           flex: 1,

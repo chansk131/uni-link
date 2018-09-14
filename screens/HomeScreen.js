@@ -11,6 +11,7 @@ import {
 import { Constants } from 'expo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux'
+import * as firebase from 'firebase'
 import { NavigationActions } from 'react-navigation'
 
 import Search from '../components/header/Search'
@@ -22,6 +23,8 @@ import { fetchUsers } from '../api'
 
 class Home extends React.Component {
   state = {
+    uid: '',
+    signedIn: false,
     products: null,
     itemLoaded: false,
     populars: [
@@ -70,6 +73,20 @@ class Home extends React.Component {
       .then(resultsArr => {
         this.setState({ products: resultsArr, itemLoaded: true })
       })
+
+    this.listenForAuth()
+  }
+
+  listenForAuth = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user != null) {
+        // User is signed in.
+        this.setState({ uid: user.uid, signedIn: true })
+      } else {
+        console.log('Signed out')
+        this.setState({ uid: '', signedIn: false })
+      }
+    })
   }
 
   // getUsers = async () => {
@@ -88,7 +105,11 @@ class Home extends React.Component {
           {this.props.search ? (
             <SearchHome data={this.props} />
           ) : (
-            <DefaultHome data={this.state} navigation={this.props.navigation} signIn={this.props.user.userData?true:null} />
+            <DefaultHome
+              data={this.state}
+              navigation={this.props.navigation}
+              signIn={this.state.signedIn}
+            />
           )}
           <View style={{ height: 50 }} />
         </ScrollView>
