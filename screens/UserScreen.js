@@ -45,7 +45,10 @@ class UserScreen extends React.Component {
             flexDirection: 'row',
           }}
         >
-          <TouchableOpacity style={styles.btnSettingContainer}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Setting')}
+            style={styles.btnSettingContainer}
+          >
             <Ionicons
               name="ios-settings"
               size={20}
@@ -69,14 +72,19 @@ class UserScreen extends React.Component {
           name={'My Order'}
         />
         <MenuButton
-          goto={'RecentlyViewed'}
+          goto={'InviteFriends'}
           navigation={this.props.navigation}
-          name={'Recently Viewed'}
+          name={'Invite Friends?'}
         />
         <MenuButton
           goto={'Selling'}
           navigation={this.props.navigation}
           name={'Selling'}
+        />
+        <MenuButton
+          goto={'Payment'}
+          navigation={this.props.navigation}
+          name={'Payment'}
         />
         <MenuButton
           goto={'Help'}
