@@ -4,24 +4,16 @@ import { Card, Button } from 'react-native-elements'
 
 export const Plus = props => (
   <TouchableOpacity style={styles.container}>
-    <Card containerStyle={styles.cardContainer}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Text style={{ fontSize: 12, color: '#FFFFFF', fontWeight: 'bold' }}>
-          +
-        </Text>
-      </View>
-    </Card>
+    <Text style={{ fontSize: 14, color: '#FFFFFF', fontWeight: 'bold' }}>
+      +
+    </Text>
   </TouchableOpacity>
 )
 
 const styles = StyleSheet.create({
   container: {
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 16,
     height: 16,
     borderRadius: 8,

@@ -22,46 +22,33 @@ export const RecentFeedback2 = () => (
   //>  </TouchableOpacity>
   <Card containerStyle={styles.cardContainer}>
     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-      <View style={{ flexDirection: 'column' }}>
+      <View style={{ flexDirection: 'column', justifyContent: 'space-evenly' }}>
         <Text />
-        <View style={{ marginBottom: 10 }}>
-          <Plus />
-        </View>
+        <Plus />
         <Minus />
-      </View>
-      <View style={{ flexDirection: 'column', left: 5 }}>
-        <Text style={{ fontSize: 12 }} />
-        <Text style={{ fontSize: 12 }}>Positive %</Text>
-        <View style={{ marginTop: 10 }}>
-          <Text style={{ fontSize: 12 }}>Negative %</Text>
-        </View>
       </View>
       <View
         style={{
-          flex: 1,
           flexDirection: 'column',
-          justifyContent: 'center',
+          left: 5,
+          justifyContent: 'space-evenly',
+        }}
+      >
+        <Text style={{ fontSize: 12 }} />
+        <Text style={{ fontSize: 12 }}>Positive %</Text>
+        <Text style={{ fontSize: 12 }}>Negative %</Text>
+      </View>
+      <View
+        style={{
+          //flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'space-evenly',
           alignItems: 'center',
         }}
       >
         <Text style={{ fontSize: 10 }}>time 1 mo.</Text>
-        <Text
-          style={{
-            fontSize: 12,
-          }}
-        >
-          #
-        </Text>
-        <View style={{ marginTop: 10 }}>
-          >
-          <Text
-            style={{
-              fontSize: 12,
-            }}
-          >
-            #
-          </Text>{' '}
-        </View>
+        <Text style={{ fontSize: 12 }}>#</Text>
+        <Text style={{ fontSize: 12 }}>#</Text>
       </View>
     </View>
   </Card>
