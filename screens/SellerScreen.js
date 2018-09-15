@@ -9,7 +9,6 @@ import { ProfilePic } from '../components/ProfilePic'
 import { Items } from '../components/Items'
 import { ItemsCard1 } from '../components/ItemsCard1'
 import { RecentFeedback } from '../components/RecentFeedback'
-import { RecentFeedback2 } from '../components/RecentFeedback2'
 
 class SellerScreen extends React.Component {
   state = {
@@ -37,9 +36,6 @@ class SellerScreen extends React.Component {
         style={{
           flex: 1,
           backgroundColor: 'white',
-          marginTop: 20,
-          marginLeft: 5,
-          padding: 2,
         }}
       >
         <ScrollView>
@@ -52,17 +48,16 @@ class SellerScreen extends React.Component {
               <Followers user={this.props.user} />
             </View>
           </View>
-          <View style={{ marginTop: 30, marginRight: 15, marginLeft: 10 }}>
+          <View style={{ marginTop: 30, marginRight: 25, marginLeft: 10 }}>
             <Items />
             {this.state.itemLoaded ? (
               <ItemsCard1 products={this.state.products} />
             ) : null}
           </View>
           <View
-            style={{ flexDirection: 'column', marginRight: 15, marginLeft: 25 }}
+            style={{ flexDirection: 'column', marginRight: 25, marginLeft: 25 }}
           >
             <RecentFeedback />
-            <RecentFeedback2 />
           </View>
         </ScrollView>
       </View>
