@@ -12,8 +12,7 @@ export default class AddItemScreen extends React.Component {
     location: '',
     description: '',
     category: '',
-    is_available: 1,
-    user_id: 1,
+    isAvailable: 1,
   }
 
   componentDidMount() {
@@ -21,20 +20,8 @@ export default class AddItemScreen extends React.Component {
     this.setState({ uid })
   }
 
-  handleNameInput = name => {
-    this.setState({ name })
-  }
-  handlePriceInput = price => {
-    this.setState({ price })
-  }
-  handleLocationInput = location => {
-    this.setState({ location })
-  }
-  handleDescriptionInput = description => {
-    this.setState({ description })
-  }
-  handleCategoryInput = category => {
-    this.setState({ category })
+  handleInput = (value, type) => {
+    this.setState({ [type]: value })
   }
 
   addPost = () => {
@@ -76,7 +63,7 @@ export default class AddItemScreen extends React.Component {
           <TextInput
             style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
             value={this.state.name}
-            onChangeText={this.handleNameInput}
+            onChangeText={name => this.handleInput(name, 'name')}
           />
         </View>
         <View style={{ width: '80%', height: '5%' }}>
@@ -84,7 +71,7 @@ export default class AddItemScreen extends React.Component {
           <TextInput
             style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
             value={this.state.price}
-            onChangeText={this.handlePriceInput}
+            onChangeText={price => this.handleInput(price, 'price')}
           />
         </View>
         <View style={{ width: '80%', height: '5%' }}>
@@ -92,7 +79,7 @@ export default class AddItemScreen extends React.Component {
           <TextInput
             style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
             value={this.state.location}
-            onChangeText={this.handleLocationInput}
+            onChangeText={location => this.handleInput(location, 'location')}
           />
         </View>
         <View style={{ width: '80%', height: '5%' }}>
@@ -100,7 +87,9 @@ export default class AddItemScreen extends React.Component {
           <TextInput
             style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
             value={this.state.description}
-            onChangeText={this.handleDescriptionInput}
+            onChangeText={description =>
+              this.handleInput(description, 'description')
+            }
           />
         </View>
         <View style={{ width: '80%', height: '5%' }}>
@@ -108,7 +97,7 @@ export default class AddItemScreen extends React.Component {
           <TextInput
             style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
             value={this.state.category}
-            onChangeText={this.handleCategoryInput}
+            onChangeText={category => this.handleInput(category, 'category')}
           />
         </View>
         <Button onPress={this.writeNewPost} title="Add" />
