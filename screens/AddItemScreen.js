@@ -1,42 +1,45 @@
 import React from 'react'
 import { Text, View, TextInput, StyleSheet, Button } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import Axios from 'axios'
 import * as firebase from 'firebase'
 
 export default class AddItemScreen extends React.Component {
   state = {
-    name: '',
-    price: '',
-    user: 'chan',
-    location: '',
-    description: '',
-    category: '',
-    isAvailable: 1,
+    isFormValid: false,
+    form: {
+      name: '',
+      price: '',
+      user: 'chan',
+      location: '',
+      description: '',
+      category: '',
+      isAvailable: true,
+      timestamp: Date.now(),
+    },
   }
 
   componentDidMount() {
-    const uid = firebase.auth().currentUser.uid
-    this.setState({ uid })
+    if (firebase.auth().currentUser.uid !== null) {
+      const uid = firebase.auth().currentUser.uid
+      this.setState({ form: { ...this.state.form, uid }, isFormValid: true })
+      console.log(uid)
+    }
   }
 
   handleInput = (value, type) => {
-    this.setState({ [type]: value })
-  }
-
-  addPost = () => {
-    const URL = 'https://uni-link-9f8f5.firebaseio.com/products.json'
-
-    Axios({
-      method: 'POST',
-      url: URL,
-      data: this.state,
-    }).then(response => console.log(response.data))
+    this.setState({ form: { ...this.state.form, [type]: value } })
   }
 
   writeNewPost = () => {
     // A post entry.
-    var postData = this.state
+    var postData = this.state.form
+
+    var postDataSelling = {
+      name: this.state.form.name,
+      price: this.state.form.price,
+      isAvailable: this.state.form.isAvailable,
+      timestamp: Date.now(),
+    }
 
     // Get a key for a new Post.
     var newPostKey = firebase
@@ -48,6 +51,9 @@ export default class AddItemScreen extends React.Component {
     // Write the new post's data simultaneously in the posts list and the user's post list.
     var updates = {}
     updates['/products/' + newPostKey] = postData
+    updates[
+      '/productsByOwners/' + this.state.form.uid + '/' + newPostKey
+    ] = postDataSelling
 
     return firebase
       .database()
@@ -62,7 +68,7 @@ export default class AddItemScreen extends React.Component {
           <Text>Name</Text>
           <TextInput
             style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
-            value={this.state.name}
+            value={this.state.form.name}
             onChangeText={name => this.handleInput(name, 'name')}
           />
         </View>
@@ -70,7 +76,7 @@ export default class AddItemScreen extends React.Component {
           <Text>Price</Text>
           <TextInput
             style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
-            value={this.state.price}
+            value={this.state.form.price}
             onChangeText={price => this.handleInput(price, 'price')}
           />
         </View>
@@ -78,7 +84,7 @@ export default class AddItemScreen extends React.Component {
           <Text>Location</Text>
           <TextInput
             style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
-            value={this.state.location}
+            value={this.state.form.location}
             onChangeText={location => this.handleInput(location, 'location')}
           />
         </View>
@@ -86,7 +92,7 @@ export default class AddItemScreen extends React.Component {
           <Text>Description</Text>
           <TextInput
             style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
-            value={this.state.description}
+            value={this.state.form.description}
             onChangeText={description =>
               this.handleInput(description, 'description')
             }
@@ -96,11 +102,15 @@ export default class AddItemScreen extends React.Component {
           <Text>Category</Text>
           <TextInput
             style={{ borderColor: 'black', borderWidth: 0.5, flex: 1 }}
-            value={this.state.category}
+            value={this.state.form.category}
             onChangeText={category => this.handleInput(category, 'category')}
           />
         </View>
-        <Button onPress={this.writeNewPost} title="Add" />
+        <Button
+          onPress={this.writeNewPost}
+          title="Add"
+          disabled={!this.state.isFormValid}
+        />
       </View>
     )
   }

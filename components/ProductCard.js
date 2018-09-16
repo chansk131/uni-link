@@ -16,12 +16,6 @@ export const ProductCard = props => (
         <Text style={styles.txt}>{props.name}</Text>
         <Text style={styles.txtPrice}>${props.price}</Text>
         <Text style={styles.txt}>{props.user}</Text>
-        <Rating
-          imageSize={10}
-          readonly
-          startingValue={props.rating}
-          style={{ paddingVertical: 4 }}
-        />
       </View>
     </Card>
   </TouchableOpacity>

@@ -6,8 +6,10 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  FlatList,
 } from 'react-native'
 import { connect } from 'react-redux'
+import * as firebase from 'firebase'
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Username } from '../components/Username'
@@ -17,6 +19,31 @@ import { ProfilePic } from '../components/ProfilePic'
 class SellingScreen extends React.Component {
   state = {
     showUnsold: true,
+    itemLoaded: false,
+  }
+
+  componentDidMount() {
+    if (firebase.auth().currentUser.uid !== null) {
+      var userId = firebase.auth().currentUser.uid
+      return firebase
+        .database()
+        .ref('/productsByOwners/' + userId)
+        .orderByChild('isAvailable')
+        .equalTo(this.state.showUnsold)
+        .once('value')
+        .then(snapshot => {
+          // var username =
+          //   (snapshot.val() && snapshot.val().username) || 'Anonymous'
+          var results = snapshot.val()
+          // ...
+          let resultsArr = []
+          Object.keys(results).forEach(function(key) {
+            resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
+          })
+          this.setState({ products: resultsArr, itemLoaded: true })
+          console.log(resultsArr)
+        })
+    }
   }
 
   render() {
@@ -81,13 +108,15 @@ class SellingScreen extends React.Component {
               )}
             </TouchableOpacity>
           </View>
-          <ScrollView style={{ flex: 1 }}>
-            {this.state.showUnsold ? (
-              <UnsoldItemView showUnsold={this.state.showUnsold} />
-            ) : (
-              <SoldItemView showUnsold={this.state.showUnsold} />
-            )}
-          </ScrollView>
+          {this.state.itemLoaded ? (
+            <ScrollView style={{ flex: 1 }}>
+              {this.state.showUnsold ? (
+                <UnsoldItemView {...this.state.products} />
+              ) : (
+                <SoldItemView {...this.state.products} />
+              )}
+            </ScrollView>
+          ) : null}
         </View>
       </View>
     )
@@ -100,17 +129,32 @@ const SoldItemView = props => (
     <ListedItem product={'Sold'} />
     <ListedItem product={'Sold'} />
     <ListedItem product={'Sold'} />
+    {/* <FlatList
+      style={{ height: 240, paddingLeft: '5%' }}
+      ListFooterComponent={<View style={{ margin: 10 }} />}
+      horizontal={true}
+      renderItem={({ item }) => <ListedItem key={item.key} {...item} />}
+      data={props}
+    /> */}
   </View>
 )
 
-const UnsoldItemView = props => (
-  <View style={{ paddingTop: 30, paddingHorizontal: 20 }}>
-    <ListedItem product={'Unsold'} />
-    <ListedItem product={'Unsold'} />
-    <ListedItem product={'Unsold'} />
-    <ListedItem product={'Unsold'} />
-  </View>
-)
+const UnsoldItemView = props => {
+  var result = Object.values(props)
+  if (result.length) {
+    return (
+      <View style={{ paddingTop: 30, paddingHorizontal: 20 }}>
+        <FlatList
+          style={{ flex: 1 }}
+          // ListFooterComponent={<View style={{ margin: 10 }} />}
+          renderItem={({ item }) => <ListedItem key={item.key} {...item} />}
+          data={result}
+        />
+      </View>
+    )
+  }
+  return false
+}
 
 const ListedItem = props => (
   <View style={{ flexDirection: 'row', alignContent: 'flex-start' }}>
@@ -125,9 +169,9 @@ const ListedItem = props => (
       source={require('../assets/images/placeholder.png')}
     />
     <View>
-      <Text>{props.product}</Text>
-      <Text>$500</Text>
-      <Text>By User</Text>
+      <Text>{props.name}</Text>
+      <Text>£{props.price}</Text>
+      <Text>Viewers: </Text>
     </View>
   </View>
 )

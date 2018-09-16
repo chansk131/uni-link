@@ -93,7 +93,7 @@ export default class App extends React.Component {
 
     // Write the new post's data simultaneously in the posts list and the user's post list.
     var updates = {}
-    updates['/users/' + 'newPostKey'] = postData
+    updates['/users/' + newPostKey] = postData
 
     return firebase
       .database()
