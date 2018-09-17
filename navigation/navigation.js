@@ -41,6 +41,7 @@ import {
   LogoHeader,
   LogoHeaderWithText,
 } from '../components/header/HeaderIcons'
+import LoginPanel from '../screens/Login/loginPanel'
 
 const HomeScreenStackNavigator = createStackNavigator({
   HomeContent: {

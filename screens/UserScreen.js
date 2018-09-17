@@ -2,6 +2,8 @@ import React from 'react'
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { Constants } from 'expo'
+import Modal from 'react-native-modal'
+import * as firebase from 'firebase'
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Username } from '../components/Username'
@@ -10,6 +12,57 @@ import { ProfilePic } from '../components/ProfilePic'
 import { MenuButton } from '../components/setting/MenuButton'
 
 class UserScreen extends React.Component {
+  state = {
+    showModal: true,
+  }
+
+  componentDidMount() {
+    this.listenForAuth()
+  }
+
+  listenForAuth = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user != null) {
+        // User is signed in.
+        this.setState({ uid: user.uid, showModal: false })
+      } else {
+        console.log('Signed out')
+        this.setState({ uid: '', showModal: true })
+      }
+    })
+  }
+
+  renderModal = () => {
+    console.log(this.state)
+    return (
+      <View>
+        <Modal isVisible={this.state.showModal}>
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ showModal: false })
+                this.props.navigation.navigate('Login', {
+                  onGoBack: () => this.listenForAuth(),
+                })
+              }}
+              style={{
+                backgroundColor: 'white',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 20,
+                borderRadius: 5,
+              }}
+            >
+              <Text>This feature requires signing in</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      </View>
+    )
+  }
+
   render() {
     return (
       <View
@@ -19,6 +72,12 @@ class UserScreen extends React.Component {
           paddingTop: Constants.statusBarHeight,
         }}
       >
+        {this.renderModal()}
+        {/* <Modal isVisible={true}>
+          <View style={{ flex: 1 }}>
+            <Text>I am the modal content!</Text>
+          </View>
+        </Modal> */}
         <View
           style={{
             height: 180,
