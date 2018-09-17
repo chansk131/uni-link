@@ -1,7 +1,8 @@
 import React from 'react'
-import { Text, View, TextInput, StyleSheet, Button } from 'react-native'
+import { Text, View, TextInput, StyleSheet, Button, Image } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import * as firebase from 'firebase'
+import Expo from 'expo'
 
 export default class AddItemScreen extends React.Component {
   state = {
@@ -16,6 +17,7 @@ export default class AddItemScreen extends React.Component {
       isAvailable: true,
       timestamp: Date.now(),
     },
+    chosenImage: null,
   }
 
   componentDidMount() {
@@ -26,21 +28,44 @@ export default class AddItemScreen extends React.Component {
     }
   }
 
+  launchCameraRollAsync = async () => {
+    let { status } = await Expo.Permissions.askAsync(
+      Expo.Permissions.CAMERA_ROLL
+    )
+    if (status != 'granted') {
+      console.error('Camera roll perms not granted')
+      return
+    }
+
+    let img = await Expo.ImagePicker.launchImageLibraryAsync()
+    this.setState({ chosenImage: img })
+    console.log(this.state.chosenImage)
+  }
+
   handleInput = (value, type) => {
     this.setState({ form: { ...this.state.form, [type]: value } })
   }
 
-  writeNewPost = () => {
-    // A post entry.
-    var postData = this.state.form
+  _handleImagePicked = async (pickerResult, imgId) => {
+    try {
+      this.setState({ uploading: true })
 
-    var postDataSelling = {
-      name: this.state.form.name,
-      price: this.state.form.price,
-      isAvailable: this.state.form.isAvailable,
-      timestamp: Date.now(),
+      if (!pickerResult.cancelled) {
+        uploadUrl = await uploadImageAsync(pickerResult.uri, imgId)
+        this.setState({ form: { ...this.state.form, pic: uploadUrl } })
+      }
+    } catch (e) {
+      console.log(e)
+      alert('Upload failed, sorry :(')
+      return false
+    } finally {
+      this.setState({ uploading: false })
+      return true
     }
+  }
 
+  writeNewPost = async () => {
+    console.log(this.state)
     // Get a key for a new Post.
     var newPostKey = firebase
       .database()
@@ -48,17 +73,34 @@ export default class AddItemScreen extends React.Component {
       .child('products')
       .push().key
 
-    // Write the new post's data simultaneously in the posts list and the user's post list.
-    var updates = {}
-    updates['/products/' + newPostKey] = postData
-    updates[
-      '/productsByOwners/' + this.state.form.uid + '/' + newPostKey
-    ] = postDataSelling
+    const img = await this._handleImagePicked(
+      this.state.chosenImage,
+      newPostKey
+    )
 
-    return firebase
-      .database()
-      .ref()
-      .update(updates)
+    if (img) {
+      // A post entry.
+      var postData = this.state.form
+
+      var postDataSelling = {
+        name: this.state.form.name,
+        price: this.state.form.price,
+        isAvailable: this.state.form.isAvailable,
+        pic: this.state.form.pic,
+        timestamp: Date.now(),
+      }
+      // Write the new post's data simultaneously in the posts list and the user's post list.
+      var updates = {}
+      updates['/products/' + newPostKey] = postData
+      updates[
+        '/productsByOwners/' + this.state.form.uid + '/' + newPostKey
+      ] = postDataSelling
+
+      return firebase
+        .database()
+        .ref()
+        .update(updates)
+    }
   }
 
   render() {
@@ -111,8 +153,39 @@ export default class AddItemScreen extends React.Component {
           title="Add"
           disabled={!this.state.isFormValid}
         />
+        <Button
+          title="Launch Camera Roll"
+          onPress={() => {
+            this.launchCameraRollAsync()
+          }}
+        />
+
+        {(this.state.chosenImage && (
+          <Image
+            style={{ width: 200, height: 200 }}
+            source={{ uri: this.state.chosenImage.uri }}
+          />
+        )) ||
+          null}
       </View>
     )
+  }
+}
+
+async function uploadImageAsync(uri, imgId) {
+  try {
+    const response = await fetch(uri)
+    const blob = await response.blob()
+    const ref = firebase
+      .storage()
+      .ref()
+      .child('products/' + imgId)
+
+    const snapshot = await ref.put(blob)
+    const url = await ref.getDownloadURL()
+    return url
+  } catch (e) {
+    console.log(e)
   }
 }
 

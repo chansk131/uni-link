@@ -24,26 +24,52 @@ class SellingScreen extends React.Component {
 
   componentDidMount() {
     if (firebase.auth().currentUser.uid !== null) {
-      var userId = firebase.auth().currentUser.uid
-      return firebase
-        .database()
-        .ref('/productsByOwners/' + userId)
-        .orderByChild('isAvailable')
-        .equalTo(this.state.showUnsold)
-        .once('value')
-        .then(snapshot => {
-          // var username =
-          //   (snapshot.val() && snapshot.val().username) || 'Anonymous'
-          var results = snapshot.val()
-          // ...
-          let resultsArr = []
-          Object.keys(results).forEach(function(key) {
-            resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
-          })
-          this.setState({ products: resultsArr, itemLoaded: true })
-          console.log(resultsArr)
-        })
+      this.fetchUnSoldData()
+      this.fetchSoldData()
     }
+  }
+
+  fetchUnSoldData = async () => {
+    var userId = firebase.auth().currentUser.uid
+    return firebase
+      .database()
+      .ref('/productsByOwners/' + userId)
+      .orderByChild('isAvailable')
+      .equalTo(true)
+      .once('value')
+      .then(snapshot => {
+        var results = snapshot.val()
+        let resultsArr = []
+        Object.keys(results).forEach(function(key) {
+          resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
+        })
+        this.setState({
+          products: { ...this.state.products, unSold: resultsArr },
+        })
+        console.log(this.state)
+      })
+  }
+
+  fetchSoldData = async () => {
+    var userId = firebase.auth().currentUser.uid
+    return firebase
+      .database()
+      .ref('/productsByOwners/' + userId)
+      .orderByChild('isAvailable')
+      .equalTo(false)
+      .once('value')
+      .then(snapshot => {
+        var results = snapshot.val()
+        let resultsArr = []
+        Object.keys(results).forEach(function(key) {
+          resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
+        })
+        this.setState({
+          products: { ...this.state.products, sold: resultsArr },
+          itemLoaded: true,
+        })
+        console.log(this.state)
+      })
   }
 
   render() {
@@ -72,11 +98,11 @@ class SellingScreen extends React.Component {
         <View style={{ paddingTop: 10, flex: 1 }}>
           <View style={style.soldTab}>
             <TouchableOpacity
-              onPress={() =>
+              onPress={() => {
                 this.setState(() => ({
                   showUnsold: false,
                 }))
-              }
+              }}
               style={{
                 flex: 1,
                 alignItems: 'center',
@@ -90,11 +116,11 @@ class SellingScreen extends React.Component {
               )}
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() =>
+              onPress={() => {
                 this.setState(() => ({
                   showUnsold: true,
                 }))
-              }
+              }}
               style={{
                 flex: 1,
                 alignItems: 'center',
@@ -111,9 +137,9 @@ class SellingScreen extends React.Component {
           {this.state.itemLoaded ? (
             <ScrollView style={{ flex: 1 }}>
               {this.state.showUnsold ? (
-                <UnsoldItemView {...this.state.products} />
+                <UnsoldItemView {...this.state.products.unSold} />
               ) : (
-                <SoldItemView {...this.state.products} />
+                <SoldItemView {...this.state.products.sold} />
               )}
             </ScrollView>
           ) : null}
@@ -123,21 +149,22 @@ class SellingScreen extends React.Component {
   }
 }
 
-const SoldItemView = props => (
-  <View style={{ paddingTop: 30, paddingHorizontal: 20 }}>
-    <ListedItem product={'Sold'} />
-    <ListedItem product={'Sold'} />
-    <ListedItem product={'Sold'} />
-    <ListedItem product={'Sold'} />
-    {/* <FlatList
-      style={{ height: 240, paddingLeft: '5%' }}
-      ListFooterComponent={<View style={{ margin: 10 }} />}
-      horizontal={true}
-      renderItem={({ item }) => <ListedItem key={item.key} {...item} />}
-      data={props}
-    /> */}
-  </View>
-)
+const SoldItemView = props => {
+  var result = Object.values(props)
+  if (result.length) {
+    return (
+      <View style={{ paddingTop: 30, paddingHorizontal: 20 }}>
+        <FlatList
+          style={{ flex: 1 }}
+          // ListFooterComponent={<View style={{ margin: 10 }} />}
+          renderItem={({ item }) => <ListedItem key={item.key} {...item} />}
+          data={result}
+        />
+      </View>
+    )
+  }
+  return false
+}
 
 const UnsoldItemView = props => {
   var result = Object.values(props)
@@ -166,7 +193,7 @@ const ListedItem = props => (
         marginRight: 10,
         marginBottom: 30,
       }}
-      source={require('../assets/images/placeholder.png')}
+      source={{ uri: props.pic }}
     />
     <View>
       <Text>{props.name}</Text>
