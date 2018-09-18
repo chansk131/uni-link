@@ -48,5 +48,3 @@ const styles = StyleSheet.create({
   },
   txt: { fontSize: 12, color: 'black' },
 })
-
-// TODO: make the position of price, ratings, user the same for all products when having long name
