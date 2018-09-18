@@ -73,11 +73,6 @@ class UserScreen extends React.Component {
         }}
       >
         {this.renderModal()}
-        {/* <Modal isVisible={true}>
-          <View style={{ flex: 1 }}>
-            <Text>I am the modal content!</Text>
-          </View>
-        </Modal> */}
         <View
           style={{
             height: 180,

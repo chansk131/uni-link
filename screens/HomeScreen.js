@@ -60,7 +60,6 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    // this.getUsers();
     fetch('https://uni-link-9f8f5.firebaseio.com/products.json')
       .then(response => response.json())
       .then(results => {
@@ -89,11 +88,6 @@ class Home extends React.Component {
     })
   }
 
-  // getUsers = async () => {
-  //   const results = await fetchUsers();
-  //   this.setState({products: results, itemLoaded: true})
-  // };
-
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -101,7 +95,6 @@ class Home extends React.Component {
           <Search />
         </View>
         <ScrollView style={styles.container}>
-          {/* <Text>55555 {JSON.stringify(this.props.search)}</Text> */}
           {this.props.search ? (
             <SearchHome data={this.props} />
           ) : (

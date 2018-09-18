@@ -2,31 +2,41 @@ import React from 'react'
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import { Card, Button, SearchBar, Rating } from 'react-native-elements'
 
-export const ProductCard = props => (
-  <TouchableOpacity
-    onPress={() =>
-      props.navigation.navigate('ItemDetail', {
-        products: props,
-      })
-    }
-  >
-    <Card containerStyle={styles.cardContainer}>
-      <Image style={styles.imageContainer} source={{ uri: props.pic }} />
-      <View>
-        <Text style={styles.txt}>{props.name}</Text>
-        <Text style={styles.txtPrice}>${props.price}</Text>
-        <Text style={styles.txt}>{props.user}</Text>
-      </View>
-    </Card>
-  </TouchableOpacity>
-)
+export const ProductCard = props => {
+  // shorten long name
+  var name = props.name
+  if (name.length > 45) {
+    name = name.substring(0, 45) + '...'
+  }
+  return (
+    <TouchableOpacity
+      onPress={() =>
+        props.navigation.navigate('ItemDetail', {
+          products: props,
+        })
+      }
+    >
+      <Card containerStyle={styles.cardContainer}>
+        <Image style={styles.imageContainer} source={{ uri: props.pic }} />
+        <View>
+          <Text style={styles.txt}>{name}</Text>
+          {name.length > 45 ? null : <Text />}
+          <Text style={[styles.txt, { fontWeight: 'bold' }]}>
+            £{props.price}
+          </Text>
+          <Text style={styles.txt}>By {props.user}</Text>
+        </View>
+      </Card>
+    </TouchableOpacity>
+  )
+}
 
 const styles = StyleSheet.create({
   cardContainer: {
     marginLeft: 0,
     marginRight: 6,
     borderRadius: 10,
-    height: 210,
+    height: 200,
     width: 176,
     padding: 8,
   },
@@ -36,8 +46,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 4,
   },
-  txt: { fontSize: 10, color: 'black' },
-  txtPrice: { fontSize: 10, color: 'black', fontWeight: 'bold' },
+  txt: { fontSize: 12, color: 'black' },
 })
 
 // TODO: make the position of price, ratings, user the same for all products when having long name
