@@ -109,7 +109,17 @@ const UserScreenStackNavigator = createStackNavigator({
   MyOrder: { screen: MyOrderScreen },
   InviteFriends: { screen: InviteFriendsScreen },
   Help: { screen: HelpScreen },
-  Login: LoginScreen,
+  Signin: {
+    screen: LoginPanel,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        elevation: 0,
+      },
+    },
+  },
+  LoginForm: LoginScreen,
   Setting: {
     screen: SettingScreen,
     navigationOptions: ({ navigation }) => ({

@@ -43,7 +43,7 @@ class UserScreen extends React.Component {
             <TouchableOpacity
               onPress={() => {
                 this.setState({ showModal: false })
-                this.props.navigation.navigate('Login', {
+                this.props.navigation.navigate('Signin', {
                   onGoBack: () => this.listenForAuth(),
                 })
               }}
