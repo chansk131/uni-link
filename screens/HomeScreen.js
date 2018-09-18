@@ -11,6 +11,7 @@ import {
 import { Constants } from 'expo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux'
+import { updateUser } from '../redux/actions'
 import * as firebase from 'firebase'
 import { NavigationActions } from 'react-navigation'
 
@@ -19,7 +20,7 @@ import Search from '../components/header/Search'
 import { DefaultHome } from './Home/DefaultHome'
 import { SearchHome } from './Home/SearchHome'
 
-import { fetchUsers } from '../api'
+import { listenForAuth } from '../api'
 
 class Home extends React.Component {
   state = {
@@ -60,6 +61,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
+    this.listenForAuth()
     fetch('https://uni-link-9f8f5.firebaseio.com/products.json')
       .then(response => response.json())
       .then(results => {
@@ -72,18 +74,16 @@ class Home extends React.Component {
       .then(resultsArr => {
         this.setState({ products: resultsArr, itemLoaded: true })
       })
-
-    this.listenForAuth()
   }
 
   listenForAuth = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user != null) {
         // User is signed in.
-        this.setState({ uid: user.uid, signedIn: true })
+        this.props.updateUser({ uid: user.uid })
       } else {
         console.log('Signed out')
-        this.setState({ uid: '', signedIn: false })
+        this.props.updateUser()
       }
     })
   }
@@ -101,7 +101,7 @@ class Home extends React.Component {
             <DefaultHome
               data={this.state}
               navigation={this.props.navigation}
-              signIn={this.state.signedIn}
+              signIn={this.props.user.uid}
             />
           )}
           <View style={{ height: 50 }} />
@@ -146,4 +146,7 @@ const mapStateToProps = state => ({
   search: state.search.searchTxt,
   user: state.user,
 })
-export default connect(mapStateToProps)(Home)
+export default connect(
+  mapStateToProps,
+  { updateUser }
+)(Home)

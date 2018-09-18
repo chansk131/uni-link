@@ -23,7 +23,7 @@ class SellingScreen extends React.Component {
   }
 
   componentDidMount() {
-    if (firebase.auth().currentUser.uid !== null) {
+    if (this.props.user.uid != null) {
       this.fetchUnSoldData()
       this.fetchSoldData()
     }
@@ -83,11 +83,10 @@ class SellingScreen extends React.Component {
         <View
           style={{
             flexDirection: 'row',
-            paddingHorizontal: '7%',
-            paddingTop: '7%',
+            marginTop: 20,
           }}
         >
-          <View style={{ width: '40%', height: 76 }}>
+          <View style={{ width: '40%', alignItems: 'center' }}>
             <ProfilePic />
           </View>
           <View>
@@ -95,7 +94,7 @@ class SellingScreen extends React.Component {
             <Followers user={this.props.user} />
           </View>
         </View>
-        <View style={{ paddingTop: 10, flex: 1 }}>
+        <View style={{ paddingTop: 15, flex: 1 }}>
           <View style={style.soldTab}>
             <TouchableOpacity
               onPress={() => {

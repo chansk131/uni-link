@@ -40,7 +40,7 @@ class SellerScreen extends React.Component {
       >
         <ScrollView>
           <View style={{ flexDirection: 'row', marginTop: 20 }}>
-            <View style={{ width: '40%', height: 76 }}>
+            <View style={{ width: '40%', alignItems: 'center' }}>
               <ProfilePic />
             </View>
             <View>
