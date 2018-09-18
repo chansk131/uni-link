@@ -186,6 +186,7 @@ const ListedItem = props => (
   <View style={{ flexDirection: 'row', alignContent: 'flex-start' }}>
     <Image
       style={{
+        resizeMode: 'contain',
         width: 200,
         height: 120,
         borderRadius: 10,

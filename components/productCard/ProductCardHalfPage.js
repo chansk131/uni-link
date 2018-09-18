@@ -13,6 +13,7 @@ export const ProductCardHalfPage = props => (
   >
     <Image
       style={{
+        resizeMode: 'contain',
         maxWidth: '90%',
         maxHeight: '60%',
         borderRadius: 10,
