@@ -3,8 +3,9 @@ import { Text, View, TextInput, StyleSheet, Button, Image } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import * as firebase from 'firebase'
 import Expo from 'expo'
+import { connect } from 'react-redux'
 
-export default class AddItemScreen extends React.Component {
+class AddItemScreen extends React.Component {
   state = {
     isFormValid: false,
     form: {
@@ -21,10 +22,18 @@ export default class AddItemScreen extends React.Component {
   }
 
   componentDidMount() {
-    if (firebase.auth().currentUser.uid !== null) {
-      const uid = firebase.auth().currentUser.uid
-      this.setState({ form: { ...this.state.form, uid }, isFormValid: true })
-      console.log(uid)
+    // if (firebase.auth().currentUser.uid !== null) {
+    //   const uid = firebase.auth().currentUser.uid
+    //   this.setState({ form: { ...this.state.form, uid }, isFormValid: true })
+    //   console.log(uid)
+    // }
+
+    if (this.props.user.uid) {
+      console.log(this.props.user.uid)
+      this.setState({
+        form: { ...this.state.form, ...this.props.user.uid },
+        isFormValid: true,
+      })
     }
   }
 
@@ -171,6 +180,12 @@ export default class AddItemScreen extends React.Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user,
+})
+
+export default connect(mapStateToProps)(AddItemScreen)
 
 async function uploadImageAsync(uri, imgId) {
   try {

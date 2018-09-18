@@ -206,14 +206,13 @@ const TabNavigator = createBottomTabNavigator(
 
 const CustomDrawerComponent = props => (
   <SafeAreaView style={{ flex: 1 }}>
-    <ScrollView>
+    <ScrollView style={{ flex: 1 }}>
       <View
         style={{
           alignItems: 'center',
           justifyContent: 'center',
           height: 50,
           backgroundColor: 'black',
-          paddingTop: Constants.statusBarHeight,
         }}
       >
         <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>

@@ -146,6 +146,7 @@ const mapStateToProps = state => ({
   search: state.search.searchTxt,
   user: state.user,
 })
+
 export default connect(
   mapStateToProps,
   { updateUser }
