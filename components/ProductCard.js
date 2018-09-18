@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native'
-import { Card, Button, SearchBar, Rating } from 'react-native-elements'
+import { Card } from 'react-native-elements'
 
 export const ProductCard = props => {
   // shorten long name
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   imageContainer: {
+    resizeMode: 'contain',
     width: 160,
     height: 120,
     borderRadius: 10,
