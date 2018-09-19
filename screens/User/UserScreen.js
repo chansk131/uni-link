@@ -6,10 +6,10 @@ import Modal from 'react-native-modal'
 import * as firebase from 'firebase'
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { Username } from '../components/Username'
-import { Followers } from '../components/FollowingFollower'
-import { ProfilePic } from '../components/ProfilePic'
-import { MenuButton } from '../components/setting/MenuButton'
+import { Username } from '../../components/Username'
+import { Followers } from '../../components/FollowingFollower'
+import { ProfilePic } from '../../components/ProfilePic'
+import { MenuButton } from '../../components/setting/MenuButton'
 
 class UserScreen extends React.Component {
   state = {

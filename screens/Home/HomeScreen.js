@@ -1,26 +1,12 @@
 import React from 'react'
-import {
-  Text,
-  View,
-  ScrollView,
-  StyleSheet,
-  Button,
-  Image,
-  FlatList,
-} from 'react-native'
-import { Constants } from 'expo'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { View, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { updateUser } from '../redux/actions'
+import { updateUser } from '../../redux/actions'
 import * as firebase from 'firebase'
-import { NavigationActions } from 'react-navigation'
 
-import Search from '../components/header/Search'
-
-import { DefaultHome } from './Home/DefaultHome'
-import { SearchHome } from './Home/SearchHome'
-
-import { listenForAuth } from '../api'
+import Search from '../../components/header/Search'
+import { DefaultHome } from './DefaultHome'
+import { SearchHome } from './SearchHome'
 
 class Home extends React.Component {
   state = {

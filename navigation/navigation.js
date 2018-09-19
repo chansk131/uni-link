@@ -18,30 +18,35 @@ import {
 import { Constants } from 'expo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
+import HomeScreenContent from '../screens/Home/HomeScreen'
+
+import LoginPanel from '../screens/Login/loginPanel'
 import LoginScreen from '../screens/LoginScreen'
-import HomeScreenContent from '../screens/HomeScreen'
+
 import ExploreScreen from '../screens/ExploreScreen'
-import SellingScreen from '../screens/SellingScreen'
 import AddItemScreen from '../screens/AddItemScreen'
 import NotificationScreen from '../screens/NotificationScreen'
-import UserScreen from '../screens/UserScreen'
-import ItemDetailScreen from '../screens/ItemDetailScreen'
-import MyAccountScreen from '../screens/MyAccountScreen'
-import MyOrderScreen from '../screens/MyOrderScreen'
-import AboutScreen from '../screens/AboutScreen'
-import WishListScreen from '../screens/WishListScreen'
-import InviteFriendsScreen from '../screens/InviteFriendsScreen'
-import HelpScreen from '../screens/HelpScreen'
-import SellerScreen from '../screens/SellerScreen'
+
+import UserScreen from '../screens/User/UserScreen'
+import WishListScreen from '../screens/User/WishListScreen'
+import MyOrderScreen from '../screens/User/MyOrderScreen'
+import InviteFriendsScreen from '../screens/User/InviteFriendsScreen'
+import SellingScreen from '../screens/User/SellingScreen'
+import MyAccountScreen from '../screens/User/MyAccountScreen'
+
 import SettingScreen from '../screens/Setting/SettingScreen'
 import EditProfileScreen from '../screens/Setting/EditProfileScreen'
+
+import ItemDetailScreen from '../screens/ItemDetailScreen'
+import SellerScreen from '../screens/SellerScreen'
+import AboutScreen from '../screens/AboutScreen'
+import HelpScreen from '../screens/HelpScreen'
 import {
   HamburgerHeader,
   MessageHeader,
   LogoHeader,
   LogoHeaderWithText,
 } from '../components/header/HeaderIcons'
-import LoginPanel from '../screens/Login/loginPanel'
 
 const HomeScreenStackNavigator = createStackNavigator({
   HomeContent: {
