@@ -12,9 +12,9 @@ import { connect } from 'react-redux'
 import * as firebase from 'firebase'
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { Username } from '../components/Username'
-import { Followers } from '../components/FollowingFollower'
-import { ProfilePic } from '../components/ProfilePic'
+import { Username } from '../../components/Username'
+import { Followers } from '../../components/FollowingFollower'
+import { ProfilePic } from '../../components/ProfilePic'
 
 class SellingScreen extends React.Component {
   state = {
