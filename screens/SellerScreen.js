@@ -1,32 +1,49 @@
 import React from 'react'
-import { Text, View, ScrollView } from 'react-native'
+import { Text, View, ScrollView, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
+import * as firebase from 'firebase'
 
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Username } from '../components/Username'
 import { Followers } from '../components/FollowingFollower'
 import { ProfilePic } from '../components/ProfilePic'
-import { Items } from '../components/Items'
-import { ItemsCard1 } from '../components/ItemsCard1'
+import { ItemsCard } from '../components/productCard/ItemsCard'
 import { RecentFeedback } from '../components/RecentFeedback'
 
 class SellerScreen extends React.Component {
   state = {
     itemLoaded: false,
   }
-  // need to set rule, to select only data for that particular user in future
+
   componentDidMount() {
-    fetch('https://uni-link-9f8f5.firebaseio.com/products.json')
-      .then(response => response.json())
-      .then(results => {
+    const { navigation } = this.props
+    const sellerId = navigation.getParam('sellerId')
+    const sellerName = navigation.getParam('sellerName')
+    console.log(sellerId)
+
+    this.fetchData(sellerId, sellerName)
+  }
+
+  fetchData = async (userId, userName) => {
+    return firebase
+      .database()
+      .ref('/productsByOwners/' + userId)
+      .orderByChild('isAvailable')
+      .equalTo(true)
+      .once('value')
+      .then(snapshot => {
+        var results = snapshot.val()
         let resultsArr = []
         Object.keys(results).forEach(function(key) {
-          resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
+          resultsArr.push({
+            key: key,
+            keyFirebase: key,
+            user: userName,
+            ...results[key],
+          })
         })
-        return resultsArr
-      })
-      .then(resultsArr => {
         this.setState({ products: resultsArr, itemLoaded: true })
+
+        console.log(this.state)
       })
   }
 
@@ -49,10 +66,24 @@ class SellerScreen extends React.Component {
             </View>
           </View>
           <View style={{ marginTop: 30, marginRight: 25, marginLeft: 10 }}>
-            <Items />
-            {this.state.itemLoaded ? (
-              <ItemsCard1 products={this.state.products} />
-            ) : null}
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginRight: 10,
+                marginLeft: 20,
+              }}
+            >
+              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Items</Text>
+              <TouchableOpacity>
+                <Text style={{ fontSize: 12 }}>see more</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ height: 240 }}>
+              {this.state.itemLoaded ? (
+                <ItemsCard products={this.state.products} />
+              ) : null}
+            </View>
           </View>
           <View
             style={{ flexDirection: 'column', marginRight: 25, marginLeft: 25 }}

@@ -5,7 +5,7 @@ import { Constants } from 'expo'
 
 import { ProductCard } from './ProductCard'
 
-export const ItemsCard1 = props => (
+export const ItemsCard = props => (
   <View>
     <FlatList
       style={{ height: 240, paddingLeft: '5%' }}

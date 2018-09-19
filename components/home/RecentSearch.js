@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View, ScrollView, StyleSheet, FlatList } from 'react-native'
 
-import { ProductCard } from '../ProductCard'
+import { ProductCard } from '../productCard/ProductCard'
 
 export const RecentSearch = props => (
   <View>

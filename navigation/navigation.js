@@ -47,6 +47,7 @@ import {
   LogoHeader,
   LogoHeaderWithText,
 } from '../components/header/HeaderIcons'
+import RegisterForm from '../screens/Login/registerForm'
 
 const HomeScreenStackNavigator = createStackNavigator({
   HomeContent: {
@@ -125,6 +126,16 @@ const UserScreenStackNavigator = createStackNavigator({
     },
   },
   LoginForm: LoginScreen,
+  RegisterForm: {
+    screen: RegisterForm,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        elevation: 0,
+      },
+    },
+  },
   Setting: {
     screen: SettingScreen,
     navigationOptions: ({ navigation }) => ({
