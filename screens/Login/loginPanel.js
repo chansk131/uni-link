@@ -20,7 +20,9 @@ class LoginPanel extends React.Component {
             <Text style={{ color: 'white', fontSize: 20 }}>Login</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('RegisterForm')}
+            onPress={() =>
+              this.props.navigation.navigate('RegisterForm', { register: true })
+            }
             style={[styles.btnContainer, { marginTop: 30 }]}
           >
             <Text style={{ color: 'white', fontSize: 20 }}>Register</Text>

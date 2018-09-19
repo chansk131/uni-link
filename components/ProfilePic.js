@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, TouchableOpacity, StyleSheet } from 'react-native'
 
 export const ProfilePic = props => (
-  <TouchableOpacity style={styles.container}>
+  <TouchableOpacity onPress={props.onPress} style={styles.container}>
     <Image style={styles.image} source={require('../assets/icon.png')} />
   </TouchableOpacity>
 )

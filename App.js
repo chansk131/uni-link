@@ -25,6 +25,7 @@ export default class App extends React.Component {
   async componentDidMount() {
     await Font.loadAsync({
       'poiret-one': require('./assets/fonts/PoiretOne-Regular.ttf'),
+      Roboto: require('./assets/fonts/Roboto.ttf'),
     })
 
     this.setState({ fontLoaded: true })
