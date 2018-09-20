@@ -21,10 +21,11 @@
   },
   users: {
     one: {
-      email: uni-email,
-      pic: profile pic,
       name,
       surname,
+      dob: date of birth
+      email: uni-email,
+      pic: profile pic,
       preferedPlace,
       university,
       idCardPic,

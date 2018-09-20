@@ -146,7 +146,7 @@ class UserScreen extends React.Component {
           name={'FAQ'}
         />
         <MenuButton
-          goto={'Login'}
+          goto={'Signin'}
           navigation={this.props.navigation}
           name={'LOGIN'}
         />
