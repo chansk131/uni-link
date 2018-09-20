@@ -16,6 +16,7 @@ import {
   Icon,
   StyleProvider,
 } from 'native-base'
+import ActionSheet from 'react-native-actionsheet'
 import getTheme from '../../native-base-theme/components'
 import platform from '../../native-base-theme/variables/platform'
 import { connect } from 'react-redux'
@@ -117,6 +118,10 @@ class RegisterForm extends React.Component {
 
   changeProfilePic = () => {
     console.log('change profile pic')
+  }
+
+  showActionSheet = () => {
+    this.ActionSheet.show()
   }
 
   launchCameraRollAsync = async () => {
@@ -242,7 +247,23 @@ class RegisterForm extends React.Component {
         >
           <ProfilePic
             style={{ marginBottom: 30 }}
-            onPress={() => this.launchCameraRollAsync()}
+            onPress={() => this.showActionSheet()}
+          />
+          <ActionSheet
+            ref={o => (this.ActionSheet = o)}
+            title={'Select image source'}
+            options={['Camera', 'Camera Roll', 'Cancel']}
+            cancelButtonIndex={2}
+            // destructiveButtonIndex={2}
+            onPress={index => {
+              /* do something */
+              if (index === 0) {
+                // launch camera
+              } else if (index === 1) {
+                // launch camera roll
+                this.launchCameraRollAsync()
+              }
+            }}
           />
           <TextInput
             style={styles.txtInput}
