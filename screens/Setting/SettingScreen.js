@@ -1,7 +1,20 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import * as firebase from 'firebase'
 
 class SettingScreen extends React.Component {
+  signOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(function() {
+        // Sign-out successful.
+      })
+      .catch(function(error) {
+        // An error happened.
+      })
+  }
+
   render() {
     return (
       <View style={styles.screenContainer}>
@@ -12,6 +25,7 @@ class SettingScreen extends React.Component {
               alignItems: 'center',
               justifyContent: 'center',
             }}
+            onPress={() => this.signOut()}
           >
             <Text style={styles.txt}>Sign Out</Text>
           </TouchableOpacity>
@@ -19,7 +33,11 @@ class SettingScreen extends React.Component {
         <View style={[styles.groupBtnContainer, { marginTop: 25 }]}>
           <TouchableOpacity
             style={styles.btnContainer}
-            onPress={() => this.props.navigation.navigate('EditProfile')}
+            onPress={() =>
+              this.props.navigation.navigate('RegisterForm', {
+                register: false,
+              })
+            }
           >
             <Text style={styles.txt}>Edit Profile</Text>
             <Text style={styles.txt}>></Text>

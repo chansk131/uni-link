@@ -5,22 +5,13 @@ import {
   KeyboardAvoidingView,
   Button,
   TextInput,
+  View,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native'
-import {
-  DatePicker,
-  Form,
-  Item,
-  Input,
-  Label,
-  Icon,
-  StyleProvider,
-} from 'native-base'
+import { DatePicker } from 'native-base'
 import ActionSheet from 'react-native-actionsheet'
-import getTheme from '../../native-base-theme/components'
-import platform from '../../native-base-theme/variables/platform'
 import { connect } from 'react-redux'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import * as firebase from 'firebase'
 
 import { ProfilePic } from '../../components/ProfilePic'
@@ -29,7 +20,14 @@ import ValidationRules from '../../components/forms/validationRules'
 // USE ACTION SHEET FOR SELECTING CAMERA ROLL OR CAMERA
 class RegisterForm extends React.Component {
   state = {
-    chosenDate: new Date(),
+    uid: '',
+    isLoading: true,
+    uploadForm: false,
+    isRegisterForm: false,
+    chosenImage: null,
+    chosenDate: new Date().toString().substr(4, 12),
+    picUrl: null,
+    uploading: false,
     hasErrors: false,
     form: {
       name: {
@@ -90,37 +88,87 @@ class RegisterForm extends React.Component {
     },
   }
 
-  setDate = newDate => {
-    this.setState({ chosenDate: newDate })
-  }
-
   componentDidMount() {
     const { navigation } = this.props
-    const register = navigation.getParam('register') // check wheter it is registration or not
-    console.log(register)
-    // if (register != true) {
-    // show edit profile detail
-    // console.log(this.props.user)
+    const registerForm = navigation.getParam('register') // check wheter it is registration or not
+    this.setState({ isRegisterForm: registerForm })
+
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         // User is signed in.
         var uid = user.uid
+        this.setState({ uid })
         console.log('auth changed')
-        this.addUserToDatabase(uid)
-        // ...
+
+        if (this.state.uploadForm === true) {
+          console.log('upload form')
+
+          this.addUserToDatabase(uid)
+        }
+
+        if (registerForm === false) {
+          console.log(`edit profile with uid: ${uid}`)
+          // TODO Get data from firebase to populate the form
+          // TODO remove password/ confirm password div
+
+          firebase
+            .database()
+            .ref('/users/' + uid)
+            .once('value')
+            .then(snapshot => {
+              var name = (snapshot.val() && snapshot.val().name) || 'Anonymous'
+              var surname =
+                (snapshot.val() && snapshot.val().name) || 'Anonymous'
+              var email = (snapshot.val() && snapshot.val().name) || 'Anonymous'
+              var university =
+                (snapshot.val() && snapshot.val().name) || 'Anonymous'
+              var location =
+                (snapshot.val() && snapshot.val().name) || 'Anonymous'
+              var tel = (snapshot.val() && snapshot.val().name) || 'Anonymous'
+              //   (snapshot.val() && snapshot.val().username) || 'Anonymous'
+              console.log(snapshot.val().dob)
+              this.setState({
+                ...this.state,
+                isLoading: false,
+                chosenDate: snapshot.val().dob,
+                form: {
+                  ...this.state.form,
+                  name: {
+                    ...this.state.form.name,
+                    value: snapshot.val().name,
+                  },
+                  surname: {
+                    ...this.state.form.surname,
+                    value: snapshot.val().surname,
+                  },
+                  email: {
+                    ...this.state.form.email,
+                    value: snapshot.val().email,
+                  },
+                  university: {
+                    ...this.state.form.university,
+                    value: snapshot.val().university,
+                  },
+                  location: {
+                    ...this.state.form.location,
+                    value: snapshot.val().location,
+                  },
+                  tel: { ...this.state.form.tel, value: snapshot.val().tel },
+                },
+              })
+              console.log(this.state.form)
+
+              // ...
+            })
+        }
       } else {
         // User is signed out.
-        // ...
       }
     })
-    // }
   }
 
-  changeProfilePic = () => {
-    console.log('change profile pic')
-  }
-
-  showActionSheet = () => {
+  // Set Profile Picture
+  showProfilePictureActionSheet = () => {
     this.ActionSheet.show()
   }
 
@@ -135,8 +183,27 @@ class RegisterForm extends React.Component {
 
     let img = await Expo.ImagePicker.launchImageLibraryAsync()
     this.setState({ chosenImage: img })
-    console.log(this.state.chosenImage)
   }
+
+  _handleImagePicked = async (pickerResult, imgId) => {
+    try {
+      this.setState({ uploading: true })
+
+      if (!pickerResult.cancelled) {
+        uploadUrl = await uploadImageAsync(pickerResult.uri, imgId)
+        this.setState({ picUrl: uploadUrl })
+      }
+    } catch (e) {
+      console.log(e)
+      alert('Upload failed, sorry :(')
+      return false
+    } finally {
+      this.setState({ uploading: false })
+      return true
+    }
+  }
+
+  // Prepare User Detail for Upload
 
   updateInput = (field, value) => {
     // copy input into formCopy
@@ -154,6 +221,22 @@ class RegisterForm extends React.Component {
     })
   }
 
+  setDate = newDate => {
+    this.setState({ chosenDate: newDate.toString().substr(4, 12) })
+    console.log(newDate.toString().substr(4, 12))
+  }
+
+  submitForm = () => {
+    if (this.state.isRegisterForm === true) {
+      this.setState({ uploadForm: true })
+      this.registertUser()
+    } else {
+      // EditProfileScreen
+      console.log(`submit with uid: ${this.state.uid}`)
+      this.addUserToDatabase(this.state.uid)
+    }
+  }
+
   registertUser = () => {
     let isformValid = true
     let formToSubmit = {}
@@ -166,7 +249,6 @@ class RegisterForm extends React.Component {
     }
 
     if (isformValid) {
-      console.log(formToSubmit)
       this.signup(formToSubmit['email'], formToSubmit['password'])
     } else {
       this.setState({ hasErrors: true })
@@ -188,22 +270,9 @@ class RegisterForm extends React.Component {
       })
   }
 
-  addUserToDatabase = uid => {
-    // Get a key for a new Post.
-    // var newPostKey = firebase
-    //   .database()
-    //   .ref()
-    //   .child('products')
-    //   .push().key
-
-    // const img = await this._handleImagePicked(
-    //   this.state.chosenImage,
-    //   newPostKey
-    // )
-
-    // if (img) {
+  // Store Data to Database
+  addUserToDatabase = async uid => {
     // A post entry.
-
     var postUserData = {
       name: this.state.form.name.value,
       surname: this.state.form.surname.value,
@@ -215,6 +284,18 @@ class RegisterForm extends React.Component {
       isAvailable: true,
       timestamp: Date.now(),
     }
+
+    if (
+      this.state.chosenImage !== null &&
+      this.state.chosenImage.cancelled === false
+    ) {
+      const img = await this._handleImagePicked(this.state.chosenImage, uid)
+
+      if (img) {
+        postUserData['pic'] = this.state.picUrl
+      }
+    }
+
     // Write the new post's data simultaneously in the posts list and the user's post list.
     var updates = {}
     updates['/users/' + uid] = postUserData
@@ -223,11 +304,21 @@ class RegisterForm extends React.Component {
       .database()
       .ref()
       .update(updates)
-    // }
   }
 
   render() {
-    return (
+    return this.state.isLoading ? (
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'white',
+        }}
+      >
+        <ActivityIndicator size="large" color="lightgrey" />
+      </View>
+    ) : (
       <KeyboardAvoidingView
         style={{
           flex: 1,
@@ -247,7 +338,13 @@ class RegisterForm extends React.Component {
         >
           <ProfilePic
             style={{ marginBottom: 30 }}
-            onPress={() => this.showActionSheet()}
+            onPress={() => this.showProfilePictureActionSheet()}
+            status={'registerForm'}
+            source={
+              this.state.chosenImage !== null
+                ? this.state.chosenImage.uri
+                : null
+            }
           />
           <ActionSheet
             ref={o => (this.ActionSheet = o)}
@@ -277,20 +374,27 @@ class RegisterForm extends React.Component {
             value={this.state.form.surname.value}
             placeholder="Surname"
           />
-          <TextInput
-            style={styles.txtInput}
-            onChangeText={value => this.updateInput('password', value)}
-            value={this.state.form.password.value}
-            placeholder="Password"
-            secureTextEntry
-          />
-          <TextInput
-            style={styles.txtInput}
-            onChangeText={value => this.updateInput('confirmPassword', value)}
-            value={this.state.form.confirmPassword.value}
-            placeholder="Re-type Password"
-            secureTextEntry
-          />
+          {this.state.isRegisterForm ? (
+            <View style={{ width: '100%' }}>
+              <TextInput
+                style={styles.txtInput}
+                onChangeText={value => this.updateInput('password', value)}
+                value={this.state.form.password.value}
+                placeholder="Password"
+                secureTextEntry
+              />
+              <TextInput
+                style={styles.txtInput}
+                onChangeText={value =>
+                  this.updateInput('confirmPassword', value)
+                }
+                value={this.state.form.confirmPassword.value}
+                placeholder="Re-type Password"
+                secureTextEntry
+              />
+            </View>
+          ) : null}
+
           <Text
             style={{
               width: '100%',
@@ -302,20 +406,28 @@ class RegisterForm extends React.Component {
           >
             Date of Birth
           </Text>
-          <DatePicker
-            defaultDate={new Date()}
-            minimumDate={new Date(1990, 1, 1)}
-            maximumDate={new Date(2018, 12, 31)}
-            locale={'en'}
-            timeZoneOffsetInMinutes={undefined}
-            modalTransparent={false}
-            animationType={'fade'}
-            androidMode={'default'}
-            placeHolderText={this.state.chosenDate.toString().substr(4, 12)}
-            textStyle={{ color: 'black', fontSize: 14 }}
-            placeHolderTextStyle={{ color: '#d3d3d3', fontSize: 14 }}
-            onDateChange={this.setDate}
-          />
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+            }}
+          >
+            <DatePicker
+              defaultDate={new Date()}
+              minimumDate={new Date(1990, 1, 1)}
+              maximumDate={new Date(2018, 12, 31)}
+              locale={'en'}
+              timeZoneOffsetInMinutes={undefined}
+              modalTransparent={false}
+              animationType={'fade'}
+              androidMode={'default'}
+              placeHolderText={this.state.chosenDate}
+              textStyle={{ color: 'black', fontSize: 14 }}
+              placeHolderTextStyle={{ color: 'black', fontSize: 14 }}
+              onDateChange={this.setDate}
+            />
+          </View>
           <TextInput
             style={styles.txtInput}
             onChangeText={value => this.updateInput('email', value)}
@@ -343,10 +455,27 @@ class RegisterForm extends React.Component {
             placeholder="Telephone"
             keyboardType="phone-pad"
           />
-          <Button onPress={() => this.registertUser()} title="OKAY" />
+          <Button onPress={() => this.submitForm()} title="OKAY" />
         </ScrollView>
       </KeyboardAvoidingView>
     )
+  }
+}
+
+async function uploadImageAsync(uri, imgId) {
+  try {
+    const response = await fetch(uri)
+    const blob = await response.blob()
+    const ref = firebase
+      .storage()
+      .ref()
+      .child('users/' + imgId)
+
+    const snapshot = await ref.put(blob)
+    const url = await ref.getDownloadURL()
+    return url
+  } catch (e) {
+    console.log(e)
   }
 }
 
