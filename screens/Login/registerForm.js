@@ -8,11 +8,13 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native'
 import { DatePicker } from 'native-base'
 import ActionSheet from 'react-native-actionsheet'
 import { connect } from 'react-redux'
 import * as firebase from 'firebase'
+import { NavigationActions, StackActions } from 'react-navigation'
 
 import { ProfilePic } from '../../components/ProfilePic'
 import ValidationRules from '../../components/forms/validationRules'
@@ -304,6 +306,15 @@ class RegisterForm extends React.Component {
       .database()
       .ref()
       .update(updates)
+      .then(() => {
+        if (this.state.isRegisterForm) {
+          const backAction = NavigationActions.back({})
+          this.props.navigation.dispatch(backAction)
+          this.props.navigation.navigate('Home')
+        } else {
+          this.props.navigation.goBack()
+        }
+      })
   }
 
   render() {
@@ -455,7 +466,28 @@ class RegisterForm extends React.Component {
             placeholder="Telephone"
             keyboardType="phone-pad"
           />
-          <Button onPress={() => this.submitForm()} title="OKAY" />
+          <View
+            style={{
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              flexDirection: 'row',
+              marginTop: 10,
+            }}
+          >
+            <TouchableOpacity
+              style={styles.bntContainer}
+              onPress={() => this.props.navigation.goBack()}
+            >
+              <Text style={styles.btnTxt}>CANCEL</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.bntContainer, { backgroundColor: '#428bca' }]}
+              onPress={() => this.submitForm()}
+            >
+              <Text style={[styles.btnTxt, { color: 'white' }]}>OKAY</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     )
@@ -498,6 +530,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     padding: 5,
     marginTop: 10,
+  },
+  bntContainer: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 8,
+    elevation: 5,
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: 'grey',
+    shadowOpacity: 0.5,
+    marginHorizontal: 5,
+  },
+  btnTxt: {
+    fontWeight: 'bold',
   },
 })
 

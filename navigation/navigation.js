@@ -21,7 +21,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import HomeScreenContent from '../screens/Home/HomeScreen'
 
 import LoginPanel from '../screens/Login/loginPanel'
-import LoginScreen from '../screens/LoginScreen'
+import LoginScreen from '../screens/Login/LoginScreen'
 
 import ExploreScreen from '../screens/ExploreScreen'
 import AddItemScreen from '../screens/AddItemScreen'
@@ -125,7 +125,16 @@ const UserScreenStackNavigator = createStackNavigator({
       },
     },
   },
-  LoginForm: LoginScreen,
+  LoginForm: {
+    screen: LoginScreen,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        elevation: 0,
+      },
+    },
+  },
   RegisterForm: {
     screen: RegisterForm,
     navigationOptions: {
