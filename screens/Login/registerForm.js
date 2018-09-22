@@ -118,17 +118,6 @@ class RegisterForm extends React.Component {
             .ref('/users/' + uid)
             .once('value')
             .then(snapshot => {
-              var name = (snapshot.val() && snapshot.val().name) || 'Anonymous'
-              var surname =
-                (snapshot.val() && snapshot.val().name) || 'Anonymous'
-              var email = (snapshot.val() && snapshot.val().name) || 'Anonymous'
-              var university =
-                (snapshot.val() && snapshot.val().name) || 'Anonymous'
-              var location =
-                (snapshot.val() && snapshot.val().name) || 'Anonymous'
-              var tel = (snapshot.val() && snapshot.val().name) || 'Anonymous'
-              //   (snapshot.val() && snapshot.val().username) || 'Anonymous'
-              console.log(snapshot.val().dob)
               this.setState({
                 ...this.state,
                 isLoading: false,

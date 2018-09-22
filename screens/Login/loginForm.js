@@ -1,22 +1,27 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
+import {
+  Text,
+  View,
+  Button,
+  TextInput,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import ValidationRules from '../../components/forms/validationRules'
 import * as firebase from 'firebase'
 
-import Input from '../../components/forms/inputs'
-import ValidationRules from '../../components/forms/validationRules'
-
-class LoginForm extends React.Component {
+export default class LoginForm extends React.Component {
   state = {
-    type: 'Login',
-    action: 'Login',
-    actionMode: 'Not a user, Register',
+    uid: '',
+    isLoading: true,
+    uploading: false,
     hasErrors: false,
-    loginErr: '',
     form: {
       email: {
         value: '',
         valid: false,
-        type: 'textinput',
         rules: {
           isRequired: true,
           isEmail: true,
@@ -25,230 +30,97 @@ class LoginForm extends React.Component {
       password: {
         value: '',
         valid: false,
-        type: 'textinput',
         rules: {
           isRequired: true,
           minLength: 6,
         },
       },
-      confirmPassword: {
-        value: '',
-        valid: false,
-        type: 'textinput',
-        rules: {
-          confirmPass: 'password',
-        },
-      },
     },
   }
 
-  componentDidMount() {
-    this.listenForAuth()
-  }
-
-  listenForAuth = () => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user != null) {
-        // User is signed in.
-        this.setState({ hasErrors: false, loginErr: '' })
-        // console.log(user)
-        this.props.navigation.navigate('Home')
-      } else {
-        console.log('Signed out')
-      }
-    })
-  }
-
-  signup = (email, password) => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .catch(error => {
-        // Handle Errors here.
-        var errorCode = error.code
-        var errorMessage = error.message
-        this.setState({ hasErrors: true, loginErr: error.message })
-        // ...
-      })
-  }
-
-  login = (email, password) => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .catch(error => {
-        // Handle Errors here.
-        var errorCode = error.code
-        var errorMessage = error.message
-        this.setState({ hasErrors: true, loginErr: error.message })
-      })
-  }
-
-  logout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(function() {
-        // Sign-out successful.
-      })
-      .catch(function(error) {
-        // An error happened.
-      })
-  }
-
-  updateInput = (name, value) => {
-    this.setState({
-      hasErrors: false,
-    })
-
+  updateInput = (field, value) => {
+    // copy input into formCopy
     let formCopy = this.state.form
-    formCopy[name].value = value
+    formCopy[field].value = value
 
-    let rules = formCopy[name].rules
+    // validate input
+    let rules = formCopy[field].rules
     let valid = ValidationRules(value, rules, formCopy)
+    formCopy[field].valid = valid
 
-    formCopy[name].valid = valid
-
+    // store input in state
     this.setState({
       form: formCopy,
     })
   }
 
-  confirmPassword = () =>
-    this.state.type != 'Login' ? (
-      <Input
-        placeholder="Confirm your password"
-        type={this.state.form.confirmPassword.type}
-        value={this.state.form.confirmPassword.value}
-        onChangeText={value => this.updateInput('confirmPassword', value)}
-        autoCapitalize={'none'}
-        secureTextEntry
-      />
-    ) : null
-
-  changeFormType = () => {
-    const type = this.state.type
-    this.setState({
-      type: type === 'Login' ? 'Register' : 'Login',
-      action: type === 'Login' ? 'Register' : 'Login',
-      actionMode:
-        type === 'Login' ? 'Already registered, Login' : 'Not a user, Register',
-    })
-  }
-
-  formHasErrors = () =>
-    this.state.hasErrors ? (
-      <View style={styles.errorContainer}>
-        <Text style={styles.errorLabel}>Oops, check your info</Text>
-      </View>
-    ) : null
-
-  //submission
-  submitUser = () => {
-    let isformValid = true
-    let formToSubmit = {}
-    const formCopy = this.state.form
-    for (let key in formCopy) {
-      if (this.state.type === 'Login') {
-        if (key !== 'confirmPassword') {
-          isformValid = isformValid && formCopy[key].valid
-          formToSubmit[key] = formCopy[key].value
-        }
-      } else {
-        isformValid = isformValid && formCopy[key].valid
-        formToSubmit[key] = formCopy[key].value
-      }
-    }
-    if (isformValid) {
-      if (this.state.type === 'Login') {
-        this.login(formToSubmit.email, formToSubmit.password)
-      } else {
-        this.signup(formToSubmit.email, formToSubmit.password)
-      }
-    } else {
-      this.setState({ hasErrors: true })
-    }
+  submitForm = () => {
+    console.log(this.state.form)
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(
+        this.state.form.email.value,
+        this.state.form.password.value
+      )
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code
+        var errorMessage = error.message
+        // ...
+        console.log(errorMessage)
+      })
   }
 
   render() {
     return (
-      <View style={styles.formInputContainer}>
-        <Input
-          placeholder="Enter your university email"
-          type={this.state.form.email.type}
-          value={this.state.form.email.value}
-          onChangeText={value => this.updateInput('email', value)}
-          autoCapitalize={'none'}
-          keyboardType={'email-address'}
-        />
-
-        <Input
-          placeholder="Enter your password"
-          type={this.state.form.password.type}
-          value={this.state.form.password.value}
-          onChangeText={value => this.updateInput('password', value)}
-          autoCapitalize={'none'}
-          secureTextEntry
-        />
-
-        {this.confirmPassword()}
-        {this.formHasErrors()}
-        {/* <Text>{JSON.stringify(this.props.user)}</Text> */}
-        {this.state.loginErr ? <Text>{this.state.loginErr}</Text> : null}
-
-        <View>
-          <TouchableOpacity
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 8,
-            }}
-            onPress={this.submitUser}
-          >
-            <Text style={{ color: '#fd9727', fontSize: 20 }}>
-              {this.state.action}
-            </Text>
-          </TouchableOpacity>
+      <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
+        <View style={{ flex: 3, justifyContent: 'flex-end' }}>
+          <Image
+            style={{ width: 128, height: 128 }}
+            source={require('../../assets/images/LogoULinks-small.jpeg')}
+          />
         </View>
-        <View>
-          <TouchableOpacity
+        <View style={{ flex: 1 }} />
+        <View
+          style={{
+            flex: 5,
+            justifyContent: 'flex-start',
+            width: '100%',
+            padding: '20%',
+          }}
+        >
+          <TextInput
+            style={styles.txtInput}
+            onChangeText={value => this.updateInput('email', value)}
+            value={this.state.form.email.value}
+            placeholder="University email"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.txtInput}
+            onChangeText={value => this.updateInput('password', value)}
+            value={this.state.form.password.value}
+            placeholder="Password"
+            secureTextEntry
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <View
             style={{
+              width: '100%',
               alignItems: 'center',
-              justifyContent: 'center',
-              padding: 8,
+              justifyContent: 'flex-end',
+              flexDirection: 'row',
+              marginTop: 10,
             }}
-            onPress={this.changeFormType}
           >
-            <Text style={{ color: 'lightgrey', fontSize: 20 }}>
-              {this.state.actionMode}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 8,
-            }}
-            onPress={() => this.props.navigation.navigate('Home')}
-          >
-            <Text style={{ color: 'lightgrey', fontSize: 20 }}>
-              skip, go to Home page
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 8,
-            }}
-            onPress={this.logout}
-          >
-            <Text style={{ color: 'lightgrey', fontSize: 20 }}>Log Out</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.bntContainer}
+              onPress={() => this.submitForm()}
+            >
+              <Text style={styles.btnTxt}>OKAY</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     )
@@ -256,18 +128,30 @@ class LoginForm extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  formInputContainer: {
-    minHeight: 400,
-    minWidth: 400,
+  txtInputContainer: {
+    marginLeft: 0,
+    paddingHorizontal: '10%',
+    marginBottom: 5,
   },
-  errorContainer: {
+  txtInput: {
+    width: '100%',
+    borderBottomWidth: 2,
+    borderBottomColor: '#eaeaea',
+    fontSize: 14,
+    padding: 5,
     marginBottom: 20,
-    marginTop: 10,
   },
-  errorLabel: {
-    color: 'red',
+  bntContainer: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 8,
+    elevation: 5,
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: 'grey',
+    shadowOpacity: 0.5,
+    marginHorizontal: 5,
+  },
+  btnTxt: {
     fontWeight: 'bold',
   },
 })
-
-export default LoginForm
