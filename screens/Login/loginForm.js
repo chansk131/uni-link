@@ -11,6 +11,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import ValidationRules from '../../components/forms/validationRules'
 import * as firebase from 'firebase'
+import { NavigationActions, StackActions } from 'react-navigation'
 
 export default class LoginForm extends React.Component {
   state = {
@@ -36,6 +37,24 @@ export default class LoginForm extends React.Component {
         },
       },
     },
+  }
+
+  componentDidMount = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in.
+        console.log('signed in')
+        const backAction = NavigationActions.back({})
+        this.props.navigation.dispatch(backAction)
+        this.props.navigation.dispatch(backAction)
+        this.props.navigation.navigate('Home')
+        // ...
+      } else {
+        // User is signed out.
+        // ...
+        console.log('signed out')
+      }
+    })
   }
 
   updateInput = (field, value) => {
