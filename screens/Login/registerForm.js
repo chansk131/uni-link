@@ -94,6 +94,9 @@ class RegisterForm extends React.Component {
   componentDidMount() {
     const { navigation } = this.props
     const registerForm = navigation.getParam('register') // check wheter it is registration or not
+    if (registerForm) {
+      this.setState({isLoading: false})
+    }
     this.setState({ isRegisterForm: registerForm })
 
     firebase.auth().onAuthStateChanged(user => {
