@@ -7,17 +7,17 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import ValidationRules from '../../components/forms/validationRules'
 import * as firebase from 'firebase'
 import { NavigationActions, StackActions } from 'react-navigation'
 
-// TODO add activity indicator
-
 export default class LoginForm extends React.Component {
   state = {
     uid: '',
+    isSubmitting: false,
     isLoading: true,
     uploading: false,
     hasErrors: false,
@@ -46,6 +46,7 @@ export default class LoginForm extends React.Component {
       if (user) {
         // User is signed in.
         console.log('signed in')
+        this.setState({ isSubmitting: false })
         const backAction = NavigationActions.back({})
         this.props.navigation.dispatch(backAction)
         this.props.navigation.dispatch(backAction)
@@ -76,6 +77,7 @@ export default class LoginForm extends React.Component {
   }
 
   submitForm = () => {
+    this.setState({ isSubmitting: true })
     let isformValid = true
     let formToSubmit = {}
     const formCopy = this.state.form
@@ -103,7 +105,7 @@ export default class LoginForm extends React.Component {
         var errorMessage = error.message
         // ...
         console.log(errorMessage)
-        this.setState({ hasErrors: true })
+        this.setState({ hasErrors: true, isSubmitting: false })
       })
   }
 
@@ -160,12 +162,16 @@ export default class LoginForm extends React.Component {
               marginTop: 10,
             }}
           >
-            <TouchableOpacity
-              style={styles.bntContainer}
-              onPress={() => this.submitForm()}
-            >
-              <Text style={styles.btnTxt}>OKAY</Text>
-            </TouchableOpacity>
+            {this.state.isSubmitting ? (
+              <ActivityIndicator size="large" color="lightgrey" />
+            ) : (
+              <TouchableOpacity
+                style={styles.bntContainer}
+                onPress={() => this.submitForm()}
+              >
+                <Text style={styles.btnTxt}>OKAY</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
