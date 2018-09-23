@@ -13,6 +13,8 @@ import ValidationRules from '../../components/forms/validationRules'
 import * as firebase from 'firebase'
 import { NavigationActions, StackActions } from 'react-navigation'
 
+// TODO add activity indicator
+
 export default class LoginForm extends React.Component {
   state = {
     uid: '',
@@ -74,21 +76,43 @@ export default class LoginForm extends React.Component {
   }
 
   submitForm = () => {
-    console.log(this.state.form)
+    let isformValid = true
+    let formToSubmit = {}
+    const formCopy = this.state.form
+    for (let key in formCopy) {
+      isformValid = isformValid && formCopy[key].valid
+      formToSubmit[key] = formCopy[key].value
+    }
+
+    if (isformValid) {
+      console.log(formToSubmit)
+      this.signIn(formToSubmit.email, formToSubmit.password)
+    } else {
+      this.setState({ hasErrors: true })
+      console.log('form error')
+    }
+  }
+
+  signIn = (email, password) => {
     firebase
       .auth()
-      .signInWithEmailAndPassword(
-        this.state.form.email.value,
-        this.state.form.password.value
-      )
-      .catch(function(error) {
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => {
         // Handle Errors here.
         var errorCode = error.code
         var errorMessage = error.message
         // ...
         console.log(errorMessage)
+        this.setState({ hasErrors: true })
       })
   }
+
+  formHasErrors = () =>
+    this.state.hasErrors ? (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorLabel}>Oops, check your info</Text>
+      </View>
+    ) : null
 
   render() {
     return (
@@ -124,6 +148,9 @@ export default class LoginForm extends React.Component {
             keyboardType="email-address"
             autoCapitalize="none"
           />
+          <View style={{ width: '100%', height: 20 }}>
+            {this.formHasErrors()}
+          </View>
           <View
             style={{
               width: '100%',
@@ -171,6 +198,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   btnTxt: {
+    fontWeight: 'bold',
+  },
+  errorContainer: {
+    // marginBottom: 20,
+    // marginTop: 10,
+  },
+  errorLabel: {
+    color: 'red',
     fontWeight: 'bold',
   },
 })

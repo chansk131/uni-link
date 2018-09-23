@@ -20,6 +20,7 @@ import { ProfilePic } from '../../components/ProfilePic'
 import ValidationRules from '../../components/forms/validationRules'
 
 // USE ACTION SHEET FOR SELECTING CAMERA ROLL OR CAMERA
+// TODO error handling
 class RegisterForm extends React.Component {
   state = {
     uid: '',
