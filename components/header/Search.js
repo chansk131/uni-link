@@ -1,73 +1,75 @@
-import React from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { SearchBar } from "react-native-elements";
-import { Constants } from "expo";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import React from 'react'
+import { View, StyleSheet, Text } from 'react-native'
+import { SearchBar } from 'react-native-elements'
+import { Constants } from 'expo'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import store from "../../redux/store";
-import { updateSearch } from "../../redux/actions";
+import store from '../../redux/store'
+import { updateSearch } from '../../redux/actions'
 
 export default class Search extends React.Component {
   state = {
-    search: ""
-  };
+    search: '',
+  }
 
   handleSearchChange = search => {
-    this.setState({ search });
+    this.setState({ search })
     store.dispatch(
       updateSearch({
-        searchTxt: search
+        searchTxt: search,
       })
-    );
-  };
+    )
+  }
 
   handleSearchCleared = () => {
-    this.setState({ search: "" });
+    this.setState({ search: '' })
     store.dispatch(
       updateSearch({
-        searchTxt: ""
+        searchTxt: '',
       })
-    );
-  };
+    )
+  }
 
   render() {
     return (
-      <SearchBar
-        onChangeText={this.handleSearchChange}
-        onClearText={this.handleSearchCleared}
-        value={this.state.search}
-        clearIcon
-        round
-        inputStyle={styles.searchBarInput}
-        containerStyle={styles.searchBarContainer}
-        placeholder="Type Here..."
-      />
-    );
+      <View style={styles.searchBarContainer}>
+        <SearchBar
+          onChangeText={this.handleSearchChange}
+          onClearText={this.handleSearchCleared}
+          value={this.state.search}
+          clearIcon
+          round
+          inputStyle={styles.searchBarInput}
+          containerStyle={styles.searchBarContainer}
+          placeholder="Type Here..."
+        />
+      </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
   searchContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderBottomWidth: 0,
     shadowOffset: { width: 1, height: 1 },
-    shadowColor: "grey",
+    shadowColor: 'grey',
     shadowOpacity: 0.5,
-    elevation: 3
+    elevation: 3,
   },
   searchBarInput: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: "#C9C9C9"
+    borderColor: '#C9C9C9',
   },
   searchBarContainer: {
-    backgroundColor: "white",
-    width: "100%",
+    backgroundColor: 'white',
+    width: '100%',
     borderBottomWidth: 0,
     borderTopWidth: 0,
     shadowOffset: { width: 1, height: 1 },
-    shadowColor: "grey",
+    shadowColor: 'grey',
     shadowOpacity: 0.5,
-    elevation: 3
-  }
-});
+    elevation: 3,
+  },
+})
