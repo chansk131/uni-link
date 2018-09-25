@@ -1,44 +1,15 @@
 import React from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { SearchBar } from 'react-native-elements'
-import { Constants } from 'expo'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import store from '../../redux/store'
-import { updateSearch } from '../../redux/actions'
-
-export default class Search extends React.Component {
-  state = {
-    search: '',
-  }
-
-  handleSearchChange = search => {
-    this.setState({ search })
-    store.dispatch(
-      updateSearch({
-        searchTxt: search,
-      })
-    )
-  }
-
-  handleSearchCleared = () => {
-    this.setState({ search: '' })
-    store.dispatch(
-      updateSearch({
-        searchTxt: '',
-      })
-    )
-  }
-
+export default class SearchButton extends React.Component {
   render() {
     return (
       <View style={styles.searchBarContainer}>
         <SearchBar
-          autoFocus={this.props.autoFocus}
-          onChangeText={this.handleSearchChange}
-          onClearText={this.handleSearchCleared}
-          value={this.state.search}
-          clearIcon
+          onFocus={() => {
+            this.props.onFocus()
+          }}
           round
           inputStyle={styles.searchBarInput}
           containerStyle={styles.searchBarContainer}

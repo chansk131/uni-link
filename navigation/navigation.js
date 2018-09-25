@@ -19,6 +19,7 @@ import { Constants } from 'expo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import HomeScreenContent from '../screens/Home/HomeScreen'
+import SearchScreen from '../screens/Home/SearchScreen'
 
 import LoginPanel from '../screens/Login/loginPanel'
 import LoginForm from '../screens/Login/loginForm'
@@ -60,6 +61,19 @@ const HomeScreenStackNavigator = createStackNavigator({
         elevation: 3,
       },
       headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeader />,
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
+  SearchScreen: {
+    screen: SearchScreen,
+    headerLayoutPreset: 'left',
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        elevation: 3,
+      },
       headerTitle: <LogoHeader />,
       headerRight: <MessageHeader navigation={navigation} />,
     }),

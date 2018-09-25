@@ -6,8 +6,7 @@ import * as firebase from 'firebase'
 
 import Search from '../../components/header/Search'
 import { DefaultHome } from './DefaultHome'
-import SearchButton from '../../components/header/SearchButton'
-// import { SearchHome } from './SearchHome'
+import { SearchHome } from './SearchHome'
 
 class Home extends React.Component {
   state = {
@@ -78,17 +77,17 @@ class Home extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <SearchButton
-          onFocus={() => {
-            this.props.navigation.navigate('SearchScreen')
-          }}
-        />
+        <Search />
         <ScrollView style={styles.container}>
-          <DefaultHome
-            data={this.state}
-            navigation={this.props.navigation}
-            signIn={this.props.user.uid}
-          />
+          {this.props.search ? (
+            <SearchHome data={this.props} />
+          ) : (
+            <DefaultHome
+              data={this.state}
+              navigation={this.props.navigation}
+              signIn={this.props.user.uid}
+            />
+          )}
           <View style={{ height: 50 }} />
         </ScrollView>
       </View>
