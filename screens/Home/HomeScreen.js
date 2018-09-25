@@ -7,7 +7,6 @@ import * as firebase from 'firebase'
 import Search from '../../components/header/Search'
 import { DefaultHome } from './DefaultHome'
 import SearchButton from '../../components/header/SearchButton'
-// import { SearchHome } from './SearchHome'
 
 class Home extends React.Component {
   state = {

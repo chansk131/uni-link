@@ -18,7 +18,7 @@ import * as firebase from 'firebase'
 
 import Search from '../components/header/Search'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { SearchHome } from './Home/SearchHome'
+import SearchButton from '../components/header/SearchButton'
 
 // TODO make the menubutton  snap when pressing the menubutton
 
@@ -26,18 +26,18 @@ class ExplorScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <Search />
+        <SearchButton
+          onFocus={() => {
+            this.props.navigation.navigate('SearchScreen')
+          }}
+        />
         <View
           style={{
             flex: 1,
             paddingTop: 18,
           }}
         >
-          {this.props.search ? (
-            <SearchHome data={this.props} />
-          ) : (
-            <Categories />
-          )}
+          <Categories />
         </View>
       </View>
     )

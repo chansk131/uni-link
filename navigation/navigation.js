@@ -87,7 +87,6 @@ const HomeScreenStackNavigator = createStackNavigator({
         borderBottomWidth: 0,
         elevation: 3,
       },
-      headerLeft: <HamburgerHeader navigation={navigation} />,
       headerTitle: <LogoHeader />,
       headerRight: <MessageHeader navigation={navigation} />,
     }),
