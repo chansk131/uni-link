@@ -20,12 +20,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import HomeScreenContent from '../screens/Home/HomeScreen'
 import SearchScreen from '../screens/Home/SearchScreen'
+import ExploreScreen from '../screens/Home/ExploreScreen'
 
 import LoginPanel from '../screens/Login/loginPanel'
 import LoginForm from '../screens/Login/loginForm'
 import RegisterForm from '../screens/Login/registerForm'
 
-import ExploreScreen from '../screens/ExploreScreen'
 import AddItemScreen from '../screens/AddItemScreen'
 import NotificationScreen from '../screens/NotificationScreen'
 
