@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Dimensions,
   ActivityIndicator,
+  FlatList,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { updateUser } from '../../redux/actions'
@@ -16,8 +17,10 @@ import * as firebase from 'firebase'
 class Categories extends React.Component {
   state = {
     menuIsLoading: true,
+    itemIsLoading: true,
     chosenCategory: '',
     categories: [],
+    products: null,
   }
 
   componentDidMount() {
@@ -40,6 +43,24 @@ class Categories extends React.Component {
       })
   }
 
+  renderMenu() {
+    return this.state.menuIsLoading ? (
+      <View style={styles.indicatorContainer}>
+        <ActivityIndicator />
+      </View>
+    ) : (
+      this.state.categories.map(category => (
+        <MenuBtn
+          key={category.key}
+          text={category.txt}
+          onPress={() => {
+            this.fetchItemsInCategory(category.name)
+          }}
+        />
+      ))
+    )
+  }
+
   fetchItemsInCategory = chosenCategory => {
     return firebase
       .database()
@@ -48,8 +69,32 @@ class Categories extends React.Component {
       .equalTo(chosenCategory)
       .once('value')
       .then(snapshot => {
-        console.log(snapshot.val())
+        var results = snapshot.val()
+        let resultsArr = []
+        Object.keys(results).forEach(function(key) {
+          resultsArr.push({ key: key, ...results[key] })
+        })
+        this.setState({
+          products: resultsArr,
+          itemIsLoading: false,
+          chosenCategory: chosenCategory,
+        })
+        console.log(this.state)
       })
+  }
+
+  renderProducts() {
+    return this.state.products ? (
+      <View>
+        {/* <Text>{JSON.stringify(this.state.products)}</Text> */}
+        <FlatList
+          style={{ flex: 1 }}
+          // ListFooterComponent={<View style={{ margin: 10 }} />}
+          renderItem={({ item }) => <ListedItem key={item.key} {...item} />}
+          data={this.state.products}
+        />
+      </View>
+    ) : null
   }
 
   render() {
@@ -73,31 +118,39 @@ class Categories extends React.Component {
             snapToInterval={6}
             decelerationRate={'fast'}
           >
-            {this.state.menuIsLoading ? (
-              <View style={styles.indicatorContainer}>
-                <ActivityIndicator />
-              </View>
-            ) : (
-              this.state.categories.map(category => (
-                <MenuBtn
-                  key={category.key}
-                  text={category.txt}
-                  onPress={() => {
-                    this.fetchItemsInCategory(category.name)
-                  }}
-                />
-              ))
-            )}
+            {this.renderMenu()}
           </ScrollView>
         </View>
         <ScrollView style={{ flex: 1, paddingTop: 15 }}>
           <Text>Content</Text>
           <Text>{this.state.chosenCategory}</Text>
+          {this.renderProducts()}
         </ScrollView>
       </View>
     )
   }
 }
+
+const ListedItem = props => (
+  <View style={{ flexDirection: 'row', alignContent: 'flex-start' }}>
+    <Image
+      style={{
+        resizeMode: 'contain',
+        width: 200,
+        height: 120,
+        borderRadius: 10,
+        marginRight: 10,
+        marginBottom: 30,
+      }}
+      source={{ uri: props.pic }}
+    />
+    <View>
+      <Text>{props.name}</Text>
+      <Text>£{props.price}</Text>
+      <Text>Viewers: </Text>
+    </View>
+  </View>
+)
 
 const dimensions = Dimensions.get('window')
 const imageHeight = Math.round(dimensions.width * 0.18)
