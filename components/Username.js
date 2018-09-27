@@ -1,6 +1,6 @@
-import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { Rating } from "react-native-elements";
+import React from 'react'
+import { Text, View, StyleSheet } from 'react-native'
+import { Rating } from 'react-native-elements'
 
 export const Username = ({ user }) => (
   <View style={{ marginBottom: 5 }}>
@@ -17,15 +17,15 @@ export const Username = ({ user }) => (
         %)
       </Text>
     </View>
-    <Text style={styles.txt}>Member since {user.created_at}</Text>
+    <Text style={styles.txt}>Member since {user.timestamp}</Text>
     <Text style={styles.txt}>Location: {user.location}</Text>
   </View>
-);
+)
 
 const styles = StyleSheet.create({
   ratingContainer: {
-    flexDirection: "row",
-    alignItems: "center"
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  txt: { fontSize: 14, color: "#313131" }
-});
+  txt: { fontSize: 14, color: '#313131' },
+})

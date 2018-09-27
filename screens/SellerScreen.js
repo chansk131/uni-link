@@ -12,6 +12,7 @@ import { RecentFeedback } from '../components/RecentFeedback'
 class SellerScreen extends React.Component {
   state = {
     itemLoaded: false,
+    seller: null,
   }
 
   componentDidMount() {
@@ -21,6 +22,19 @@ class SellerScreen extends React.Component {
     console.log(sellerId)
 
     this.fetchData(sellerId, sellerName)
+    this.fetchUser(sellerId)
+  }
+
+  fetchUser = async userId => {
+    return firebase
+      .database()
+      .ref('/users/' + userId)
+      .once('value')
+      .then(snapshot => {
+        var results = snapshot.val()
+        this.setState({ seller: results })
+        console.log(this.state)
+      })
   }
 
   fetchData = async (userId, userName) => {
@@ -43,7 +57,7 @@ class SellerScreen extends React.Component {
         })
         this.setState({ products: resultsArr, itemLoaded: true })
 
-        console.log(this.state)
+        // console.log(this.state)
       })
   }
 
@@ -61,7 +75,7 @@ class SellerScreen extends React.Component {
               <ProfilePic />
             </View>
             <View>
-              <Username user={this.props.user} />
+              {this.state.seller ? <Username user={this.state.seller} /> : null}
               <Followers user={this.props.user} />
             </View>
           </View>

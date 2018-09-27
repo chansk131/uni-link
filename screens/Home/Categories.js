@@ -150,7 +150,7 @@ const ListedItem = props => {
     name = props.name.substring(0, 10) + '...'
   }
   return (
-    <View style={{ alignContent: 'flex-start' }}>
+    <View style={{ alignContent: 'flex-start', marginBottom: 5 }}>
       <Image
         style={{
           resizeMode: 'contain',
