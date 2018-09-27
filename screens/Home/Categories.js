@@ -14,6 +14,8 @@ import { connect } from 'react-redux'
 import { updateUser } from '../../redux/actions'
 import * as firebase from 'firebase'
 
+// TODO add forYou category
+
 class Categories extends React.Component {
   state = {
     menuIsLoading: true,
@@ -62,6 +64,7 @@ class Categories extends React.Component {
   }
 
   fetchItemsInCategory = chosenCategory => {
+    this.setState({ itemIsLoading: true })
     return firebase
       .database()
       .ref('/products/')
@@ -70,31 +73,45 @@ class Categories extends React.Component {
       .once('value')
       .then(snapshot => {
         var results = snapshot.val()
-        let resultsArr = []
-        Object.keys(results).forEach(function(key) {
-          resultsArr.push({ key: key, ...results[key] })
-        })
-        this.setState({
-          products: resultsArr,
-          itemIsLoading: false,
-          chosenCategory: chosenCategory,
-        })
-        console.log(this.state)
+        if (results !== null) {
+          let resultsArr = []
+          Object.keys(results).forEach(function(key) {
+            resultsArr.push({ key: key, ...results[key] })
+          })
+          this.setState({
+            products: resultsArr,
+            itemIsLoading: false,
+            chosenCategory: chosenCategory,
+          })
+          console.log(this.state)
+        } else {
+          this.setState({
+            products: null,
+            itemIsLoading: false,
+            chosenCategory: chosenCategory,
+          })
+        }
       })
   }
 
   renderProducts() {
-    return this.state.products ? (
-      <View>
-        {/* <Text>{JSON.stringify(this.state.products)}</Text> */}
-        <FlatList
-          style={{ flex: 1 }}
-          // ListFooterComponent={<View style={{ margin: 10 }} />}
-          renderItem={({ item }) => <ListedItem key={item.key} {...item} />}
-          data={this.state.products}
-        />
+    return this.state.itemIsLoading ? (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator />
       </View>
-    ) : null
+    ) : this.state.products ? (
+      <FlatList
+        style={{ flex: 1, paddingHorizontal: '5%' }}
+        numColumns={3}
+        // ListFooterComponent={<View style={{ margin: 10 }} />}
+        renderItem={({ item }) => <ListedItem key={item.key} {...item} />}
+        data={this.state.products}
+      />
+    ) : (
+      <View>
+        <Text>Product for {this.state.chosenCategory} is not available</Text>
+      </View>
+    )
   }
 
   render() {
@@ -121,36 +138,39 @@ class Categories extends React.Component {
             {this.renderMenu()}
           </ScrollView>
         </View>
-        <ScrollView style={{ flex: 1, paddingTop: 15 }}>
-          <Text>Content</Text>
-          <Text>{this.state.chosenCategory}</Text>
-          {this.renderProducts()}
-        </ScrollView>
+        <View style={{ flex: 1, paddingTop: 10 }}>{this.renderProducts()}</View>
       </View>
     )
   }
 }
 
-const ListedItem = props => (
-  <View style={{ flexDirection: 'row', alignContent: 'flex-start' }}>
-    <Image
-      style={{
-        resizeMode: 'contain',
-        width: 200,
-        height: 120,
-        borderRadius: 10,
-        marginRight: 10,
-        marginBottom: 30,
-      }}
-      source={{ uri: props.pic }}
-    />
-    <View>
-      <Text>{props.name}</Text>
-      <Text>£{props.price}</Text>
-      <Text>Viewers: </Text>
+const ListedItem = props => {
+  var name = props.name
+  if (props.name.length > 10) {
+    name = props.name.substring(0, 10) + '...'
+  }
+  return (
+    <View style={{ alignContent: 'flex-start' }}>
+      <Image
+        style={{
+          resizeMode: 'contain',
+          width: 100,
+          height: 56.25,
+          borderRadius: 10,
+          marginRight: 12,
+          marginBottom: 5,
+          borderWidth: 0.5,
+        }}
+        source={{ uri: props.pic }}
+      />
+      <View>
+        <Text>{name}</Text>
+        <Text style={{ fontWeight: 'bold' }}>£{props.price}</Text>
+        <Text>By: {props.user}</Text>
+      </View>
     </View>
-  </View>
-)
+  )
+}
 
 const dimensions = Dimensions.get('window')
 const imageHeight = Math.round(dimensions.width * 0.18)
