@@ -95,7 +95,7 @@ class RegisterForm extends React.Component {
     const { navigation } = this.props
     const registerForm = navigation.getParam('register') // check wheter it is registration or not
     if (registerForm) {
-      this.setState({isLoading: false})
+      this.setState({ isLoading: false })
     }
     this.setState({ isRegisterForm: registerForm })
 
@@ -115,7 +115,6 @@ class RegisterForm extends React.Component {
         if (registerForm === false) {
           console.log(`edit profile with uid: ${uid}`)
           // TODO Get data from firebase to populate the form
-          // TODO remove password/ confirm password div
 
           firebase
             .database()
@@ -125,6 +124,7 @@ class RegisterForm extends React.Component {
               this.setState({
                 ...this.state,
                 isLoading: false,
+                chosenImage: { uri: snapshot.val().pic },
                 chosenDate: snapshot.val().dob,
                 form: {
                   ...this.state.form,
@@ -160,6 +160,19 @@ class RegisterForm extends React.Component {
         // User is signed out.
       }
     })
+  }
+
+  renderProfilPic = () => {
+    return (
+      <ProfilePic
+        style={{ marginBottom: 30 }}
+        onPress={() => this.showProfilePictureActionSheet()}
+        status={'registerForm'}
+        source={
+          this.state.chosenImage !== null ? this.state.chosenImage.uri : null
+        }
+      />
+    )
   }
 
   // Set Profile Picture
@@ -340,16 +353,8 @@ class RegisterForm extends React.Component {
           }}
           contentContainerStyle={{ alignItems: 'center' }}
         >
-          <ProfilePic
-            style={{ marginBottom: 30 }}
-            onPress={() => this.showProfilePictureActionSheet()}
-            status={'registerForm'}
-            source={
-              this.state.chosenImage !== null
-                ? this.state.chosenImage.uri
-                : null
-            }
-          />
+          {this.renderProfilPic()}
+
           <ActionSheet
             ref={o => (this.ActionSheet = o)}
             title={'Select image source'}

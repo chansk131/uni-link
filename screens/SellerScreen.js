@@ -19,19 +19,20 @@ class SellerScreen extends React.Component {
     const { navigation } = this.props
     const sellerId = navigation.getParam('sellerId')
     const sellerName = navigation.getParam('sellerName')
-    console.log(sellerId)
+    // console.log(sellerId)
 
+    this.fetchUser(sellerId, sellerName)
     this.fetchData(sellerId, sellerName)
-    this.fetchUser(sellerId)
   }
 
-  fetchUser = async userId => {
+  fetchUser = async (userId, username) => {
     return firebase
       .database()
       .ref('/users/' + userId)
       .once('value')
       .then(snapshot => {
         var results = snapshot.val()
+        results['username'] = username
         this.setState({ seller: results })
         console.log(this.state)
       })
@@ -61,6 +62,13 @@ class SellerScreen extends React.Component {
       })
   }
 
+  renderProfilePic = () => {
+    return this.state.itemLoaded ? (
+      <ProfilePic source={this.state.seller.pic} />
+    ) : null
+    //
+  }
+
   render() {
     return (
       <View
@@ -72,7 +80,7 @@ class SellerScreen extends React.Component {
         <ScrollView>
           <View style={{ flexDirection: 'row', marginTop: 20 }}>
             <View style={{ width: '40%', alignItems: 'center' }}>
-              <ProfilePic />
+              {this.renderProfilePic()}
             </View>
             <View>
               {this.state.seller ? <Username user={this.state.seller} /> : null}
