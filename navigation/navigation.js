@@ -39,8 +39,9 @@ import MyAccountScreen from '../screens/User/MyAccountScreen'
 import SettingScreen from '../screens/Setting/SettingScreen'
 import EditProfileScreen from '../screens/Setting/EditProfileScreen'
 
+import SellerScreen from '../screens/Seller/SellerScreen'
+
 import ItemDetailScreen from '../screens/ItemDetailScreen'
-import SellerScreen from '../screens/SellerScreen'
 import AboutScreen from '../screens/AboutScreen'
 import HelpScreen from '../screens/HelpScreen'
 import {

@@ -48,13 +48,23 @@
       productIdTwo
     }
   }
+  wishlist: {
+    userId: {
+      productIdOne: {
+        name,
+        pic,
+        price,
+        timeStamp,
+      },
+      productIdTwo
+    }
+  }
   recent search: {
     userId: {
       productIdOne: {
         name,
         pic,
         price,
-        rating,
         timeStamp,
       },
       productIdTwo
