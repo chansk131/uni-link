@@ -1,23 +1,22 @@
-import React from 'react'
+import React from 'react';
 import {
   Text,
   ScrollView,
   KeyboardAvoidingView,
-  Button,
   TextInput,
   View,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity,
-} from 'react-native'
-import { DatePicker } from 'native-base'
-import ActionSheet from 'react-native-actionsheet'
-import { connect } from 'react-redux'
-import * as firebase from 'firebase'
-import { NavigationActions, StackActions } from 'react-navigation'
+  TouchableOpacity
+} from 'react-native';
+import { DatePicker } from 'native-base';
+import ActionSheet from 'react-native-actionsheet';
+import { connect } from 'react-redux';
+import * as firebase from 'firebase';
+import { NavigationActions, StackActions } from 'react-navigation';
 
-import { ProfilePic } from '../../components/ProfilePic'
-import ValidationRules from '../../components/forms/validationRules'
+import { ProfilePic } from '../../components/ProfilePic';
+import ValidationRules from '../../components/forms/validationRules';
 
 // USE ACTION SHEET FOR SELECTING CAMERA ROLL OR CAMERA
 // TODO error handling
@@ -37,83 +36,90 @@ class RegisterForm extends React.Component {
         value: '',
         valid: false,
         rules: {
-          isRequired: true,
-        },
+          isRequired: true
+        }
       },
       surname: {
         value: '',
         valid: false,
         rules: {
-          isRequired: true,
-        },
+          isRequired: true
+        }
+      },
+      username: {
+        value: '',
+        valid: false,
+        rules: {
+          isRequired: true
+        }
       },
       password: {
         value: '',
         valid: false,
         rules: {
           isRequired: true,
-          minLength: 6,
-        },
+          minLength: 6
+        }
       },
       confirmPassword: {
         value: '',
         valid: false,
         rules: {
           isRequired: true,
-          confirmPass: 'password',
-        },
+          confirmPass: 'password'
+        }
       },
       email: {
         value: '',
         valid: false,
         rules: {
           isRequired: true,
-          isEmail: true,
-        },
+          isEmail: true
+        }
       },
       university: {
         value: '',
         valid: false,
         rules: {
-          isRequired: true,
-        },
+          isRequired: true
+        }
       },
       location: {
         value: '',
         valid: false,
-        rules: {},
+        rules: {}
       },
       tel: {
         value: '',
         valid: false,
-        rules: {},
-      },
-    },
-  }
+        rules: {}
+      }
+    }
+  };
 
   componentDidMount() {
-    const { navigation } = this.props
-    const registerForm = navigation.getParam('register') // check wheter it is registration or not
+    const { navigation } = this.props;
+    const registerForm = navigation.getParam('register'); // check wheter it is registration or not
     if (registerForm) {
-      this.setState({ isLoading: false })
+      this.setState({ isLoading: false });
     }
-    this.setState({ isRegisterForm: registerForm })
+    this.setState({ isRegisterForm: registerForm });
 
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         // User is signed in.
-        var uid = user.uid
-        this.setState({ uid })
-        console.log('auth changed')
+        var uid = user.uid;
+        this.setState({ uid });
+        console.log('auth changed');
 
         if (this.state.uploadForm === true) {
-          console.log('upload form')
+          console.log('upload form');
 
-          this.addUserToDatabase(uid)
+          this.addUserToDatabase(uid);
         }
 
         if (registerForm === false) {
-          console.log(`edit profile with uid: ${uid}`)
+          console.log(`edit profile with uid: ${uid}`);
           // TODO Get data from firebase to populate the form
 
           firebase
@@ -130,36 +136,40 @@ class RegisterForm extends React.Component {
                   ...this.state.form,
                   name: {
                     ...this.state.form.name,
-                    value: snapshot.val().name,
+                    value: snapshot.val().name
                   },
                   surname: {
                     ...this.state.form.surname,
-                    value: snapshot.val().surname,
+                    value: snapshot.val().surname
+                  },
+                  username: {
+                    ...this.state.form.username,
+                    value: snapshot.val().username
                   },
                   email: {
                     ...this.state.form.email,
-                    value: snapshot.val().email,
+                    value: snapshot.val().email
                   },
                   university: {
                     ...this.state.form.university,
-                    value: snapshot.val().university,
+                    value: snapshot.val().university
                   },
                   location: {
                     ...this.state.form.location,
-                    value: snapshot.val().location,
+                    value: snapshot.val().location
                   },
-                  tel: { ...this.state.form.tel, value: snapshot.val().tel },
-                },
-              })
-              console.log(this.state.form)
+                  tel: { ...this.state.form.tel, value: snapshot.val().tel }
+                }
+              });
+              console.log(this.state.form);
 
               // ...
-            })
+            });
         }
       } else {
         // User is signed out.
       }
-    })
+    });
   }
 
   renderProfilPic = () => {
@@ -172,97 +182,119 @@ class RegisterForm extends React.Component {
           this.state.chosenImage !== null ? this.state.chosenImage.uri : null
         }
       />
-    )
-  }
+    );
+  };
 
   // Set Profile Picture
   showProfilePictureActionSheet = () => {
-    this.ActionSheet.show()
-  }
+    this.ActionSheet.show();
+  };
 
   launchCameraRollAsync = async () => {
     let { status } = await Expo.Permissions.askAsync(
       Expo.Permissions.CAMERA_ROLL
-    )
+    );
     if (status != 'granted') {
-      console.error('Camera roll perms not granted')
-      return
+      console.error('Camera roll perms not granted');
+      return;
     }
 
-    let img = await Expo.ImagePicker.launchImageLibraryAsync()
-    this.setState({ chosenImage: img })
-  }
+    let img = await Expo.ImagePicker.launchImageLibraryAsync();
+    this.setState({ chosenImage: img });
+  };
 
   _handleImagePicked = async (pickerResult, imgId) => {
     try {
-      this.setState({ uploading: true })
+      this.setState({ uploading: true });
 
       if (!pickerResult.cancelled) {
-        uploadUrl = await uploadImageAsync(pickerResult.uri, imgId)
-        this.setState({ picUrl: uploadUrl })
+        uploadUrl = await uploadImageAsync(pickerResult.uri, imgId);
+        this.setState({ picUrl: uploadUrl });
       }
     } catch (e) {
-      console.log(e)
-      alert('Upload failed, sorry :(')
-      return false
+      console.log(e);
+      alert('Upload failed, sorry :(');
+      return false;
     } finally {
-      this.setState({ uploading: false })
-      return true
+      this.setState({ uploading: false });
+      return true;
     }
-  }
+  };
 
   // Prepare User Detail for Upload
 
   updateInput = (field, value) => {
     // copy input into formCopy
-    let formCopy = this.state.form
-    formCopy[field].value = value
+    let formCopy = this.state.form;
+    formCopy[field].value = value;
 
     // validate input
-    let rules = formCopy[field].rules
-    let valid = ValidationRules(value, rules, formCopy)
-    formCopy[field].valid = valid
+    let rules = formCopy[field].rules;
+    let valid = ValidationRules(value, rules, formCopy);
+    formCopy[field].valid = valid;
 
     // store input in state
     this.setState({
-      form: formCopy,
-    })
-  }
+      form: formCopy
+    });
+  };
 
   setDate = newDate => {
-    this.setState({ chosenDate: newDate.toString().substr(4, 12) })
-    console.log(newDate.toString().substr(4, 12))
-  }
+    this.setState({ chosenDate: newDate.toString().substr(4, 12) });
+    console.log(newDate.toString().substr(4, 12));
+  };
 
-  submitForm = () => {
-    if (this.state.isRegisterForm === true) {
-      this.setState({ uploadForm: true })
-      this.registertUser()
-    } else {
-      // EditProfileScreen
-      console.log(`submit with uid: ${this.state.uid}`)
-      this.addUserToDatabase(this.state.uid)
+  asyncValidate = async () => {
+    let error = null;
+
+    // check if username already exist
+    const username = await firebase
+      .database()
+      .ref(`/usernames/${this.state.form.username.value}`)
+      .once('value');
+    if (username === null) {
+      error = 'Username already exists.';
     }
-  }
+
+    return error;
+  };
+
+  submitForm = async () => {
+    const asyncErrors = await this.asyncValidate();
+
+    if (!asyncErrors) {
+      if (this.state.isRegisterForm === true) {
+        this.setState({ uploadForm: true });
+        this.registertUser();
+      } else {
+        // EditProfileScreen
+        console.log(`submit with uid: ${this.state.uid}`);
+        this.addUserToDatabase(this.state.uid);
+      }
+    } else {
+      alert(asyncErrors);
+    }
+  };
 
   registertUser = () => {
-    let isformValid = true
-    let formToSubmit = {}
-    const formCopy = this.state.form
+    let isformValid = true;
+    let formToSubmit = {};
+    const formCopy = this.state.form;
+
     for (let key in formCopy) {
-      isformValid = isformValid && formCopy[key].valid
+      isformValid = isformValid && formCopy[key].valid;
       if (key !== 'confirmPassword') {
-        formToSubmit[key] = formCopy[key].value
+        formToSubmit[key] = formCopy[key].value;
       }
     }
 
     if (isformValid) {
-      this.signup(formToSubmit['email'], formToSubmit['password'])
+      this.signup(formToSubmit['email'], formToSubmit['password']);
     } else {
-      this.setState({ hasErrors: true })
-      console.log('form error')
+      this.setState({ hasErrors: true });
+      console.log('form error');
     }
-  }
+  };
 
   signup = (email, password) => {
     firebase
@@ -270,13 +302,13 @@ class RegisterForm extends React.Component {
       .createUserWithEmailAndPassword(email, password)
       .catch(error => {
         // Handle Errors here.
-        var errorCode = error.code
-        var errorMessage = error.message
-        this.setState({ hasErrors: true, loginErr: error.message })
-        console.log(errorMessage)
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        this.setState({ hasErrors: true, loginErr: error.message });
+        console.log(errorMessage);
         // ...
-      })
-  }
+      });
+  };
 
   // Store Data to Database
   addUserToDatabase = async uid => {
@@ -284,29 +316,30 @@ class RegisterForm extends React.Component {
     var postUserData = {
       name: this.state.form.name.value,
       surname: this.state.form.surname.value,
+      username: this.state.form.username.value,
       dob: this.state.chosenDate,
       email: this.state.form.email.value,
       university: this.state.form.university.value,
       location: this.state.form.location.value,
       tel: this.state.form.tel.value,
       isAvailable: true,
-      timestamp: Date.now(),
-    }
+      timestamp: Date.now()
+    };
 
     if (
       this.state.chosenImage !== null &&
       this.state.chosenImage.cancelled === false
     ) {
-      const img = await this._handleImagePicked(this.state.chosenImage, uid)
+      const img = await this._handleImagePicked(this.state.chosenImage, uid);
 
       if (img) {
-        postUserData['pic'] = this.state.picUrl
+        postUserData['pic'] = this.state.picUrl;
       }
     }
 
     // Write the new post's data simultaneously in the posts list and the user's post list.
-    var updates = {}
-    updates['/users/' + uid] = postUserData
+    var updates = {};
+    updates['/users/' + uid] = postUserData;
 
     return firebase
       .database()
@@ -314,14 +347,14 @@ class RegisterForm extends React.Component {
       .update(updates)
       .then(() => {
         if (this.state.isRegisterForm) {
-          const backAction = NavigationActions.back({})
-          this.props.navigation.dispatch(backAction)
-          this.props.navigation.navigate('Home')
+          const backAction = NavigationActions.back({});
+          this.props.navigation.dispatch(backAction);
+          this.props.navigation.navigate('Home');
         } else {
-          this.props.navigation.goBack()
+          this.props.navigation.goBack();
         }
-      })
-  }
+      });
+  };
 
   render() {
     return this.state.isLoading ? (
@@ -330,7 +363,7 @@ class RegisterForm extends React.Component {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'white',
+          backgroundColor: 'white'
         }}
       >
         <ActivityIndicator size="large" color="lightgrey" />
@@ -341,7 +374,7 @@ class RegisterForm extends React.Component {
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: 'white',
+          backgroundColor: 'white'
         }}
         behavior="padding"
         enabled
@@ -349,7 +382,7 @@ class RegisterForm extends React.Component {
         <ScrollView
           style={{
             width: '100%',
-            paddingHorizontal: '10%',
+            paddingHorizontal: '10%'
           }}
           contentContainerStyle={{ alignItems: 'center' }}
         >
@@ -367,7 +400,7 @@ class RegisterForm extends React.Component {
                 // launch camera
               } else if (index === 1) {
                 // launch camera roll
-                this.launchCameraRollAsync()
+                this.launchCameraRollAsync();
               }
             }}
           />
@@ -382,6 +415,12 @@ class RegisterForm extends React.Component {
             onChangeText={value => this.updateInput('surname', value)}
             value={this.state.form.surname.value}
             placeholder="Surname"
+          />
+          <TextInput
+            style={styles.txtInput}
+            onChangeText={value => this.updateInput('username', value)}
+            value={this.state.form.username.value}
+            placeholder="Username"
           />
           {this.state.isRegisterForm ? (
             <View style={{ width: '100%' }}>
@@ -410,7 +449,7 @@ class RegisterForm extends React.Component {
               alignContent: 'flex-start',
               fontSize: 13,
               marginTop: 5,
-              color: 'grey',
+              color: 'grey'
             }}
           >
             Date of Birth
@@ -419,7 +458,7 @@ class RegisterForm extends React.Component {
             style={{
               width: '100%',
               flexDirection: 'row',
-              alignItems: 'flex-start',
+              alignItems: 'flex-start'
             }}
           >
             <DatePicker
@@ -470,7 +509,7 @@ class RegisterForm extends React.Component {
               alignItems: 'center',
               justifyContent: 'flex-end',
               flexDirection: 'row',
-              marginTop: 10,
+              marginTop: 10
             }}
           >
             <TouchableOpacity
@@ -488,24 +527,24 @@ class RegisterForm extends React.Component {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    )
+    );
   }
 }
 
 async function uploadImageAsync(uri, imgId) {
   try {
-    const response = await fetch(uri)
-    const blob = await response.blob()
+    const response = await fetch(uri);
+    const blob = await response.blob();
     const ref = firebase
       .storage()
       .ref()
-      .child('users/' + imgId)
+      .child('users/' + imgId);
 
-    const snapshot = await ref.put(blob)
-    const url = await ref.getDownloadURL()
-    return url
+    const snapshot = await ref.put(blob);
+    const url = await ref.getDownloadURL();
+    return url;
   } catch (e) {
-    console.log(e)
+    console.log(e);
   }
 }
 
@@ -513,7 +552,7 @@ const styles = StyleSheet.create({
   txtInputContainer: {
     marginLeft: 0,
     paddingHorizontal: '10%',
-    marginBottom: 5,
+    marginBottom: 5
   },
   txtInput: {
     width: '100%',
@@ -521,13 +560,13 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eaeaea',
     fontSize: 14,
     padding: 5,
-    marginTop: 10,
+    marginTop: 10
   },
   txt: {
     width: '100%',
     fontSize: 14,
     padding: 5,
-    marginTop: 10,
+    marginTop: 10
   },
   bntContainer: {
     backgroundColor: 'white',
@@ -537,15 +576,15 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowColor: 'grey',
     shadowOpacity: 0.5,
-    marginHorizontal: 5,
+    marginHorizontal: 5
   },
   btnTxt: {
-    fontWeight: 'bold',
-  },
-})
+    fontWeight: 'bold'
+  }
+});
 
 const mapStateToProps = state => ({
-  user: state.user,
-})
+  user: state.user
+});
 
-export default connect(mapStateToProps)(RegisterForm)
+export default connect(mapStateToProps)(RegisterForm);
