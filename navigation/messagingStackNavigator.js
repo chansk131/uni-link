@@ -1,9 +1,13 @@
 import { createStackNavigator } from 'react-navigation'
-import MessageListScreen from '../screens/MessageInbox/MessageListScreen'
+import { MessageListScreen, AddUserScreen, ChatScreen } from '../screens'
 
-export const MessagingStackNavigator = createStackNavigator({
-  Messaging: {
-    screen: MessageListScreen,
-    navigationOptions: { header: null }
+export const MessagingStackNavigator = createStackNavigator(
+  {
+    Messaging: MessageListScreen,
+    AddUser: AddUserScreen,
+    Chat: ChatScreen
+  },
+  {
+    initialRouteName: 'Messaging'
   }
-})
+)

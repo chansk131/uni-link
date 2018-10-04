@@ -68,10 +68,6 @@ const HomeScreenStackNavigator = createStackNavigator({
       headerRight: <MessageHeader navigation={navigation} />
     })
   },
-  Messaging: {
-    screen: MessagingStackNavigator,
-    navigationOptions: { title: 'Messages' }
-  },
   SearchScreen: {
     screen: SearchScreen,
     headerLayoutPreset: 'left',
@@ -310,6 +306,12 @@ export const DrawerNavigator = createDrawerNavigator(
       screen: MyOrderScreen,
       navigationOptions: {
         drawerLabel: 'MY ORDER'
+      }
+    },
+    Message: {
+      screen: MessagingStackNavigator,
+      navigationOptions: {
+        drawerLabel: 'MESSAGES'
       }
     },
     About: {

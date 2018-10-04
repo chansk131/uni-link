@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import InlineButton from '../../components/InlineButton'
-import MessageList from './MessageList'
+import { MessageList } from './MessageList'
 
 class MessageListScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -21,4 +21,4 @@ class MessageListScreen extends Component {
   }
 }
 
-export default MessageListScreen
+export { MessageListScreen }

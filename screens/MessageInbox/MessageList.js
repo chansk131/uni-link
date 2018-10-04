@@ -41,4 +41,4 @@ MessageList = connect(
   mapStateToProps,
   { fetchUser }
 )(MessageList)
-export default MessageList
+export { MessageList }
