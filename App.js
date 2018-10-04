@@ -4,8 +4,8 @@ import { SafeAreaView } from 'react-native'
 import { Provider } from 'react-redux'
 import * as firebase from 'firebase'
 
-import { DrawerNavigator } from './navigation/navigation'
 import store from './redux/store'
+import { NavigationWithState } from './navigation'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAV0Qrk7xTpgAInmQFmi7fQfVrm3kn-_W0',
@@ -13,19 +13,19 @@ const firebaseConfig = {
   databaseURL: 'https://uni-link-9f8f5.firebaseio.com',
   projectId: 'uni-link-9f8f5',
   storageBucket: 'uni-link-9f8f5.appspot.com',
-  messagingSenderId: '219033095634',
+  messagingSenderId: '219033095634'
 }
 firebase.initializeApp(firebaseConfig)
 
 export default class App extends React.Component {
   state = {
-    fontLoaded: false,
+    fontLoaded: false
   }
 
   async componentDidMount() {
     await Font.loadAsync({
       'poiret-one': require('./assets/fonts/PoiretOne-Regular.ttf'),
-      Roboto: require('./assets/fonts/Roboto.ttf'),
+      Roboto: require('./assets/fonts/Roboto.ttf')
     })
 
     this.setState({ fontLoaded: true })
@@ -34,7 +34,7 @@ export default class App extends React.Component {
   render() {
     return this.state.fontLoaded ? (
       <Provider store={store}>
-        <DrawerNavigator />
+        <NavigationWithState />
       </Provider>
     ) : null
   }

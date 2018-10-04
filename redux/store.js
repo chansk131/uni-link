@@ -1,10 +1,11 @@
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
+import { navMiddleware } from '../navigation'
 import { updateUser } from './actions'
-import reducer from './reducer'
+import reducers from './reducers'
 
-const store = createStore(reducer, applyMiddleware(thunk))
+const store = createStore(reducers, {}, applyMiddleware(thunk, navMiddleware))
 
 store.dispatch(
   updateUser({
@@ -13,7 +14,7 @@ store.dispatch(
     created_at: '21 Sept 2018',
     location: 'Bristol',
     followers: 100,
-    following: 200,
+    following: 200
   })
 )
 
