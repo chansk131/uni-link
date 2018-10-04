@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withNavigation } from 'react-navigation'
 import { Text, View, TouchableWithoutFeedback } from 'react-native'
-import CardSection from '../../components/CardSection'
+import { CardSection } from '../../components'
 
 class ListItem extends Component {
   render() {

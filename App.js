@@ -1,8 +1,8 @@
 import React from 'react'
 import { Font } from 'expo'
-import { SafeAreaView } from 'react-native'
 import { Provider } from 'react-redux'
 import * as firebase from 'firebase'
+import 'firebase/functions'
 
 import store from './redux/store'
 import { NavigationWithState } from './navigation'
@@ -23,6 +23,8 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
+    firebase.functions()
+
     await Font.loadAsync({
       'poiret-one': require('./assets/fonts/PoiretOne-Regular.ttf'),
       Roboto: require('./assets/fonts/Roboto.ttf')

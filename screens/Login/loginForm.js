@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { fetchUser } from '../../redux/actions'
 import {
   Text,
   View,
@@ -7,14 +9,14 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator,
+  ActivityIndicator
 } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import ValidationRules from '../../components/forms/validationRules'
 import * as firebase from 'firebase'
 import { NavigationActions, StackActions } from 'react-navigation'
 
-export default class LoginForm extends React.Component {
+class LoginForm extends React.Component {
   state = {
     uid: '',
     isSubmitting: false,
@@ -27,18 +29,18 @@ export default class LoginForm extends React.Component {
         valid: false,
         rules: {
           isRequired: true,
-          isEmail: true,
-        },
+          isEmail: true
+        }
       },
       password: {
         value: '',
         valid: false,
         rules: {
           isRequired: true,
-          minLength: 6,
-        },
-      },
-    },
+          minLength: 6
+        }
+      }
+    }
   }
 
   componentDidMount = () => {
@@ -46,6 +48,8 @@ export default class LoginForm extends React.Component {
       if (user) {
         // User is signed in.
         console.log('signed in')
+        this.props.fetchUser()
+
         this.setState({ isSubmitting: false })
         const backAction = NavigationActions.back({})
         this.props.navigation.dispatch(backAction)
@@ -72,7 +76,7 @@ export default class LoginForm extends React.Component {
 
     // store input in state
     this.setState({
-      form: formCopy,
+      form: formCopy
     })
   }
 
@@ -131,7 +135,7 @@ export default class LoginForm extends React.Component {
             flex: 5,
             justifyContent: 'flex-start',
             width: '100%',
-            padding: '20%',
+            padding: '20%'
           }}
         >
           <TextInput
@@ -159,7 +163,7 @@ export default class LoginForm extends React.Component {
               alignItems: 'center',
               justifyContent: 'flex-end',
               flexDirection: 'row',
-              marginTop: 10,
+              marginTop: 10
             }}
           >
             {this.state.isSubmitting ? (
@@ -183,7 +187,7 @@ const styles = StyleSheet.create({
   txtInputContainer: {
     marginLeft: 0,
     paddingHorizontal: '10%',
-    marginBottom: 5,
+    marginBottom: 5
   },
   txtInput: {
     width: '100%',
@@ -191,7 +195,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eaeaea',
     fontSize: 14,
     padding: 5,
-    marginBottom: 20,
+    marginBottom: 20
   },
   bntContainer: {
     backgroundColor: 'white',
@@ -201,10 +205,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowColor: 'grey',
     shadowOpacity: 0.5,
-    marginHorizontal: 5,
+    marginHorizontal: 5
   },
   btnTxt: {
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   errorContainer: {
     // marginBottom: 20,
@@ -212,6 +216,11 @@ const styles = StyleSheet.create({
   },
   errorLabel: {
     color: 'red',
-    fontWeight: 'bold',
-  },
+    fontWeight: 'bold'
+  }
 })
+
+export default connect(
+  null,
+  { fetchUser }
+)(LoginForm)
