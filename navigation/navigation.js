@@ -4,7 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   View,
-  TouchableOpacity,
+  TouchableOpacity
 } from 'react-native'
 import { Badge } from 'react-native-elements'
 import {
@@ -13,10 +13,12 @@ import {
   createDrawerNavigator,
   createSwitchNavigator,
   DrawerItems,
-  BottomTabBar,
+  BottomTabBar
 } from 'react-navigation'
 import { Constants } from 'expo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+
+import { MessagingStackNavigator } from './messagingStackNavigator'
 
 import HomeScreenContent from '../screens/Home/HomeScreen'
 import SearchScreen from '../screens/Home/SearchScreen'
@@ -48,7 +50,7 @@ import {
   HamburgerHeader,
   MessageHeader,
   LogoHeader,
-  LogoHeaderWithText,
+  LogoHeaderWithText
 } from '../components/header/HeaderIcons'
 
 const HomeScreenStackNavigator = createStackNavigator({
@@ -59,12 +61,12 @@ const HomeScreenStackNavigator = createStackNavigator({
       headerStyle: {
         backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 3,
+        elevation: 3
       },
       headerLeft: <HamburgerHeader navigation={navigation} />,
       headerTitle: <LogoHeader />,
-      headerRight: <MessageHeader navigation={navigation} />,
-    }),
+      headerRight: <MessageHeader navigation={navigation} />
+    })
   },
   SearchScreen: {
     screen: SearchScreen,
@@ -73,11 +75,11 @@ const HomeScreenStackNavigator = createStackNavigator({
       headerStyle: {
         backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 3,
+        elevation: 3
       },
       headerTitle: <LogoHeader />,
-      headerRight: <MessageHeader navigation={navigation} />,
-    }),
+      headerRight: <MessageHeader navigation={navigation} />
+    })
   },
   Categories: {
     screen: ExploreScreen,
@@ -86,11 +88,11 @@ const HomeScreenStackNavigator = createStackNavigator({
       headerStyle: {
         backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 3,
+        elevation: 3
       },
       headerTitle: <LogoHeader />,
-      headerRight: <MessageHeader navigation={navigation} />,
-    }),
+      headerRight: <MessageHeader navigation={navigation} />
+    })
   },
   ItemDetail: ItemDetailScreen,
   Seller: {
@@ -102,13 +104,13 @@ const HomeScreenStackNavigator = createStackNavigator({
         shadowOffset: { width: 1, height: 1 },
         shadowColor: 'grey',
         shadowOpacity: 0.5,
-        elevation: 3,
+        elevation: 3
       },
       // headerLeft: <HamburgerHeader navigation={navigation} />,
       headerTitle: <LogoHeader />,
-      headerRight: <MessageHeader navigation={navigation} />,
-    }),
-  },
+      headerRight: <MessageHeader navigation={navigation} />
+    })
+  }
 })
 
 const SellingScreenStackNavigator = createStackNavigator({
@@ -122,21 +124,21 @@ const SellingScreenStackNavigator = createStackNavigator({
         shadowOffset: { width: 1, height: 1 },
         shadowColor: 'grey',
         shadowOpacity: 0.5,
-        elevation: 3,
+        elevation: 3
       },
       headerLeft: <HamburgerHeader navigation={navigation} />,
       headerTitle: <LogoHeader />,
-      headerRight: <MessageHeader navigation={navigation} />,
-    }),
-  },
+      headerRight: <MessageHeader navigation={navigation} />
+    })
+  }
 })
 
 const UserScreenStackNavigator = createStackNavigator({
   UserContent: {
     screen: UserScreen,
     navigationOptions: ({ navigation }) => ({
-      header: null,
-    }),
+      header: null
+    })
   },
   WishList: { screen: WishListScreen },
   MyOrder: { screen: MyOrderScreen },
@@ -148,9 +150,9 @@ const UserScreenStackNavigator = createStackNavigator({
       headerStyle: {
         backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 0,
-      },
-    },
+        elevation: 0
+      }
+    }
   },
   LoginForm: {
     screen: LoginForm,
@@ -158,9 +160,9 @@ const UserScreenStackNavigator = createStackNavigator({
       headerStyle: {
         backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 0,
-      },
-    },
+        elevation: 0
+      }
+    }
   },
   RegisterForm: {
     screen: RegisterForm,
@@ -168,9 +170,9 @@ const UserScreenStackNavigator = createStackNavigator({
       headerStyle: {
         backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 0,
-      },
-    },
+        elevation: 0
+      }
+    }
   },
   Setting: {
     screen: SettingScreen,
@@ -181,12 +183,12 @@ const UserScreenStackNavigator = createStackNavigator({
         shadowOffset: { width: 1, height: 1 },
         shadowColor: 'grey',
         shadowOpacity: 0.5,
-        elevation: 3,
+        elevation: 3
       },
       // headerLeft: <HamburgerHeader navigation={navigation} />,
       headerTitle: <LogoHeaderWithText text={'Setting'} />,
-      headerRight: <MessageHeader navigation={navigation} />,
-    }),
+      headerRight: <MessageHeader navigation={navigation} />
+    })
   },
   EditProfile: {
     screen: EditProfileScreen,
@@ -194,10 +196,10 @@ const UserScreenStackNavigator = createStackNavigator({
       headerStyle: {
         backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 0,
-      },
-    },
-  },
+        elevation: 0
+      }
+    }
+  }
 })
 
 const TabNavigator = createBottomTabNavigator(
@@ -208,8 +210,8 @@ const TabNavigator = createBottomTabNavigator(
     Notifications: NotificationScreen,
     User: {
       screen: UserScreenStackNavigator,
-      navigationOptions: { tabBarLabel: 'My U-Links' },
-    },
+      navigationOptions: { tabBarLabel: 'My U-Links' }
+    }
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -250,7 +252,7 @@ const TabNavigator = createBottomTabNavigator(
             </View> */}
           </View>
         )
-      },
+      }
     }),
     tabBarOptions: {
       activeTintColor: 'black',
@@ -260,9 +262,9 @@ const TabNavigator = createBottomTabNavigator(
         shadowOffset: { width: 1, height: 1 },
         shadowColor: 'grey',
         shadowOpacity: 0.5,
-        elevation: 5,
-      },
-    },
+        elevation: 5
+      }
+    }
   }
 )
 
@@ -274,7 +276,7 @@ const CustomDrawerComponent = props => (
           alignItems: 'center',
           justifyContent: 'center',
           height: 50,
-          backgroundColor: 'black',
+          backgroundColor: 'black'
         }}
       >
         <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>
@@ -291,33 +293,39 @@ export const DrawerNavigator = createDrawerNavigator(
     Home: {
       screen: TabNavigator,
       navigationOptions: {
-        drawerLabel: 'HOME',
-      },
+        drawerLabel: 'HOME'
+      }
     },
     MyAccount: {
       screen: MyAccountScreen,
       navigationOptions: {
-        drawerLabel: 'MY ACCOUNT',
-      },
+        drawerLabel: 'MY ACCOUNT'
+      }
     },
     MyOrder: {
       screen: MyOrderScreen,
       navigationOptions: {
-        drawerLabel: 'MY ORDER',
-      },
+        drawerLabel: 'MY ORDER'
+      }
+    },
+    Message: {
+      screen: MessagingStackNavigator,
+      navigationOptions: {
+        drawerLabel: 'MESSAGES'
+      }
     },
     About: {
       screen: AboutScreen,
       navigationOptions: {
-        drawerLabel: 'ABOUT',
-      },
+        drawerLabel: 'ABOUT'
+      }
     },
     Help: {
       screen: HelpScreen,
       navigationOptions: {
-        drawerLabel: 'HELP / FAQ',
-      },
-    },
+        drawerLabel: 'HELP / FAQ'
+      }
+    }
   },
   {
     contentComponent: CustomDrawerComponent,
@@ -326,8 +334,8 @@ export const DrawerNavigator = createDrawerNavigator(
       itemStyle: {
         borderColor: '#707070',
         borderBottomWidth: 0.5,
-        alignItems: 'center',
-      },
-    },
+        alignItems: 'center'
+      }
+    }
   }
 )
