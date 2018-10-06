@@ -3,9 +3,9 @@ import { Font } from 'expo'
 import { Provider } from 'react-redux'
 import * as firebase from 'firebase'
 import 'firebase/functions'
+import { DrawerNavigator } from './navigation'
 
 import store from './redux/store'
-import { NavigationWithState } from './navigation'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAV0Qrk7xTpgAInmQFmi7fQfVrm3kn-_W0',
@@ -36,7 +36,7 @@ export default class App extends React.Component {
   render() {
     return this.state.fontLoaded ? (
       <Provider store={store}>
-        <NavigationWithState />
+        <DrawerNavigator />
       </Provider>
     ) : null
   }
