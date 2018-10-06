@@ -15,6 +15,7 @@
     "firebase": "^5.4.2",
     "native-base": "^2.8.0",
     "react": "16.3.1",
+    "react-instantsearch-native": "^5.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-29.0.0.tar.gz",
     "react-native-actionsheet": "^2.4.2",
     "react-native-elements": "^0.19.1",
