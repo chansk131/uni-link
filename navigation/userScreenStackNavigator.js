@@ -1,6 +1,7 @@
 import React from 'react'
 import { createStackNavigator } from 'react-navigation'
 
+import { MessageHeader } from '../components/header/HeaderIcons'
 import LoginPanel from '../screens/Login/loginPanel'
 import LoginForm from '../screens/Login/loginForm'
 import SettingScreen from '../screens/Setting/SettingScreen'
