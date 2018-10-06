@@ -24,13 +24,14 @@ class AddUser extends Component {
     return error
   }
 
-  onButtonPress() {
+  async onButtonPress() {
     const error = this.validate()
     const { value, loading } = this.state
     const { createChat } = this.props
 
     if (!error && !loading) {
-      createChat({ value })
+      await createChat({ value })
+      this.props.navigation.navigate('Messaging')
     }
   }
 

@@ -7,7 +7,7 @@ class AddUserScreen extends Component {
   }
 
   render() {
-    return <AddUser />
+    return <AddUser navigation={this.props.navigation} />
   }
 }
 
