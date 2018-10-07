@@ -26,7 +26,7 @@ export const UserScreenStackNavigator = createStackNavigator({
   WishList: { screen: WishListScreen },
   MyOrder: { screen: MyOrderScreen },
   InviteFriends: { screen: InviteFriendsScreen },
-  Help: { screen: HelpScreen },
+  /*Help: { screen: HelpScreen }, error when navigating from side bar to help/faq then back to home */
   Signin: {
     screen: LoginPanel,
     navigationOptions: {
