@@ -54,7 +54,6 @@ export const fetchUser = () => dispatch => {
     .database()
     .ref(`/users/${currentUser.uid}/username`)
     .on('value', snapshot => {
-      console.log('hey!')
       dispatch({
         type: UPDATE_USER,
         payload: { username: snapshot.val() }

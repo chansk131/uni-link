@@ -9,7 +9,6 @@ import {
   Text
 } from 'react-native'
 import ListItem from './ListItem'
-import { fetchUser } from '../../redux/actions'
 import { Constants } from 'expo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
@@ -17,7 +16,14 @@ class MessageList extends Component {
   keyExtractor = (item, index) => item.id
 
   renderItem({ item }) {
-    return <ListItem id={item.id} title={item.title} />
+    return (
+      <ListItem
+        id={item.id}
+        title={title}
+        users={item.users}
+        lastMessage={item.lastMessage}
+      />
+    )
   }
 
   render() {
@@ -85,16 +91,30 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   const { chat } = state
+  const { username } = state.user
 
   const chats = _.map(chat, (value, chatId) => {
-    return { id: chatId, title: value.title }
+    title = value.title
+    const usernames = _.map(value.users, (username, usersId) => {
+      return username
+    })
+    if (title === '') {
+      i = 0
+      while (usernames[i] === username && i < usernames.length) {
+        i++
+      }
+      title = usernames[i]
+    }
+    return {
+      id: chatId,
+      title,
+      lastMessage: value.lastMessage.message,
+      usernames
+    }
   })
 
   return { chats }
 }
 
-MessageList = connect(
-  mapStateToProps,
-  { fetchUser }
-)(MessageList)
+MessageList = connect(mapStateToProps)(MessageList)
 export { MessageList }

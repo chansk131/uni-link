@@ -5,7 +5,7 @@ import { ProfilePicChat } from '../../components'
 
 class ListItem extends Component {
   render() {
-    const { id, title, navigation } = this.props
+    const { id, title, lastMessage, navigation } = this.props
 
     return (
       <TouchableOpacity
@@ -13,7 +13,10 @@ class ListItem extends Component {
         style={styles.btnContainer}
       >
         <ProfilePicChat />
-        <Text style={styles.btnText}>{title}</Text>
+        <View>
+          <Text style={styles.btnTitle}>{title}</Text>
+          <Text style={styles.btnMessage}>{lastMessage}</Text>
+        </View>
       </TouchableOpacity>
     )
   }
@@ -30,9 +33,14 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     flexDirection: 'row'
   },
-  btnText: {
+  btnTitle: {
     fontWeight: 'bold',
     fontSize: 15,
+    paddingLeft: 15
+  },
+  btnMessage: {
+    fontSize: 14,
+    paddingTop: 3,
     paddingLeft: 15
   }
 })

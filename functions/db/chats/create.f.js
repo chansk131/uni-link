@@ -18,10 +18,18 @@ module.exports = functions.https.onCall((data, context) => {
   }
 
   const { uid } = context.auth
-  let { receiverId } = data
+  let { receiverId, title } = data
   let key, senderUsername
 
   if (typeof receiverId !== 'string' || receiverId.length === 0) {
+    return new functions.https.HttpsError(
+      'invalid-argument',
+      "The value that you've given is not valid",
+      "The value that you've given is not valid"
+    )
+  }
+
+  if (typeof receiverId !== 'string') {
     return new functions.https.HttpsError(
       'invalid-argument',
       "The value that you've given is not valid",
@@ -83,14 +91,14 @@ module.exports = functions.https.onCall((data, context) => {
     })
     .then(receiverUsername => {
       let userObj = {}
-      userObj[uid] = true
-      userObj[receiverId] = true
+      userObj[uid] = senderUsername
+      userObj[receiverId] = receiverUsername
       const chatRef = admin
         .database()
         .ref('/chats')
         .push({
           users: userObj,
-          title: `${receiverUsername}, ${senderUsername}`
+          title
         })
       key = chatRef.key
 
