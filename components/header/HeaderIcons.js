@@ -29,6 +29,15 @@ export const MessageHeader = ({ navigation }) => (
   </TouchableOpacity>
 )
 
+export const AddUserHeader = ({ navigation }) => (
+  <TouchableOpacity
+    onPress={() => navigation.navigate('AddUser')}
+    style={{ marginRight: 10 }}
+  >
+    <Ionicons name={'md-add'} size={25} color={'black'} />
+  </TouchableOpacity>
+)
+
 export const LogoHeader = () => (
   <View style={{ flex: 1, alignItems: 'flex-start' }}>
     <Image
