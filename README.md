@@ -39,7 +39,7 @@ UserScreenStackNavigator
   Open powershell (windows) or terminal (mac) and type
   > node -v
   
-  You should get v8.*.* (* means whatever number is fine).
+  You should get v8...
 
 2. Install expo
   
