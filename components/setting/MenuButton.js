@@ -2,12 +2,17 @@ import React from 'react'
 import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Constants } from 'expo'
 
-export const MenuButton = props => (
+export const MenuButton = ({ navigation, name, goto, handlePress }) => (
   <TouchableOpacity
-    onPress={() => props.navigation.navigate(props.goto)}
+    onPress={() => {
+      navigation.navigate(goto)
+      if (handlePress) {
+        handlePress()
+      }
+    }}
     style={styles.btnContainer}
   >
-    <Text style={styles.btnText}>{props.name}</Text>
+    <Text style={styles.btnText}>{name}</Text>
     <Text style={styles.btnText}>></Text>
   </TouchableOpacity>
 )
@@ -20,10 +25,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 30,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   btnText: {
     fontWeight: 'bold',
-    fontSize: 20,
-  },
+    fontSize: 20
+  }
 })

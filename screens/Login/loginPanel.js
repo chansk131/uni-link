@@ -1,7 +1,18 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  DeviceEventEmitter
+} from 'react-native'
 
 class LoginPanel extends React.Component {
+  componentWillUnmount() {
+    DeviceEventEmitter.emit('checkAuth', {})
+  }
+
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
@@ -40,8 +51,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,
-    padding: 4,
-  },
+    padding: 4
+  }
 })
 
 export default LoginPanel

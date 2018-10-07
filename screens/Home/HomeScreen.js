@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { updateUser } from '../../redux/actions'
+import { updateUser, fetchUser } from '../../redux/actions'
 import * as firebase from 'firebase'
 
 import Search from '../../components/header/Search'
@@ -17,33 +17,42 @@ class Home extends React.Component {
     populars: [
       {
         key: 1,
-        name: 'Accommodation',
+        name: 'Accommodation'
       },
       {
         key: 2,
-        name: 'Jewelry',
+        name: 'Jewelry'
       },
       {
         key: 3,
-        name: 'Engineering',
+        name: 'Engineering'
       },
       {
         key: 4,
-        name: 'Kitchen Supplies',
+        name: 'Kitchen Supplies'
       },
       {
         key: 5,
-        name: 'Gloves',
+        name: 'Gloves'
       },
       {
         key: 6,
-        name: 'Textbooks',
+        name: 'Textbooks'
       },
       {
         key: 7,
-        name: 'Furniture',
-      },
-    ],
+        name: 'Furniture'
+      }
+    ]
+  }
+
+  componentWillMount() {
+    // if user is logged then get their data from firebase
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.props.fetchUser()
+      }
+    })
   }
 
   componentDidMount() {
@@ -98,16 +107,16 @@ class Home extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 18,
-  },
+    paddingTop: 18
+  }
 })
 
 const mapStateToProps = state => ({
   search: state.search.searchTxt,
-  user: state.user,
+  user: state.user
 })
 
 export default connect(
   mapStateToProps,
-  { updateUser }
+  { updateUser, fetchUser }
 )(Home)

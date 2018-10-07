@@ -6,10 +6,6 @@ import ListItem from './ListItem'
 import { fetchUser } from '../../redux/actions'
 
 class MessageList extends Component {
-  async componentWillMount() {
-    await this.props.fetchUser()
-  }
-
   keyExtractor = (item, index) => item.id
 
   renderItem({ item }) {

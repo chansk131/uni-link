@@ -4,17 +4,14 @@ import { fetchUser } from '../../redux/actions'
 import {
   Text,
   View,
-  Button,
   TextInput,
   Image,
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator
 } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import ValidationRules from '../../components/forms/validationRules'
 import * as firebase from 'firebase'
-import { NavigationActions, StackActions } from 'react-navigation'
 
 class LoginForm extends React.Component {
   state = {
@@ -46,22 +43,20 @@ class LoginForm extends React.Component {
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        // User is signed in.
-        console.log('signed in')
-        this.props.fetchUser()
-
-        this.setState({ isSubmitting: false })
-        const backAction = NavigationActions.back({})
-        this.props.navigation.dispatch(backAction)
-        this.props.navigation.dispatch(backAction)
-        this.props.navigation.navigate('Home')
-        // ...
-      } else {
-        // User is signed out.
-        // ...
-        console.log('signed out')
+        this.navigateToMyUniLink()
       }
     })
+
+    // redundant, but if they somehow end up back at here after while logged in,
+    // send them to My U-Links (ie UserScreen)
+    if (firebase.auth().currentUser) this.navigateToMyUniLink()
+  }
+
+  navigateToMyUniLink = () => {
+    this.props.fetchUser()
+
+    this.setState({ isSubmitting: false })
+    this.props.navigation.navigate('UserContent')
   }
 
   updateInput = (field, value) => {

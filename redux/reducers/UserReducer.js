@@ -5,7 +5,13 @@ import {
 } from '../actions/types'
 
 const INITIAL_STATE = {
-  messages: {}
+  messages: {},
+  username: '',
+  rating: 100,
+  created_at: '',
+  location: '',
+  followers: 0,
+  following: 0
 }
 
 export default (state = INITIAL_STATE, action) => {

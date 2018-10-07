@@ -1,5 +1,11 @@
 import React from 'react'
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  DeviceEventEmitter
+} from 'react-native'
 import { connect } from 'react-redux'
 import { Constants } from 'expo'
 import Modal from 'react-native-modal'
@@ -12,47 +18,62 @@ import { ProfilePic } from '../../components/ProfilePic'
 import { MenuButton } from '../../components/setting/MenuButton'
 
 class UserScreen extends React.Component {
-  state = {
-    showModal: true,
+  constructor(props) {
+    super(props)
+
+    this.checkAuth = this.checkAuth.bind(this)
+
+    this.state = {
+      modalVisible: false
+    }
   }
 
-  componentDidMount() {
-    this.listenForAuth()
-  }
-
-  listenForAuth = () => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user != null) {
-        // User is signed in.
-        this.setState({ uid: user.uid, showModal: false })
-      } else {
-        console.log('Signed out')
-        this.setState({ uid: '', showModal: true })
-      }
+  componentWillMount() {
+    DeviceEventEmitter.addListener('checkAuth', e => {
+      this.checkAuth()
     })
+    this.checkAuth()
+  }
+
+  componentWillUnmount() {
+    DeviceEventEmitter.removeListener('checkAuth')
+  }
+
+  checkAuth() {
+    const currentUser = firebase.auth().currentUser
+
+    if (currentUser) {
+      this.setState({ modalVisible: false })
+    } else {
+      this.setState({ modalVisible: true })
+    }
   }
 
   renderModal = () => {
-    console.log(this.state)
+    const { modalVisible } = this.state
+    console.log(modalVisible)
+
     return (
       <View>
-        <Modal isVisible={this.state.showModal}>
+        <Modal isVisible={modalVisible}>
           <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
           >
             <TouchableOpacity
               onPress={() => {
-                this.setState({ showModal: false })
-                this.props.navigation.navigate('Signin', {
-                  onGoBack: () => this.listenForAuth(),
-                })
+                this.setState({ modalVisible: false })
+                this.props.navigation.navigate('Signin')
               }}
               style={{
                 backgroundColor: 'white',
                 alignItems: 'center',
                 justifyContent: 'center',
                 padding: 20,
-                borderRadius: 5,
+                borderRadius: 5
               }}
             >
               <Text>This feature requires signing in</Text>
@@ -69,7 +90,7 @@ class UserScreen extends React.Component {
         style={{
           flex: 1,
           backgroundColor: 'white',
-          paddingTop: Constants.statusBarHeight,
+          paddingTop: Constants.statusBarHeight
         }}
       >
         {this.renderModal()}
@@ -78,7 +99,7 @@ class UserScreen extends React.Component {
             height: 180,
             borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            padding: '7%',
+            padding: '7%'
           }}
         >
           <View style={{ flexDirection: 'row' }}>
@@ -96,7 +117,7 @@ class UserScreen extends React.Component {
             height: 40,
             borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            flexDirection: 'row',
+            flexDirection: 'row'
           }}
         >
           <TouchableOpacity
@@ -148,7 +169,8 @@ class UserScreen extends React.Component {
         <MenuButton
           goto={'Signin'}
           navigation={this.props.navigation}
-          name={'LOGIN'}
+          name={'LOGOUT'}
+          handlePress={() => firebase.auth().signOut()}
         />
       </View>
     )
@@ -166,7 +188,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   btnMessageContainer: {
     flex: 1,
@@ -176,15 +198,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   btnSmallText: {
     fontWeight: 'bold',
-    fontSize: 15,
-  },
+    fontSize: 15
+  }
 })
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user
 })
 export default connect(mapStateToProps)(UserScreen)
