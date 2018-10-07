@@ -33,7 +33,7 @@ UserScreenStackNavigator
 - Help: HelpScreen
 
 # Running the application
-1. Download and install NodeJs: https://nodejs.org/eny/
+1. Download and install NodeJs: https://nodejs.org/en/
 
 1.1 Check node installation and version:
   Open powershell (windows) or terminal (mac) and type
