@@ -5,7 +5,7 @@ import { MessageListScreen, AddUserScreen, ChatScreen } from '../screens'
 import {
   HamburgerHeader,
   AddUserHeader,
-  LogoHeaderWithText
+  LogoHeaderWithText,
 } from '../components/header/HeaderIcons'
 
 export const MessagingStackNavigator = createStackNavigator(
@@ -14,20 +14,13 @@ export const MessagingStackNavigator = createStackNavigator(
       screen: MessageListScreen,
       headerLayoutPreset: 'left',
       navigationOptions: ({ navigation }) => ({
-        headerStyle: {
-          backgroundColor: 'white',
-          borderBottomWidth: 0,
-          elevation: 3
-        },
-        headerLeft: <HamburgerHeader navigation={navigation} />,
-        headerTitle: <LogoHeaderWithText text="Messenger" />,
-        headerRight: <AddUserHeader navigation={navigation} />
-      })
+        header: null,
+      }),
     },
     AddUser: AddUserScreen,
-    Chat: ChatScreen
+    Chat: ChatScreen,
   },
   {
-    initialRouteName: 'Messaging'
+    initialRouteName: 'Messaging',
   }
 )

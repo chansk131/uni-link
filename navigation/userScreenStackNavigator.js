@@ -3,6 +3,7 @@ import { createStackNavigator } from 'react-navigation'
 
 import {
   MessageHeader,
+  AddUserHeader,
   LogoHeaderWithText,
 } from '../components/header/HeaderIcons'
 import LoginPanel from '../screens/Login/loginPanel'
@@ -14,6 +15,8 @@ import UserScreen from '../screens/User/UserScreen'
 import WishListScreen from '../screens/User/WishListScreen'
 import RegisterForm from '../screens/Login/registerForm'
 import MyOrderScreen from '../screens/User/MyOrderScreen'
+
+import { MessageListScreen, AddUserScreen, ChatScreen } from '../screens'
 import { HelpScreenStackNavigator } from './helpScreenStackNavigator'
 
 export const UserScreenStackNavigator = createStackNavigator({
@@ -26,7 +29,6 @@ export const UserScreenStackNavigator = createStackNavigator({
   WishList: { screen: WishListScreen },
   MyOrder: { screen: MyOrderScreen },
   InviteFriends: { screen: InviteFriendsScreen },
-  /*Help: { screen: HelpScreen }, error when navigating from side bar to help/faq then back to home */
   Signin: {
     screen: LoginPanel,
     navigationOptions: {
@@ -100,4 +102,20 @@ export const UserScreenStackNavigator = createStackNavigator({
       headerRight: <MessageHeader navigation={navigation} />,
     }),
   },
+  Messaging: {
+    screen: MessageListScreen,
+    headerLayoutPreset: 'left',
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeaderWithText text="Messenger" />,
+      headerRight: <AddUserHeader navigation={navigation} />,
+    }),
+  },
+  AddUser: AddUserScreen,
+  Chat: ChatScreen,
 })
