@@ -38,12 +38,14 @@ UserScreenStackNavigator
 1.1 Check node installation and version:
   Open powershell (windows) or terminal (mac) and type
   > node -v
+  
   You should get v8.*.* (* means whatever number is fine).
 
 2. Install expo
   
 2.1 In powershell/terminal, type
 > npm install expo-cli --global
+
 close powershell/terminal.
 
 3. Download this repository
@@ -52,6 +54,7 @@ close powershell/terminal.
   
 3.2 Open powershell/terminal inside this folder (easiest way for windows is to type powershell inside the navigation textbox of window explorer and press enter). Type in powershell/terminal.
 > expo start
+
 After a while you should see a QR Code. 
 
 4. Use app on phone!
