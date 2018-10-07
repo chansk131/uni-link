@@ -3,7 +3,7 @@ import { createStackNavigator } from 'react-navigation'
 
 import {
   MessageHeader,
-  LogoHeaderWithText
+  LogoHeaderWithText,
 } from '../components/header/HeaderIcons'
 import LoginPanel from '../screens/Login/loginPanel'
 import LoginForm from '../screens/Login/loginForm'
@@ -14,14 +14,14 @@ import UserScreen from '../screens/User/UserScreen'
 import WishListScreen from '../screens/User/WishListScreen'
 import RegisterForm from '../screens/Login/registerForm'
 import MyOrderScreen from '../screens/User/MyOrderScreen'
-import HelpScreen from '../screens/HelpScreen'
+import { HelpScreenStackNavigator } from './helpScreenStackNavigator'
 
 export const UserScreenStackNavigator = createStackNavigator({
   UserContent: {
     screen: UserScreen,
     navigationOptions: ({ navigation }) => ({
-      header: null
-    })
+      header: null,
+    }),
   },
   WishList: { screen: WishListScreen },
   MyOrder: { screen: MyOrderScreen },
@@ -33,9 +33,9 @@ export const UserScreenStackNavigator = createStackNavigator({
       headerStyle: {
         backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 0
-      }
-    }
+        elevation: 0,
+      },
+    },
   },
   LoginForm: {
     screen: LoginForm,
@@ -43,9 +43,9 @@ export const UserScreenStackNavigator = createStackNavigator({
       headerStyle: {
         backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 0
-      }
-    }
+        elevation: 0,
+      },
+    },
   },
   RegisterForm: {
     screen: RegisterForm,
@@ -53,9 +53,9 @@ export const UserScreenStackNavigator = createStackNavigator({
       headerStyle: {
         backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 0
-      }
-    }
+        elevation: 0,
+      },
+    },
   },
   Setting: {
     screen: SettingScreen,
@@ -66,12 +66,12 @@ export const UserScreenStackNavigator = createStackNavigator({
         shadowOffset: { width: 1, height: 1 },
         shadowColor: 'grey',
         shadowOpacity: 0.5,
-        elevation: 3
+        elevation: 3,
       },
       // headerLeft: <HamburgerHeader navigation={navigation} />,
       headerTitle: <LogoHeaderWithText text={'Setting'} />,
-      headerRight: <MessageHeader navigation={navigation} />
-    })
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
   },
   EditProfile: {
     screen: EditProfileScreen,
@@ -79,8 +79,25 @@ export const UserScreenStackNavigator = createStackNavigator({
       headerStyle: {
         backgroundColor: 'white',
         borderBottomWidth: 0,
-        elevation: 0
-      }
-    }
-  }
+        elevation: 0,
+      },
+    },
+  },
+  Help: {
+    screen: HelpScreenStackNavigator,
+    // headerLayoutPreset: 'left',
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeaderWithText text={'Help'} />,
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
 })

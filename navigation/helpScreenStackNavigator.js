@@ -11,16 +11,8 @@ import {
 export const HelpScreenStackNavigator = createStackNavigator({
   Help: {
     screen: HelpScreen,
-    headerLayoutPreset: 'left',
     navigationOptions: ({ navigation }) => ({
-      headerStyle: {
-        backgroundColor: 'white',
-        borderBottomWidth: 0,
-        elevation: 3,
-      },
-      headerLeft: <HamburgerHeader navigation={navigation} />,
-      headerTitle: <LogoHeaderWithText text={'Help'} />,
-      headerRight: <MessageHeader navigation={navigation} />,
+      header: null,
     }),
   },
 })
