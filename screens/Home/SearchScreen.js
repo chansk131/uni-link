@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native'
 import { SearchBar } from 'react-native-elements'
 import { connect } from 'react-redux'
 import {
@@ -27,7 +34,7 @@ class SearchScreen extends React.Component {
           apiKey="eeb95603a82cde7e9393474518a67c27"
           indexName="products"
         >
-          <SearchBox />
+          <SearchBox navigation={this.props.navigation} />
           <Hits />
           <View style={{ flex: 1, paddingHorizontal: '5%', paddingTop: 20 }}>
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
@@ -60,7 +67,8 @@ const Hits = connectInfiniteHits(({ hits, hasMore, refine }) => {
         keyExtractor={(item, index) => item.objectID}
         renderItem={({ item }) => {
           return (
-            <View
+            <TouchableOpacity
+              onPress={() => console.log(JSON.stringify(item))}
               style={{
                 flex: 1,
                 aspectRatio: 1.15,
@@ -88,7 +96,7 @@ const Hits = connectInfiniteHits(({ hits, hasMore, refine }) => {
               <Text style={{ fontSize: 10 }}>
                 By <Highlight attribute="user" hit={item} />
               </Text>
-            </View>
+            </TouchableOpacity>
           )
         }}
       />
@@ -96,52 +104,56 @@ const Hits = connectInfiniteHits(({ hits, hasMore, refine }) => {
   )
 })
 
-const SearchBox = connectSearchBox(({ refine, currentRefinement }) => {
-  const styles = StyleSheet.create({
-    searchContainer: {
-      backgroundColor: 'white',
-      borderBottomWidth: 0,
-      shadowOffset: { width: 1, height: 1 },
-      shadowColor: 'grey',
-      shadowOpacity: 0.5,
-      elevation: 3,
-    },
-    searchBarInput: {
-      backgroundColor: 'white',
-      borderWidth: 1,
-      borderColor: '#C9C9C9',
-    },
-    searchBarContainer: {
-      backgroundColor: 'white',
-      width: '100%',
-      borderBottomWidth: 0,
-      borderTopWidth: 0,
-      shadowOffset: { width: 1, height: 1 },
-      shadowColor: 'grey',
-      shadowOpacity: 0.5,
-      elevation: 3,
-    },
-  })
+const SearchBox = connectSearchBox(
+  ({ refine, currentRefinement, navigation }) => {
+    const styles = StyleSheet.create({
+      searchContainer: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      searchBarInput: {
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: '#C9C9C9',
+      },
+      searchBarContainer: {
+        backgroundColor: 'white',
+        width: '100%',
+        borderBottomWidth: 0,
+        borderTopWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+    })
 
-  return (
-    <View style={styles.searchBarContainer}>
-      <SearchBar
-        autoFocus={true}
-        onChangeText={text => refine(text)}
-        // onClearText={this.handleSearchCleared}
-        value={currentRefinement}
-        spellCheck={false}
-        autoCorrect={false}
-        autoCapitalize={'none'}
-        clearIcon
-        round
-        inputStyle={styles.searchBarInput}
-        containerStyle={styles.searchBarContainer}
-        placeholder="Search a product..."
-      />
-    </View>
-  )
-})
+    return (
+      <View style={styles.searchBarContainer}>
+        <SearchBar
+          autoFocus={true}
+          onChangeText={text => {
+            refine(text)
+          }}
+          onClearText={() => navigation.goBack()}
+          value={currentRefinement}
+          spellCheck={false}
+          autoCorrect={false}
+          autoCapitalize={'none'}
+          clearIcon
+          round
+          inputStyle={styles.searchBarInput}
+          containerStyle={styles.searchBarContainer}
+          placeholder="Search a product..."
+        />
+      </View>
+    )
+  }
+)
 
 const Highlight = connectHighlight(
   ({ highlight, attribute, hit, highlightProperty }) => {
