@@ -4,7 +4,7 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  DeviceEventEmitter,
+  DeviceEventEmitter
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Constants } from 'expo'
@@ -25,14 +25,27 @@ class UserScreen extends React.Component {
 
     this.state = {
       modalVisible: false,
+      profilePicUrl: null
     }
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     DeviceEventEmitter.addListener('checkAuth', e => {
       this.checkAuth()
     })
     this.checkAuth()
+
+    const profilePicRef = firebase
+      .storage()
+      .ref()
+      .child(`users/${firebase.auth().currentUser.uid}`)
+    let profilePicUrl = null
+    try {
+      profilePicUrl = await profilePicRef.getDownloadURL()
+    } catch (error) {
+      return error
+    }
+    this.setState({ profilePicUrl })
   }
 
   componentWillUnmount() {
@@ -51,7 +64,6 @@ class UserScreen extends React.Component {
 
   renderModal = () => {
     const { modalVisible } = this.state
-    console.log(modalVisible)
 
     return (
       <View>
@@ -60,7 +72,7 @@ class UserScreen extends React.Component {
             style={{
               flex: 1,
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'center'
             }}
           >
             <TouchableOpacity
@@ -73,7 +85,7 @@ class UserScreen extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 padding: 20,
-                borderRadius: 5,
+                borderRadius: 5
               }}
             >
               <Text>This feature requires signing in</Text>
@@ -85,12 +97,15 @@ class UserScreen extends React.Component {
   }
 
   render() {
+    const { profilePicUrl } = this.state
+    const { user } = this.props
+
     return (
       <View
         style={{
           flex: 1,
           backgroundColor: 'white',
-          paddingTop: Constants.statusBarHeight,
+          paddingTop: Constants.statusBarHeight
         }}
       >
         {this.renderModal()}
@@ -99,16 +114,16 @@ class UserScreen extends React.Component {
             height: 180,
             borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            padding: '7%',
+            padding: '7%'
           }}
         >
           <View style={{ flexDirection: 'row' }}>
             <View style={{ width: '40%', height: 76 }}>
-              <ProfilePic />
+              <ProfilePic source={profilePicUrl} />
             </View>
             <View>
-              <Username user={this.props.user} />
-              <Followers user={this.props.user} />
+              <Username user={user} />
+              <Followers user={user} />
             </View>
           </View>
         </View>
@@ -117,7 +132,7 @@ class UserScreen extends React.Component {
             height: 40,
             borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            flexDirection: 'row',
+            flexDirection: 'row'
           }}
         >
           <TouchableOpacity
@@ -191,7 +206,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   btnMessageContainer: {
     flex: 1,
@@ -201,15 +216,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   btnSmallText: {
     fontWeight: 'bold',
-    fontSize: 15,
-  },
+    fontSize: 15
+  }
 })
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user
 })
 export default connect(mapStateToProps)(UserScreen)

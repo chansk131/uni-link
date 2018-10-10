@@ -1,17 +1,27 @@
 import React from 'react'
 import { Image, TouchableOpacity, StyleSheet, View, Text } from 'react-native'
+import CacheImage from './CacheImage'
 
-export const ProfilePic = props => (
-  <TouchableOpacity onPress={props.onPress} style={styles.container}>
-    {props.source ? (
-      <Image style={styles.image} source={{ uri: props.source }} />
-    ) : (
+const renderImage = ({ notCache, source }) => {
+  if (!source) {
+    return (
       <Image
         style={styles.image}
         defaultSource={require('../assets/images/user.png')}
       />
-    )}
-    {props.status === 'registerForm' ? (
+    )
+  }
+
+  if (notCache) {
+    return <Image style={styles.image} source={{ uri: source }} />
+  }
+
+  return <CacheImage style={styles.image} uri={source} />
+}
+
+const renderPlus = status => {
+  if (status === 'registerForm') {
+    return (
       <View
         style={{
           position: 'absolute',
@@ -22,16 +32,27 @@ export const ProfilePic = props => (
           minWidth: 20,
           height: 20,
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'center'
         }}
       >
         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
           +
         </Text>
       </View>
-    ) : null}
-  </TouchableOpacity>
-)
+    )
+  }
+}
+
+export const ProfilePic = props => {
+  const { notCache, onPress, source, status } = props
+
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.container}>
+      {renderImage({ notCache, source })}
+      {renderPlus(status)}
+    </TouchableOpacity>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -43,11 +64,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     elevation: 5,
     borderWidth: 0,
-    marginLeft: 10,
+    marginLeft: 10
   },
   image: {
     width: 84,
     height: 84,
-    borderRadius: 42,
-  },
+    borderRadius: 42
+  }
 })
