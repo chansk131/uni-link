@@ -17,7 +17,7 @@ class MessageListScreen extends Component {
   })
 
   render() {
-    return <MessageList />
+    return <MessageList navigation={this.props.navigation} />
   }
 }
 
