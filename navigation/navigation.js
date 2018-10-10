@@ -66,7 +66,6 @@ export const DrawerNavigator = createDrawerNavigator(
           borderBottomWidth: 0,
           elevation: 3,
         },
-        // headerLeft: <HamburgerHeader navigation={navigation} />,
         headerTitle: <LogoHeaderWithText text="Messenger" />,
         headerRight: <AddUserHeader navigation={navigation} />,
       }),

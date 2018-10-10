@@ -35,7 +35,7 @@ class SearchScreen extends React.Component {
           indexName="products"
         >
           <SearchBox navigation={this.props.navigation} />
-          <Hits />
+          <Hits navigation={this.props.navigation} />
           <View style={{ flex: 1, paddingHorizontal: '5%', paddingTop: 20 }}>
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
               Search Result {JSON.stringify(this.props.search)}
@@ -49,13 +49,18 @@ class SearchScreen extends React.Component {
   }
 }
 
-const Hits = connectInfiniteHits(({ hits, hasMore, refine }) => {
+const Hits = connectInfiniteHits(({ hits, hasMore, refine, navigation }) => {
   /* if there are still results, you can
   call the refine function to load more */
   const onEndReached = function() {
     if (hasMore) {
       refine()
     }
+  }
+
+  pressProduct = item => {
+    console.log(JSON.stringify(item))
+    navigation.navigate('ItemDetail', { products: item })
   }
 
   return (
@@ -68,7 +73,7 @@ const Hits = connectInfiniteHits(({ hits, hasMore, refine }) => {
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
-              onPress={() => console.log(JSON.stringify(item))}
+              onPress={() => this.pressProduct(item)}
               style={{
                 flex: 1,
                 aspectRatio: 1.15,
