@@ -34,8 +34,6 @@ class SellingScreen extends React.Component {
     return firebase
       .database()
       .ref('/productsByOwners/' + userId)
-      .orderByChild('isAvailable')
-      .equalTo(true)
       .once('value')
       .then(snapshot => {
         var results = snapshot.val()
