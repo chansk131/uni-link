@@ -31,12 +31,15 @@ class MessageList extends Component {
       <View style={styles.root}>
         <View style={styles.btnContainer}>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Setting')}
+            onPress={() => this.props.navigation.navigate('AddUser')}
             style={styles.btnSettingContainer}
           >
             <Text style={styles.btnText}>Create Group</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnMessageContainer}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('AddUser')}
+            style={styles.btnMessageContainer}
+          >
             <Text style={styles.btnText}>Create Chat</Text>
           </TouchableOpacity>
         </View>
@@ -105,10 +108,11 @@ const mapStateToProps = state => {
       }
       title = usernames[i]
     }
+    lastMessage = value.lastMessage ? value.lastMessage.message : ''
     return {
       id: chatId,
       title,
-      lastMessage: value.lastMessage.message,
+      lastMessage,
       usernames
     }
   })
