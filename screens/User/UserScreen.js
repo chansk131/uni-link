@@ -4,7 +4,7 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  DeviceEventEmitter
+  DeviceEventEmitter,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Constants } from 'expo'
@@ -24,7 +24,7 @@ class UserScreen extends React.Component {
     this.checkAuth = this.checkAuth.bind(this)
 
     this.state = {
-      modalVisible: false
+      modalVisible: false,
     }
   }
 
@@ -60,7 +60,7 @@ class UserScreen extends React.Component {
             style={{
               flex: 1,
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
             }}
           >
             <TouchableOpacity
@@ -73,7 +73,7 @@ class UserScreen extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 padding: 20,
-                borderRadius: 5
+                borderRadius: 5,
               }}
             >
               <Text>This feature requires signing in</Text>
@@ -90,7 +90,7 @@ class UserScreen extends React.Component {
         style={{
           flex: 1,
           backgroundColor: 'white',
-          paddingTop: Constants.statusBarHeight
+          paddingTop: Constants.statusBarHeight,
         }}
       >
         {this.renderModal()}
@@ -99,7 +99,7 @@ class UserScreen extends React.Component {
             height: 180,
             borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            padding: '7%'
+            padding: '7%',
           }}
         >
           <View style={{ flexDirection: 'row' }}>
@@ -117,7 +117,7 @@ class UserScreen extends React.Component {
             height: 40,
             borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            flexDirection: 'row'
+            flexDirection: 'row',
           }}
         >
           <TouchableOpacity
@@ -131,7 +131,10 @@ class UserScreen extends React.Component {
             />
             <Text style={styles.btnText}>SETTING</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnMessageContainer}>
+          <TouchableOpacity
+            style={styles.btnMessageContainer}
+            onPress={() => this.props.navigation.navigate('Messaging')}
+          >
             <Ionicons name="ios-mail" size={20} style={{ marginRight: 8 }} />
             <Text style={styles.btnText}>MESSAGE</Text>
           </TouchableOpacity>
@@ -188,7 +191,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   btnMessageContainer: {
     flex: 1,
@@ -198,15 +201,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   btnSmallText: {
     fontWeight: 'bold',
-    fontSize: 15
-  }
+    fontSize: 15,
+  },
 })
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
 })
 export default connect(mapStateToProps)(UserScreen)

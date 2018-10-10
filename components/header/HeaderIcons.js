@@ -5,7 +5,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
 } from 'react-native'
 import { Card, Button, SearchBar } from 'react-native-elements'
 import { Constants } from 'expo'
@@ -54,7 +54,7 @@ export const LogoHeaderWithText = props => (
         flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-start',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
       }}
     >
       <Image
@@ -64,10 +64,10 @@ export const LogoHeaderWithText = props => (
     </View>
     <View
       style={{
-        flex: 1,
+        flex: 3,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
       }}
     >
       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{props.text}</Text>

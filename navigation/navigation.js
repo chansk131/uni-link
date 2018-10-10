@@ -6,11 +6,13 @@ import { MessagingStackNavigator } from './messagingStackNavigator'
 import { TabNavigator } from './tabNavigator'
 import { HelpScreenStackNavigator } from './helpScreenStackNavigator'
 
+import { MessageListScreen } from '../screens/'
 import MyOrderScreen from '../screens/User/MyOrderScreen'
 import MyAccountScreen from '../screens/User/MyAccountScreen'
 import AboutScreen from '../screens/AboutScreen'
 import {
   MessageHeader,
+  AddUserHeader,
   LogoHeaderWithText,
 } from '../components/header/HeaderIcons'
 
@@ -54,11 +56,20 @@ export const DrawerNavigator = createDrawerNavigator(
         drawerLabel: 'MY ORDER',
       },
     },
-    Message: {
-      screen: MessagingStackNavigator,
-      navigationOptions: {
+    Messaging: {
+      screen: MessageListScreen,
+      headerLayoutPreset: 'left',
+      navigationOptions: ({ navigation }) => ({
         drawerLabel: 'MESSAGES',
-      },
+        headerStyle: {
+          backgroundColor: 'white',
+          borderBottomWidth: 0,
+          elevation: 3,
+        },
+        // headerLeft: <HamburgerHeader navigation={navigation} />,
+        headerTitle: <LogoHeaderWithText text="Messenger" />,
+        headerRight: <AddUserHeader navigation={navigation} />,
+      }),
     },
     About: {
       screen: AboutScreen,
