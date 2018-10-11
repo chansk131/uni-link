@@ -1,5 +1,6 @@
 import React from 'react'
-import { Asset, ImageManipulator } from 'expo'
+import shorthash from 'shorthash'
+import { FileSystem, ImageManipulator } from 'expo'
 import {
   Text,
   ScrollView,
@@ -14,7 +15,7 @@ import { DatePicker } from 'native-base'
 import ActionSheet from 'react-native-actionsheet'
 import { connect } from 'react-redux'
 import * as firebase from 'firebase'
-import { NavigationActions, StackActions } from 'react-navigation'
+import { NavigationActions } from 'react-navigation'
 
 import { ProfilePic } from '../../components/ProfilePic'
 import ValidationRules from '../../components/forms/validationRules'
@@ -30,6 +31,7 @@ class RegisterForm extends React.Component {
     chosenImage: null,
     chosenDate: new Date().toString().substr(4, 12),
     picUrl: null,
+    previousProfilePicUrl: null,
     uploading: false,
     hasErrors: false,
     form: {
@@ -106,82 +108,109 @@ class RegisterForm extends React.Component {
     }
     this.setState({ isRegisterForm: registerForm })
 
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged(async user => {
       if (user) {
         // User is signed in.
         var uid = user.uid
         this.setState({ uid })
-        console.log('auth changed')
+        // console.log('auth changed')
 
         if (this.state.uploadForm === true) {
-          console.log('upload form')
+          // console.log('upload form')
 
           this.addUserToDatabase(uid)
         }
 
         if (registerForm === false) {
-          console.log(`edit profile with uid: ${uid}`)
+          // console.log(`edit profile with uid: ${uid}`)
           // TODO Get data from firebase to populate the form
-
-          firebase
+          const profilePicRef = firebase
+            .storage()
+            .ref()
+            .child(`users/${firebase.auth().currentUser.uid}`)
+          let profilePicUrl = null
+          try {
+            profilePicUrl = await profilePicRef.getDownloadURL()
+          } catch (error) {
+            console.log(error)
+          }
+          const snapshot = await firebase
             .database()
             .ref('/users/' + uid)
             .once('value')
-            .then(snapshot => {
-              this.setState({
-                ...this.state,
-                isLoading: false,
-                chosenImage: { uri: snapshot.val().pic },
-                chosenDate: snapshot.val().dob,
-                form: {
-                  ...this.state.form,
-                  name: {
-                    ...this.state.form.name,
-                    value: snapshot.val().name
-                  },
-                  surname: {
-                    ...this.state.form.surname,
-                    value: snapshot.val().surname
-                  },
-                  username: {
-                    ...this.state.form.username,
-                    value: snapshot.val().username
-                  },
-                  email: {
-                    ...this.state.form.email,
-                    value: snapshot.val().email
-                  },
-                  university: {
-                    ...this.state.form.university,
-                    value: snapshot.val().university
-                  },
-                  location: {
-                    ...this.state.form.location,
-                    value: snapshot.val().location
-                  },
-                  tel: { ...this.state.form.tel, value: snapshot.val().tel }
-                }
-              })
-              console.log(this.state.form)
 
-              // ...
-            })
+          this.setState({
+            ...this.state,
+            isLoading: false,
+            chosenImage: { uri: snapshot.val().pic },
+            chosenDate: snapshot.val().dob,
+            previousProfilePicUrl: profilePicUrl,
+            form: {
+              ...this.state.form,
+              name: {
+                ...this.state.form.name,
+                value: snapshot.val().name
+              },
+              surname: {
+                ...this.state.form.surname,
+                value: snapshot.val().surname
+              },
+              username: {
+                ...this.state.form.username,
+                value: snapshot.val().username
+              },
+              email: {
+                ...this.state.form.email,
+                value: snapshot.val().email
+              },
+              university: {
+                ...this.state.form.university,
+                value: snapshot.val().university
+              },
+              location: {
+                ...this.state.form.location,
+                value: snapshot.val().location
+              },
+              tel: { ...this.state.form.tel, value: snapshot.val().tel }
+            }
+          })
+          // console.log(this.state.form)
         }
-      } else {
-        // User is signed out.
       }
     })
   }
 
   renderProfilPic = () => {
+    const { chosenImage, picUrl } = this.state
+
+    if (chosenImage == null) {
+      return (
+        <ProfilePic
+          style={{ marginBottom: 30 }}
+          onPress={() => this.showProfilePictureActionSheet()}
+          status={'registerForm'}
+        />
+      )
+    }
+
+    if (chosenImage.uri == null && picUrl != null) {
+      return (
+        <ProfilePic
+          style={{ marginBottom: 30 }}
+          onPress={() => this.showProfilePictureActionSheet()}
+          status={'registerForm'}
+          source={picUrl}
+        />
+      )
+    }
+
     return (
       <ProfilePic
         style={{ marginBottom: 30 }}
         onPress={() => this.showProfilePictureActionSheet()}
         status={'registerForm'}
-        source={
-          this.state.chosenImage !== null ? this.state.chosenImage.uri : null
-        }
+        notCache
+        source={chosenImage.uri}
       />
     )
   }
@@ -206,7 +235,8 @@ class RegisterForm extends React.Component {
       [{ resize: { width: 100, height: 100 } }],
       { format: 'jpeg', compress: 0.8 }
     )
-    this.setState({ chosenImage: manipResult })
+    const imageObj = { ...manipResult, cancelled: img.cancelled }
+    this.setState({ chosenImage: imageObj })
   }
 
   /**
@@ -216,9 +246,8 @@ class RegisterForm extends React.Component {
   _handleImagePicked = async (pickerResult, imgId) => {
     try {
       this.setState({ uploading: true })
-
       if (!pickerResult.cancelled) {
-        uploadUrl = await uploadImageAsync(pickerResult.uri, imgId)
+        uploadUrl = await this.uploadImageAsync(pickerResult.uri, imgId)
         this.setState({ picUrl: uploadUrl })
       }
     } catch (e) {
@@ -364,6 +393,30 @@ class RegisterForm extends React.Component {
           this.props.navigation.goBack()
         }
       })
+  }
+
+  /**
+   * @param {string} uri - path to image on device
+   * @param {string} imgId - image id (which is equals to user's id)
+   */
+  async uploadImageAsync(uri, imgId) {
+    try {
+      const image = await fetch(uri)
+      const blob = await image.blob()
+      const ref = firebase
+        .storage()
+        .ref()
+        .child('users/' + imgId)
+      await ref.put(blob)
+      const url = await ref.getDownloadURL()
+      // delete previous profile pic from cache
+      const name = shorthash.unique(this.state.previousProfilePicUrl)
+      const path = `${FileSystem.cacheDirectory}${name}`
+      await FileSystem.deleteAsync(path)
+      return url
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   render() {
@@ -538,26 +591,6 @@ class RegisterForm extends React.Component {
         </ScrollView>
       </KeyboardAvoidingView>
     )
-  }
-}
-
-/**
- * @param {string} uri - path to image on device
- * @param {string} imgId - image id (which is equals to user's id)
- */
-async function uploadImageAsync(uri, imgId) {
-  try {
-    const image = await fetch(uri)
-    const blob = await image.blob()
-    const ref = firebase
-      .storage()
-      .ref()
-      .child('users/' + imgId)
-    await ref.put(blob)
-    const url = await ref.getDownloadURL()
-    return url
-  } catch (e) {
-    console.log(e)
   }
 }
 

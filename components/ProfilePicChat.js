@@ -1,19 +1,34 @@
 import React from 'react'
 import { Image, TouchableOpacity, StyleSheet, View, Text } from 'react-native'
+import CacheImage from './CacheImage'
 
-const ProfilePicChat = props => (
-  <TouchableOpacity onPress={props.onPress} style={styles.container}>
-    {props.source ? (
-      <Image style={styles.image} source={{ uri: props.source }} />
-    ) : (
+const renderImage = ({ notCache, source }) => {
+  if (!source) {
+    return (
       <Image
         style={styles.image}
         defaultSource={require('../assets/images/user.png')}
       />
-    )}
-    <View style={styles.onlineIndicator} />
-  </TouchableOpacity>
-)
+    )
+  }
+
+  if (notCache) {
+    return <Image style={styles.image} source={{ uri: source }} />
+  }
+
+  return <CacheImage style={styles.image} uri={source} />
+}
+
+const ProfilePicChat = props => {
+  const { notCache, onPress, source } = props
+
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.container}>
+      {renderImage({ notCache, source })}
+      <View style={styles.onlineIndicator} />
+    </TouchableOpacity>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {

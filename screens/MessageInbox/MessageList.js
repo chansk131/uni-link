@@ -98,22 +98,22 @@ const mapStateToProps = state => {
 
   const chats = _.map(chat, (value, chatId) => {
     title = value.title
-    const usernames = _.map(value.users, (username, usersId) => {
-      return username
+    const users = _.map(value.users, (username, userId) => {
+      return { username, userId }
     })
     if (title === '') {
       i = 0
-      while (usernames[i] === username && i < usernames.length) {
+      while (users[i] === username && i < users.length) {
         i++
       }
-      title = usernames[i]
+      title = users[i].username
     }
     lastMessage = value.lastMessage ? value.lastMessage.message : ''
     return {
       id: chatId,
       title,
       lastMessage,
-      usernames
+      users
     }
   })
 

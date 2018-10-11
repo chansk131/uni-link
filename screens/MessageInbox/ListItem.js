@@ -1,18 +1,48 @@
 import React, { Component } from 'react'
+import firebase from 'firebase'
 import { withNavigation } from 'react-navigation'
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import { ProfilePicChat } from '../../components'
 
 class ListItem extends Component {
+  state = {
+    chatPicUrl: null
+  }
+
+  async componentDidMount() {
+    const { users } = this.props
+    let chatPicUserId = null
+
+    if (users.length === 2) {
+      if (users[0].userId === firebase.auth().currentUser.uid) {
+        chatPicUserId = users[1].userId
+      } else {
+        chatPicUserId = users[0].userId
+      }
+      const chatPicRef = firebase
+        .storage()
+        .ref()
+        .child(`users/${chatPicUserId}`)
+      let chatPicUrl = null
+      try {
+        chatPicUrl = await chatPicRef.getDownloadURL()
+      } catch (error) {
+        return error
+      }
+      this.setState({ chatPicUrl })
+    }
+  }
+
   render() {
     const { id, title, lastMessage, navigation } = this.props
+    const { chatPicUrl } = this.state
 
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('Chat', { chatId: id })}
         style={styles.btnContainer}
       >
-        <ProfilePicChat />
+        <ProfilePicChat source={chatPicUrl} />
         <View>
           <Text style={styles.btnTitle}>{title}</Text>
           <Text style={styles.btnMessage}>{lastMessage}</Text>
