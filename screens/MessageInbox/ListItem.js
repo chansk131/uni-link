@@ -34,7 +34,7 @@ class ListItem extends Component {
   }
 
   render() {
-    const { id, title, lastMessage, navigation } = this.props
+    const { id, title, lastMessage, status, navigation } = this.props
     const { chatPicUrl } = this.state
 
     return (
@@ -42,7 +42,7 @@ class ListItem extends Component {
         onPress={() => navigation.navigate('Chat', { chatId: id })}
         style={styles.btnContainer}
       >
-        <ProfilePicChat source={chatPicUrl} />
+        <ProfilePicChat source={chatPicUrl} status={status} />
         <View>
           <Text style={styles.btnTitle}>{title}</Text>
           <Text style={styles.btnMessage}>{lastMessage}</Text>

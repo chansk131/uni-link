@@ -9,8 +9,6 @@ import {
   Text
 } from 'react-native'
 import ListItem from './ListItem'
-import { Constants } from 'expo'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 
 class MessageList extends Component {
   keyExtractor = (item, index) => item.id
@@ -22,6 +20,7 @@ class MessageList extends Component {
         title={title}
         users={item.users}
         lastMessage={item.lastMessage}
+        status={item.status}
       />
     )
   }
@@ -97,7 +96,7 @@ const mapStateToProps = state => {
   const { username } = state.user
 
   const chats = _.map(chat, (value, chatId) => {
-    title = value.title
+    ;(title = value.title), (status = value.status)
     const users = _.map(value.users, (username, userId) => {
       return { username, userId }
     })
@@ -113,7 +112,8 @@ const mapStateToProps = state => {
       id: chatId,
       title,
       lastMessage,
-      users
+      users,
+      status
     }
   })
 

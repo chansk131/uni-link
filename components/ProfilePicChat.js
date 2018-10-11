@@ -19,13 +19,20 @@ const renderImage = ({ notCache, source }) => {
   return <CacheImage style={styles.image} uri={source} />
 }
 
+const renderOnlineIndicator = online => {
+  let onlineIndicatorStyle = styles.onlineIndicator
+  if (online) onlineIndicatorStyle.backgroundColor = '#52C181'
+  else onlineIndicatorStyle.backgroundColor = '#8B3535'
+  return <View style={onlineIndicatorStyle} />
+}
+
 const ProfilePicChat = props => {
-  const { notCache, onPress, source } = props
+  const { notCache, onPress, source, status } = props
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       {renderImage({ notCache, source })}
-      <View style={styles.onlineIndicator} />
+      {renderOnlineIndicator(status)}
     </TouchableOpacity>
   )
 }
