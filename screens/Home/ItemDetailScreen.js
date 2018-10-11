@@ -14,6 +14,7 @@ import * as firebase from 'firebase'
 import { CartButton, BuyButton } from '../../components/itemDetail/Buttons'
 import { Divider } from '../../components/itemDetail/Divider'
 import { ContentHeader } from '../../components/itemDetail/ContentHeader'
+import { AboutItem } from '../../components/itemDetail/AboutItem'
 
 class ItemDetail extends React.Component {
   state = {
@@ -46,35 +47,42 @@ class ItemDetail extends React.Component {
       })
   }
 
-  renderDetail = () =>
-    this.state.itemLoaded ? (
+  renderDetail = () => {
+    const product = this.state.product
+    var aboutArr = []
+    if (product !== null) {
+      if (product.about !== undefined) {
+        const aboutObj = product.about
+        Object.keys(aboutObj).forEach(function(key) {
+          let nameKey = key.charAt(0).toUpperCase() + key.slice(1)
+          aboutArr.push({ key: nameKey, value: aboutObj[key] })
+        })
+      }
+    }
+    return this.state.itemLoaded && product && aboutArr ? (
       <View>
         <BuyButton />
         <CartButton />
         <Divider />
         <ContentHeader text={'About this item'} />
-        <View style={{ flexDirection: 'row', marginHorizontal: '8%' }}>
-          <View style={{ flex: 4 }}>
-            <Text style={{ fontSize: 16, color: '#525252' }}>Condition</Text>
-            <Text style={{ fontSize: 16, color: '#525252' }}>Brand</Text>
-            <Text style={{ fontSize: 16, color: '#525252' }}>Type</Text>
-          </View>
-          <View style={{ flex: 6 }}>
-            <Text style={{ fontSize: 16 }}>{this.state.product.condition}</Text>
-            <Text style={{ fontSize: 16 }}>{this.state.product.brand}</Text>
-            <Text style={{ fontSize: 16 }}>{this.state.product.type}</Text>
-          </View>
+        <View style={{ marginHorizontal: '8%' }}>
+          <AboutItem label={'Condition'} text={product.condition} />
+          {aboutArr.map(about => (
+            <AboutItem key={about.key} label={about.key} text={about.value} />
+          ))}
         </View>
         <Divider />
         <ContentHeader text={'Item description'} />
-        <Text>Item description</Text>
-        <Text>{this.state.product.description}</Text>
+        <Text style={{ fontSize: 16, marginHorizontal: '8%' }}>
+          {product.description}
+        </Text>
       </View>
     ) : (
       <View style={{ flex: 1 }}>
         <ActivityIndicator />
       </View>
     )
+  }
 
   addWishList = products => {
     console.log(this.props.user.uid)
