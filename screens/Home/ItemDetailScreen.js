@@ -15,6 +15,7 @@ import { CartButton, BuyButton } from '../../components/itemDetail/Buttons'
 import { Divider } from '../../components/itemDetail/Divider'
 import { ContentHeader } from '../../components/itemDetail/ContentHeader'
 import { AboutItem } from '../../components/itemDetail/AboutItem'
+import SearchButton from '../../components/header/SearchButton'
 
 class ItemDetail extends React.Component {
   state = {
@@ -67,6 +68,7 @@ class ItemDetail extends React.Component {
         <ContentHeader text={'About this item'} />
         <View style={{ marginHorizontal: '8%' }}>
           <AboutItem label={'Condition'} text={product.condition} />
+          <AboutItem label={'Type'} text={product.type} />
           {aboutArr.map(about => (
             <AboutItem key={about.key} label={about.key} text={about.value} />
           ))}
@@ -109,31 +111,44 @@ class ItemDetail extends React.Component {
     const { navigation } = this.props
     const products = navigation.getParam('products')
     return (
-      <ScrollView
+      <View
         style={{
           flex: 1,
           backgroundColor: 'white',
         }}
       >
-        <Image
-          style={{
-            width: '90%',
-            aspectRatio: 16 / 9,
-            resizeMode: 'contain',
-            marginHorizontal: '5%',
+        <SearchButton
+          onFocus={() => {
+            this.props.navigation.navigate('SearchScreen')
           }}
-          source={{ uri: products.pic }}
         />
-        <View style={{ marginHorizontal: '5%', marginVertical: 10 }}>
-          <Text style={{ fontSize: 20 }}>{products.name}</Text>
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-            £{products.price}
-          </Text>
-          <Text style={{ fontSize: 20 }}>By {products.user}</Text>
-        </View>
-        {this.renderDetail()}
 
-        {/* <Image
+        <ScrollView
+          style={{
+            flex: 1,
+            // backgroundColor: 'white',
+          }}
+        >
+          <Image
+            style={{
+              width: '90%',
+              aspectRatio: 16 / 9,
+              resizeMode: 'contain',
+              marginHorizontal: '5%',
+            }}
+            source={{ uri: products.pic }}
+          />
+          <View style={{ marginHorizontal: '5%', marginVertical: 10 }}>
+            <Text style={{ fontSize: 20 }}>{products.name}</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+              £{products.price}
+            </Text>
+            <Text style={{ fontSize: 20 }}>By {products.user}</Text>
+          </View>
+          {this.renderDetail()}
+          <View style={{ height: 20, width: '100%' }} />
+
+          {/* <Image
             style={{
               width: '100%',
               aspectRatio: 16 / 9,
@@ -164,7 +179,8 @@ class ItemDetail extends React.Component {
           >
             <Text>{products.user}</Text>
           </TouchableOpacity> */}
-      </ScrollView>
+        </ScrollView>
+      </View>
     )
   }
 }
