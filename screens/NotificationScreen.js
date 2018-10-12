@@ -6,7 +6,7 @@ export default class NotificationScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Notifications! KIKI</Text>
+        <Text>Notifications!</Text>
       </View>
     )
   }
