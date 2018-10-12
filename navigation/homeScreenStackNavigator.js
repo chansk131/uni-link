@@ -53,7 +53,19 @@ export const HomeScreenStackNavigator = createStackNavigator({
       headerRight: <MessageHeader navigation={navigation} />
     })
   },
-  ItemDetail: ItemDetailScreen,
+  ItemDetail: {
+    screen: ItemDetailScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeader />,
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
   Seller: {
     screen: SellerScreen,
     navigationOptions: ({ navigation }) => ({
