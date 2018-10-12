@@ -2,7 +2,6 @@ import React from 'react'
 import { Text, SafeAreaView, ScrollView, View } from 'react-native'
 import { createDrawerNavigator, DrawerItems } from 'react-navigation'
 
-import { MessagingStackNavigator } from './messagingStackNavigator'
 import { TabNavigator } from './tabNavigator'
 import { HelpScreenStackNavigator } from './helpScreenStackNavigator'
 
@@ -11,9 +10,8 @@ import MyOrderScreen from '../screens/User/MyOrderScreen'
 import MyAccountScreen from '../screens/User/MyAccountScreen'
 import AboutScreen from '../screens/AboutScreen'
 import {
-  MessageHeader,
   AddUserHeader,
-  LogoHeaderWithText,
+  LogoHeaderWithText
 } from '../components/header/HeaderIcons'
 
 const CustomDrawerComponent = props => (
@@ -24,7 +22,7 @@ const CustomDrawerComponent = props => (
           alignItems: 'center',
           justifyContent: 'center',
           height: 50,
-          backgroundColor: 'black',
+          backgroundColor: 'black'
         }}
       >
         <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>
@@ -41,20 +39,20 @@ export const DrawerNavigator = createDrawerNavigator(
     Home: {
       screen: TabNavigator,
       navigationOptions: {
-        drawerLabel: 'HOME',
-      },
+        drawerLabel: 'HOME'
+      }
     },
     MyAccount: {
       screen: MyAccountScreen,
       navigationOptions: {
-        drawerLabel: 'MY ACCOUNT',
-      },
+        drawerLabel: 'MY ACCOUNT'
+      }
     },
     MyOrder: {
       screen: MyOrderScreen,
       navigationOptions: {
-        drawerLabel: 'MY ORDER',
-      },
+        drawerLabel: 'MY ORDER'
+      }
     },
     Messaging: {
       screen: MessageListScreen,
@@ -64,24 +62,24 @@ export const DrawerNavigator = createDrawerNavigator(
         headerStyle: {
           backgroundColor: 'white',
           borderBottomWidth: 0,
-          elevation: 3,
+          elevation: 3
         },
         headerTitle: <LogoHeaderWithText text="Messenger" />,
-        headerRight: <AddUserHeader navigation={navigation} />,
-      }),
+        headerRight: <AddUserHeader navigation={navigation} />
+      })
     },
     About: {
       screen: AboutScreen,
       navigationOptions: {
-        drawerLabel: 'ABOUT',
-      },
+        drawerLabel: 'ABOUT'
+      }
     },
     Help: {
       screen: HelpScreenStackNavigator,
       navigationOptions: {
-        drawerLabel: 'HELP / FAQ',
-      },
-    },
+        drawerLabel: 'HELP / FAQ'
+      }
+    }
   },
   {
     contentComponent: CustomDrawerComponent,
@@ -90,8 +88,8 @@ export const DrawerNavigator = createDrawerNavigator(
       itemStyle: {
         borderColor: '#707070',
         borderBottomWidth: 0.5,
-        alignItems: 'center',
-      },
-    },
+        alignItems: 'center'
+      }
+    }
   }
 )

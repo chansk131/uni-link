@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Chat } from './Chat'
+import Chat from './Chat'
 
 class ChatScreen extends Component {
   static navigationOptions = {
@@ -7,7 +7,7 @@ class ChatScreen extends Component {
   }
 
   render() {
-    return <Chat />
+    return <Chat navigation={this.props.navigation} />
   }
 }
 

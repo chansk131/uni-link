@@ -96,7 +96,8 @@ const mapStateToProps = state => {
   const { username } = state.user
 
   const chats = _.map(chat, (value, chatId) => {
-    ;(title = value.title), (status = value.status)
+    title = value.title
+    status = value.status
     const users = _.map(value.users, (username, userId) => {
       return { username, userId }
     })
