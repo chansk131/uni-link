@@ -5,22 +5,33 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
+  ActivityIndicator
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux'
 import * as firebase from 'firebase'
-import { CartButton, BuyButton } from '../../components/itemDetail/Buttons'
+import {
+  CartButton,
+  BuyButton,
+  MessageSellerButton
+} from '../../components/itemDetail/Buttons'
 import { Divider } from '../../components/itemDetail/Divider'
 import { ContentHeader } from '../../components/itemDetail/ContentHeader'
 import { AboutItem } from '../../components/itemDetail/AboutItem'
 import SearchButton from '../../components/header/SearchButton'
+import { createChat } from '../../redux/actions'
 
 class ItemDetail extends React.Component {
-  state = {
-    product: null,
-    itemLoaded: false,
+  constructor(props) {
+    super(props)
+
+    this.onMessageSellerButtonPress = this.onMessageSellerButtonPress.bind(this)
+
+    this.state = {
+      product: null,
+      itemLoaded: false
+    }
   }
 
   componentDidMount() {
@@ -48,6 +59,16 @@ class ItemDetail extends React.Component {
       })
   }
 
+  onMessageSellerButtonPress() {
+    const { product } = this.state
+    if (product) {
+      const { uid } = product
+      const { createChat } = this.props
+
+      createChat({ value: uid })
+    }
+  }
+
   renderDetail = () => {
     const product = this.state.product
     var aboutArr = []
@@ -64,6 +85,7 @@ class ItemDetail extends React.Component {
       <View>
         <BuyButton />
         <CartButton />
+        <MessageSellerButton onPress={this.onMessageSellerButtonPress} />
         <Divider />
         <ContentHeader text={'About this item'} />
         <View style={{ marginHorizontal: '8%' }}>
@@ -92,7 +114,7 @@ class ItemDetail extends React.Component {
       var postData = {
         name: products.name,
         pic: products.pic,
-        price: products.price,
+        price: products.price
       }
       // Write the new post's data simultaneously in the posts list and the user's post list.
       var updates = {}
@@ -114,7 +136,7 @@ class ItemDetail extends React.Component {
       <View
         style={{
           flex: 1,
-          backgroundColor: 'white',
+          backgroundColor: 'white'
         }}
       >
         <SearchButton
@@ -125,7 +147,7 @@ class ItemDetail extends React.Component {
 
         <ScrollView
           style={{
-            flex: 1,
+            flex: 1
             // backgroundColor: 'white',
           }}
         >
@@ -134,7 +156,7 @@ class ItemDetail extends React.Component {
               width: '90%',
               aspectRatio: 16 / 9,
               resizeMode: 'contain',
-              marginHorizontal: '5%',
+              marginHorizontal: '5%'
             }}
             source={{ uri: products.pic }}
           />
@@ -186,6 +208,9 @@ class ItemDetail extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user
 })
-export default connect(mapStateToProps)(ItemDetail)
+export default connect(
+  mapStateToProps,
+  { createChat }
+)(ItemDetail)

@@ -1,10 +1,10 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
+const functions = require('firebase-functions')
+const admin = require('firebase-admin')
 
 try {
-  admin.initializeApp();
+  admin.initializeApp()
 } catch (e) {
-  console.log(e);
+  console.log(e)
 }
 
 /**
@@ -20,21 +20,19 @@ function Utils() {}
 Utils.getUid = user => {
   return admin
     .database()
-    .ref(`/users/${user}/visible`)
+    .ref(`/users/${user}/isAvailable`)
     .once('value')
     .then(snapshot => {
       if (snapshot.val()) {
         // user = uid
         return {
-          val: () => {
-            user;
-          }
-        };
+          val: () => user
+        }
       }
       return admin
         .database()
         .ref(`usernames/${user}`)
-        .once('value');
+        .once('value')
     })
     .then(snapshot => {
       if (!snapshot.val()) {
@@ -42,13 +40,13 @@ Utils.getUid = user => {
           'invalid-argument',
           'User does not exist',
           'User does not exist'
-        );
+        )
       }
 
-      return (user = snapshot.val()); // user = uid
+      return (user = snapshot.val()) // user = uid
     })
-    .catch(error => Promise.reject(error));
-};
+    .catch(error => Promise.reject(error))
+}
 
 Utils.getUsername = uid => {
   return admin
@@ -56,18 +54,18 @@ Utils.getUsername = uid => {
     .ref(`/users/${uid}/username`)
     .once('value')
     .then(snapshot => {
-      const username = snapshot.val();
+      const username = snapshot.val()
       if (!username) {
         throw new functions.https.HttpsError(
           'invalid-argument',
           'User does not exist',
           'User does not exist'
-        );
+        )
       }
 
-      return username;
+      return username
     })
-    .catch(error => Promise.reject(error));
-};
+    .catch(error => Promise.reject(error))
+}
 
-module.exports = Utils;
+module.exports = Utils

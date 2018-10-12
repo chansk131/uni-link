@@ -17,7 +17,7 @@ class MessageList extends Component {
     return (
       <ListItem
         id={item.id}
-        title={title}
+        title={item.title}
         users={item.users}
         lastMessage={item.lastMessage}
         status={item.status}
@@ -96,14 +96,14 @@ const mapStateToProps = state => {
   const { username } = state.user
 
   const chats = _.map(chat, (value, chatId) => {
-    title = value.title
-    status = value.status
-    const users = _.map(value.users, (username, userId) => {
-      return { username, userId }
+    var title = value.title
+    var status = value.status
+    const users = _.map(value.users, (_username, userId) => {
+      return { username: _username, userId }
     })
     if (title === '') {
       i = 0
-      while (users[i] === username && i < users.length) {
+      while (users[i].username === username && i < users.length) {
         i++
       }
       title = users[i].username

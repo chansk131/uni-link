@@ -13,6 +13,12 @@ export const CartButton = () => (
   </TouchableOpacity>
 )
 
+export const MessageSellerButton = ({ onPress }) => (
+  <TouchableOpacity onPress={onPress} style={styles.btnContainer}>
+    <Text style={styles.btnTxt}>Message seller</Text>
+  </TouchableOpacity>
+)
+
 const styles = StyleSheet.create({
   btnContainer: {
     width: '90%',
@@ -26,7 +32,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowColor: 'grey',
     shadowOpacity: 0.5,
-    elevation: 3,
+    elevation: 3
   },
-  btnTxt: { fontSize: 18 },
+  btnTxt: { fontSize: 18 }
 })
