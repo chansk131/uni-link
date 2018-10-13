@@ -5,10 +5,20 @@
     one: {
       name: product name,
       price,
-      pic: product pictures,
+      pic: product pictures for the product card,
+      pictures: { // pictures for picture slideshow in itemdetail page ordered by key
+        1: pic1,
+        2: pic2,
+        ...
+      }
+      condition: New/ Used/ Parts/ Refurb?,
+      type: Tablet/ any type that they want to add
       category,
       location: selling location,
       description: product description,
+      including: {
+        1: what is included with the product/ service
+      }
       isAvailable: boolean,
       uid: firebaseUid,
       user: username,
