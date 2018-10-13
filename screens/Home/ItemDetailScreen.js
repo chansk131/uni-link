@@ -5,22 +5,27 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  StyleSheet,
+  Dimensions,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
+import Swiper from 'react-native-swiper'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux'
 import * as firebase from 'firebase'
 import {
   CartButton,
   BuyButton,
-  MessageSellerButton
+  MessageSellerButton,
 } from '../../components/itemDetail/Buttons'
 import { Divider } from '../../components/itemDetail/Divider'
 import { ContentHeader } from '../../components/itemDetail/ContentHeader'
 import { AboutItem } from '../../components/itemDetail/AboutItem'
 import SearchButton from '../../components/header/SearchButton'
 import { createChat } from '../../redux/actions'
+
+const { width, height } = Dimensions.get('window')
 
 class ItemDetail extends React.Component {
   constructor(props) {
@@ -30,7 +35,7 @@ class ItemDetail extends React.Component {
 
     this.state = {
       product: null,
-      itemLoaded: false
+      itemLoaded: false,
     }
   }
 
@@ -50,7 +55,15 @@ class ItemDetail extends React.Component {
         var productStatus = snapshot.val() && snapshot.val().isAvailable
         if (productStatus) {
           var product = snapshot.val()
-          this.setState({ product: product, itemLoaded: true })
+          let picsArr = []
+          if (product.pictures) {
+            picsArr = Object.values(product.pictures)
+          }
+          this.setState({
+            product: product,
+            itemLoaded: true,
+            pictures: picsArr,
+          })
           // TODO ADD production later
         }
         // var product = (snapshot.val() && snapshot.val().username) || 'Anonymous'
@@ -67,6 +80,34 @@ class ItemDetail extends React.Component {
 
       createChat({ value: uid })
     }
+  }
+
+  renderSwipePics = () => {
+    this.state.pictures.map((val, key) => console.log(val + key))
+    return (
+      <Swiper
+        style={{ height: (9 * width) / 16 + 10, marginTop: 10 }}
+        showsButtons={true}
+        paginationStyle={{
+          position: 'absolute',
+          bottom: -5,
+          left: 0,
+          right: 0,
+        }}
+      >
+        {this.state.pictures.map((val, key) => (
+          <Image
+            key={key}
+            style={{
+              width: '100%',
+              aspectRatio: 16 / 9,
+              resizeMode: 'contain',
+            }}
+            source={{ uri: val }}
+          />
+        ))}
+      </Swiper>
+    )
   }
 
   renderDetail = () => {
@@ -114,7 +155,7 @@ class ItemDetail extends React.Component {
       var postData = {
         name: products.name,
         pic: products.pic,
-        price: products.price
+        price: products.price,
       }
       // Write the new post's data simultaneously in the posts list and the user's post list.
       var updates = {}
@@ -136,7 +177,7 @@ class ItemDetail extends React.Component {
       <View
         style={{
           flex: 1,
-          backgroundColor: 'white'
+          backgroundColor: 'white',
         }}
       >
         <SearchButton
@@ -147,19 +188,27 @@ class ItemDetail extends React.Component {
 
         <ScrollView
           style={{
-            flex: 1
+            flex: 1,
             // backgroundColor: 'white',
           }}
         >
-          <Image
-            style={{
-              width: '90%',
-              aspectRatio: 16 / 9,
-              resizeMode: 'contain',
-              marginHorizontal: '5%'
-            }}
-            source={{ uri: products.pic }}
-          />
+          {this.state.itemLoaded &&
+          this.state.product &&
+          this.state.product.pictures ? (
+            this.renderSwipePics()
+          ) : (
+            <Image
+              style={{
+                width: '100%',
+                aspectRatio: 16 / 9,
+                resizeMode: 'contain',
+                marginTop: 10,
+                marginBottom: 10,
+              }}
+              source={{ uri: products.pic }}
+            />
+          )}
+
           <View style={{ marginHorizontal: '5%', marginVertical: 10 }}>
             <Text style={{ fontSize: 20 }}>{products.name}</Text>
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
@@ -207,8 +256,35 @@ class ItemDetail extends React.Component {
   }
 }
 
+const styles = StyleSheet.create({
+  wrapper: {},
+  slide1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#9DD6EB',
+  },
+  slide2: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#97CAE5',
+  },
+  slide3: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#92BBD9',
+  },
+  text: {
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+})
+
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
 })
 export default connect(
   mapStateToProps,
