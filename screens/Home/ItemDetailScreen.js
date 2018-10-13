@@ -214,42 +214,26 @@ class ItemDetail extends React.Component {
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
               £{products.price}
             </Text>
-            <Text style={{ fontSize: 20 }}>By {products.user}</Text>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('Seller', {
+                  sellerId: products.uid,
+                  sellerName: products.user,
+                })
+              }
+            >
+              <Text style={{ fontSize: 20 }}>By {products.user}</Text>
+            </TouchableOpacity>
           </View>
           {this.renderDetail()}
           <View style={{ height: 20, width: '100%' }} />
 
-          {/* <Image
-            style={{
-              width: '100%',
-              aspectRatio: 16 / 9,
-              // height: 189,
-              resizeMode: 'contain',
-              marginHorizontal: '5%',
-            }}
-            source={{ uri: products.pic }}
-          />
+          {/* 
           <TouchableOpacity onPress={() => this.addWishList(products)}>
             <Text>ADD TO WISHLIST</Text>
           </TouchableOpacity>
-          <Text>{products.keyFirebase}</Text>
-          <Text>{products.name}</Text>
-          <Text>{products.price}</Text>
-          <Text>{products.description}</Text>
-          <Text>{products.location}</Text>
-          <Text>{products.pic}</Text>
-          <Text>{products.uid}</Text>
-          <Text>{products.category}</Text>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate('Seller', {
-                sellerId: products.uid,
-                sellerName: products.user,
-              })
-            }
-          >
-            <Text>{products.user}</Text>
-          </TouchableOpacity> */}
+          
+           */}
         </ScrollView>
       </View>
     )
