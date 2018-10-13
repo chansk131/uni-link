@@ -20,10 +20,5 @@ export const DefaultHome = props => (
     {props.data.itemLoaded ? (
       <RecentSearch navigation={props.navigation} {...props.data} />
     ) : null}
-    <Button
-      style={{ marginBottom: 50 }}
-      onPress={() => props.navigation.navigate('Seller')}
-      title={'goToSellerScreen'}
-    />
   </View>
 )
