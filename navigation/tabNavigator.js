@@ -8,7 +8,7 @@ import { SellingScreenStackNavigator } from './sellingScreenStackNavigator'
 import { UserScreenStackNavigator } from './userScreenStackNavigator'
 
 import AddItemScreen from '../screens/AddItemScreen'
-import NotificationScreen from '../screens/NotificationScreen'
+import NotificationScreen from '../screens/Notification/NotificationScreen'
 
 export const TabNavigator = createBottomTabNavigator(
   {
@@ -18,8 +18,8 @@ export const TabNavigator = createBottomTabNavigator(
     Notifications: NotificationScreen,
     User: {
       screen: UserScreenStackNavigator,
-      navigationOptions: { tabBarLabel: 'My U-Links' }
-    }
+      navigationOptions: { tabBarLabel: 'My U-Links' },
+    },
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -60,7 +60,7 @@ export const TabNavigator = createBottomTabNavigator(
             </View> */}
           </View>
         )
-      }
+      },
     }),
     tabBarOptions: {
       activeTintColor: 'black',
@@ -70,8 +70,8 @@ export const TabNavigator = createBottomTabNavigator(
         shadowOffset: { width: 1, height: 1 },
         shadowColor: 'grey',
         shadowOpacity: 0.5,
-        elevation: 5
-      }
-    }
+        elevation: 5,
+      },
+    },
   }
 )

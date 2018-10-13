@@ -44,7 +44,12 @@ class SettingScreen extends React.Component {
           </TouchableOpacity>
         </View>
         <View style={[styles.groupBtnContainer, { marginTop: 25 }]}>
-          <TouchableOpacity style={styles.btnContainer}>
+          <TouchableOpacity
+            style={styles.btnContainer}
+            onPress={() =>
+              this.props.navigation.navigate('NotificationSetting')
+            }
+          >
             <Text style={styles.txt}>Notifications</Text>
             <Text style={styles.txt}>></Text>
           </TouchableOpacity>
