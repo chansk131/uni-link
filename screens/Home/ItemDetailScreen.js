@@ -86,25 +86,12 @@ class ItemDetail extends React.Component {
     this.state.pictures.map((val, key) => console.log(val + key))
     return (
       <Swiper
-        style={{ height: (9 * width) / 16 + 10, marginTop: 10 }}
+        style={styles.swiperStyle}
         showsButtons={true}
-        paginationStyle={{
-          position: 'absolute',
-          bottom: -5,
-          left: 0,
-          right: 0,
-        }}
+        paginationStyle={styles.paginationStyle}
       >
         {this.state.pictures.map((val, key) => (
-          <Image
-            key={key}
-            style={{
-              width: '100%',
-              aspectRatio: 16 / 9,
-              resizeMode: 'contain',
-            }}
-            source={{ uri: val }}
-          />
+          <Image key={key} style={styles.imgContainer} source={{ uri: val }} />
         ))}
       </Swiper>
     )
@@ -197,21 +184,12 @@ class ItemDetail extends React.Component {
           this.state.product.pictures ? (
             this.renderSwipePics()
           ) : (
-            <Image
-              style={{
-                width: '100%',
-                aspectRatio: 16 / 9,
-                resizeMode: 'contain',
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-              source={{ uri: products.pic }}
-            />
+            <Image style={styles.imgContainer} source={{ uri: products.pic }} />
           )}
 
           <View style={{ marginHorizontal: '5%', marginVertical: 10 }}>
-            <Text style={{ fontSize: 20 }}>{products.name}</Text>
-            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+            <Text style={styles.headerTxt}>{products.name}</Text>
+            <Text style={[styles.headerTxt, { fontWeight: 'bold' }]}>
               £{products.price}
             </Text>
             <TouchableOpacity
@@ -222,7 +200,7 @@ class ItemDetail extends React.Component {
                 })
               }
             >
-              <Text style={{ fontSize: 20 }}>By {products.user}</Text>
+              <Text style={styles.headerTxt}>By {products.user}</Text>
             </TouchableOpacity>
           </View>
           {this.renderDetail()}
@@ -242,28 +220,22 @@ class ItemDetail extends React.Component {
 
 const styles = StyleSheet.create({
   wrapper: {},
-  slide1: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#9DD6EB',
+  swiperStyle: { height: (9 * width) / 16 + 10, marginTop: 10 },
+  imgContainer: {
+    width: '100%',
+    aspectRatio: 16 / 9,
+    resizeMode: 'contain',
+    marginTop: 10,
+    marginBottom: 10,
   },
-  slide2: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#97CAE5',
+  paginationStyle: {
+    position: 'absolute',
+    bottom: -5,
+    left: 0,
+    right: 0,
   },
-  slide3: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#92BBD9',
-  },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold',
+  headerTxt: {
+    fontSize: 20,
   },
 })
 
