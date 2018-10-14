@@ -258,7 +258,7 @@ class ItemDetail extends React.Component {
 
 const styles = StyleSheet.create({
   wrapper: {},
-  swiperStyle: { height: (9 * width) / 16 + 10, marginTop: 10 },
+  swiperStyle: { height: (9 * width) / 16 + 10 },
   imgContainer: {
     width: '100%',
     aspectRatio: 16 / 9,
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
   },
   paginationStyle: {
     position: 'absolute',
-    bottom: -5,
+    bottom: -15,
     left: 0,
     right: 0,
   },
