@@ -36,13 +36,13 @@ class ItemDetail extends React.Component {
     this.state = {
       product: null,
       itemLoaded: false,
+      similarItemLoaded: false,
     }
   }
 
   componentDidMount() {
     const { navigation } = this.props
     const products = navigation.getParam('products')
-    console.log(products.objectID)
     this.fetchDetail(products.objectID)
   }
 
@@ -64,11 +64,37 @@ class ItemDetail extends React.Component {
             itemLoaded: true,
             pictures: picsArr,
           })
+
+          this.fetchSimilarItems(objectID)
           // TODO ADD production later
         }
         // var product = (snapshot.val() && snapshot.val().username) || 'Anonymous'
         // console.log(snapshot.val())
         // ...
+      })
+  }
+
+  fetchSimilarItems = objectID => {
+    return firebase
+      .database()
+      .ref('/products/')
+      .orderByChild('type')
+      .equalTo(this.state.product.type)
+      .once('value')
+      .then(snapshot => {
+        var similarObj = snapshot.val()
+        if (similarObj !== null) {
+          let similarArr = []
+          Object.keys(similarObj).forEach(function(key) {
+            if (key != objectID) {
+              similarArr.push({ key: key, ...similarObj[key] })
+            }
+          })
+          this.setState({
+            similarItems: similarArr,
+            similarItemLoaded: true,
+          })
+        }
       })
   }
 
@@ -83,7 +109,6 @@ class ItemDetail extends React.Component {
   }
 
   renderSwipePics = () => {
-    this.state.pictures.map((val, key) => console.log(val + key))
     return (
       <Swiper
         style={styles.swiperStyle}
@@ -96,6 +121,12 @@ class ItemDetail extends React.Component {
       </Swiper>
     )
   }
+
+  // renderSimilarItem = () => {
+  //   this.state.similarItemLoaded ? (
+
+  //   ) : null
+  // }
 
   renderDetail = () => {
     const product = this.state.product
@@ -125,9 +156,16 @@ class ItemDetail extends React.Component {
         </View>
         <Divider />
         <ContentHeader text={'Item description'} />
-        <Text style={{ fontSize: 16, marginHorizontal: '8%' }}>
+        <Text
+          style={{ fontSize: 16, marginHorizontal: '8%', marginBottom: 10 }}
+        >
           {product.description}
         </Text>
+
+        <Divider />
+        <ContentHeader text={'Similar Items'} />
+
+        {/* {this.fetchSimilarItems()} */}
       </View>
     ) : (
       <View style={{ flex: 1 }}>
@@ -137,7 +175,7 @@ class ItemDetail extends React.Component {
   }
 
   addWishList = products => {
-    console.log(this.props.user.uid)
+    // console.log(this.props.user.uid)
     if (this.props.user.uid) {
       var postData = {
         name: products.name,
