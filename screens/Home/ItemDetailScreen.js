@@ -132,7 +132,7 @@ class ItemDetail extends React.Component {
     }
 
     if (this.state.similarItems.length == 0) {
-      console.log(`no similar item ${typeof this.state.similarItems}`)
+      console.log(`no similar item`)
       return (
         <View>
           <Text
