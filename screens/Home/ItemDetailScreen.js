@@ -49,6 +49,7 @@ class ItemDetail extends React.Component {
   }
 
   fetchDetail = objectID => {
+    console.log(`objectID is ${objectID}`)
     return firebase
       .database()
       .ref('/products/' + objectID)
@@ -89,7 +90,7 @@ class ItemDetail extends React.Component {
           let similarArr = []
           Object.keys(similarObj).forEach(function(key) {
             if (key != objectID && similarObj[key].isAvailable) {
-              similarArr.push({ key: key, ...similarObj[key] })
+              similarArr.push({ key: key, objectID: key, ...similarObj[key] })
             }
           })
           this.setState({
