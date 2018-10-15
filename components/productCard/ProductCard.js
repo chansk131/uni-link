@@ -11,7 +11,7 @@ export const ProductCard = props => {
   return (
     <TouchableOpacity
       onPress={() =>
-        props.navigation.navigate('ItemDetail', {
+        props.navigation.push('ItemDetail', {
           products: props,
         })
       }
