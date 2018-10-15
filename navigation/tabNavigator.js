@@ -9,12 +9,14 @@ import { UserScreenStackNavigator } from './userScreenStackNavigator'
 
 import AddItemScreen from '../screens/AddItemScreen'
 import NotificationScreen from '../screens/Notification/NotificationScreen'
+import { HamburgerHeader, LogoHeader } from '../components/header/HeaderIcons'
+import { AddItemScreenStackNavigator } from './addItemScreenStackNavigator'
 
 export const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeScreenStackNavigator,
     Selling: SellingScreenStackNavigator,
-    Add: AddItemScreen,
+    Add: AddItemScreenStackNavigator,
     Notifications: NotificationScreen,
     User: {
       screen: UserScreenStackNavigator,
