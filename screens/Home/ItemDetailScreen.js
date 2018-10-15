@@ -126,21 +126,58 @@ class ItemDetail extends React.Component {
   }
 
   renderSimilarItem = () => {
-    return this.state.similarItemLoaded ? (
-      <FlatList
-        style={{ height: 240, paddingLeft: '5%' }}
-        ListFooterComponent={<View style={{ margin: 10 }} />}
-        horizontal={true}
-        renderItem={({ item }) => (
-          <ProductCard
-            navigation={this.props.navigation}
-            key={item.key}
-            {...item}
-          />
-        )}
-        data={this.state.similarItems}
-      />
-    ) : null
+    if (!this.state.similarItemLoaded) {
+      console.log('similar item loading')
+      return <ActivityIndicator />
+    }
+
+    if (this.state.similarItems.length == 0) {
+      console.log(`no similar item ${typeof this.state.similarItems}`)
+      return (
+        <View>
+          <Text
+            style={{ fontSize: 16, marginHorizontal: '8%', marginBottom: 10 }}
+          >
+            No similar item found
+          </Text>
+        </View>
+      )
+    } else {
+      console.log(`similar item found`)
+      console.log(this.state.similarItems.length)
+      return (
+        <FlatList
+          style={{ height: 240, paddingLeft: '5%' }}
+          ListFooterComponent={<View style={{ margin: 10 }} />}
+          horizontal={true}
+          renderItem={({ item }) => (
+            <ProductCard
+              navigation={this.props.navigation}
+              key={item.key}
+              {...item}
+            />
+          )}
+          data={this.state.similarItems}
+        />
+      )
+    }
+    // return this.state.similarItemLoaded ? (
+    //   <FlatList
+    //     style={{ height: 240, paddingLeft: '5%' }}
+    //     ListFooterComponent={<View style={{ margin: 10 }} />}
+    //     horizontal={true}
+    //     renderItem={({ item }) => (
+    //       <ProductCard
+    //         navigation={this.props.navigation}
+    //         key={item.key}
+    //         {...item}
+    //       />
+    //     )}
+    //     data={this.state.similarItems}
+    //   />
+    // ) : (
+    //   <ActivityIndicator />
+    // )
   }
 
   renderDetail = () => {
