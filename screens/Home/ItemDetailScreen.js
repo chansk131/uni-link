@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   Dimensions,
+  FlatList,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 import Swiper from 'react-native-swiper'
@@ -24,6 +25,7 @@ import { ContentHeader } from '../../components/itemDetail/ContentHeader'
 import { AboutItem } from '../../components/itemDetail/AboutItem'
 import SearchButton from '../../components/header/SearchButton'
 import { createChat } from '../../redux/actions'
+import { ProductCard } from '../../components/productCard/ProductCard'
 
 const { width, height } = Dimensions.get('window')
 
@@ -86,7 +88,7 @@ class ItemDetail extends React.Component {
         if (similarObj !== null) {
           let similarArr = []
           Object.keys(similarObj).forEach(function(key) {
-            if (key != objectID) {
+            if (key != objectID && similarObj[key].isAvailable) {
               similarArr.push({ key: key, ...similarObj[key] })
             }
           })
@@ -122,11 +124,23 @@ class ItemDetail extends React.Component {
     )
   }
 
-  // renderSimilarItem = () => {
-  //   this.state.similarItemLoaded ? (
-
-  //   ) : null
-  // }
+  renderSimilarItem = () => {
+    return this.state.similarItemLoaded ? (
+      <FlatList
+        style={{ height: 240, paddingLeft: '5%' }}
+        ListFooterComponent={<View style={{ margin: 10 }} />}
+        horizontal={true}
+        renderItem={({ item }) => (
+          <ProductCard
+            navigation={this.props.navigation}
+            key={item.key}
+            {...item}
+          />
+        )}
+        data={this.state.similarItems}
+      />
+    ) : null
+  }
 
   renderDetail = () => {
     const product = this.state.product
@@ -165,7 +179,7 @@ class ItemDetail extends React.Component {
         <Divider />
         <ContentHeader text={'Similar Items'} />
 
-        {/* {this.fetchSimilarItems()} */}
+        {this.renderSimilarItem()}
       </View>
     ) : (
       <View style={{ flex: 1 }}>
