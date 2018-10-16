@@ -6,7 +6,7 @@ import {
   LogoHeader,
   MessageHeader,
 } from '../components/header/HeaderIcons'
-import AddItemScreen from '../screens/AddItemScreen'
+import AddItemScreen from '../screens/AddItem/AddItemScreen'
 import ConditionScreen from '../screens/AddItem/ConditionScreen'
 
 export const AddItemScreenStackNavigator = createStackNavigator({

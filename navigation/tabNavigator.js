@@ -7,7 +7,6 @@ import { HomeScreenStackNavigator } from './homeScreenStackNavigator'
 import { SellingScreenStackNavigator } from './sellingScreenStackNavigator'
 import { UserScreenStackNavigator } from './userScreenStackNavigator'
 
-import AddItemScreen from '../screens/AddItemScreen'
 import NotificationScreen from '../screens/Notification/NotificationScreen'
 import { HamburgerHeader, LogoHeader } from '../components/header/HeaderIcons'
 import { AddItemScreenStackNavigator } from './addItemScreenStackNavigator'
