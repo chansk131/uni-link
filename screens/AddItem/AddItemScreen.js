@@ -14,6 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import * as firebase from 'firebase'
 import Expo from 'expo'
 import { connect } from 'react-redux'
+import { withNavigationFocus } from 'react-navigation'
 
 import ValidationRules from '../../components/forms/validationRules'
 
@@ -93,6 +94,44 @@ class AddItemScreen extends React.Component {
     console.log(this.state.form)
   }
 
+  renderCondition = () => {
+    const { navigation } = this.props
+    const condition = navigation.getParam('condition')
+    if (condition) {
+      return (
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginTop: 10,
+          }}
+          onPress={() => {
+            this.props.navigation.navigate('Condition')
+          }}
+        >
+          <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
+          <Text> {condition}</Text>
+        </TouchableOpacity>
+      )
+    } else {
+      return (
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginTop: 10,
+          }}
+          onPress={() => {
+            this.props.navigation.navigate('Condition')
+          }}
+        >
+          <Ionicons name={'md-radio-button-off'} size={20} color={'black'} />
+          <Text style={{ color: 'lightgrey' }}> Press to choose condition</Text>
+        </TouchableOpacity>
+      )
+    }
+  }
+
   render() {
     return (
       <ScrollView
@@ -112,19 +151,8 @@ class AddItemScreen extends React.Component {
               placeholder="Name of product"
             />
             <Text style={styles.txtLabel}>Condition</Text>
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: 10,
-              }}
-              onPress={() => {
-                this.props.navigation.navigate('Condition')
-              }}
-            >
-              <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
-              <Text> New</Text>
-            </TouchableOpacity>
+            {/* {this.props.isFocused ? this.renderCondition() : null} */}
+            {this.renderCondition()}
             {/* show selected choice and this view can be pressed to go to new selecting radio buttons choices */}
             <Text style={styles.txtLabel}>Pricing</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -176,7 +204,7 @@ const mapStateToProps = state => ({
   user: state.user,
 })
 
-export default connect(mapStateToProps)(AddItemScreen)
+export default connect(mapStateToProps)(withNavigationFocus(AddItemScreen))
 
 const styles = StyleSheet.create({
   txtLabel: {
