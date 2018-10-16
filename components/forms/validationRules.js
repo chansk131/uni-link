@@ -9,6 +9,9 @@ const validation = (value, rules, form) => {
       case 'isEmail':
         valid = valid && validateEmail(value)
         break
+      case 'isNumber':
+        valid = valid && validateNumber(value)
+        break
       case 'minLength':
         valid = valid && validateMinLength(value, rules[rule])
         break
@@ -36,6 +39,11 @@ const validateEmail = email => {
   const expression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
   return expression.test(String(email).toLowerCase())
+}
+
+const validateNumber = number => {
+  const expression = /^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/
+  return expression.test(String(number))
 }
 
 const validateMinLength = (value, ruleValue) => {

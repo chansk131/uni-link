@@ -15,8 +15,11 @@ import * as firebase from 'firebase'
 import Expo from 'expo'
 import { connect } from 'react-redux'
 
+import ValidationRules from '../../components/forms/validationRules'
+
 class AddItemScreen extends React.Component {
   state = {
+    uid: null,
     form: {
       name: {
         value: '',
@@ -30,7 +33,7 @@ class AddItemScreen extends React.Component {
         valid: false,
         rules: {
           isRequired: true,
-          // isNumber: true,
+          isNumber: true,
         },
       },
       location: {
@@ -50,7 +53,45 @@ class AddItemScreen extends React.Component {
     },
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.checkAuth()
+  }
+
+  checkAuth = () => {
+    // const currentUser = firebase.auth().currentUser
+    if (this.props.user.uid) {
+      const uid = this.props.user.uid
+      this.setState({ uid })
+      console.log('logged in')
+    } else {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          this.setState({ uid: user.uid })
+          console.log('logged in')
+        } else {
+          console.log('logged out')
+        }
+      })
+    }
+    console.log(this.props.user)
+  }
+
+  updateInput = (field, value) => {
+    // copy input into formCopy
+    let formCopy = this.state.form
+    formCopy[field].value = value
+
+    // validate input
+    let rules = formCopy[field].rules
+    let valid = ValidationRules(value, rules, formCopy)
+    formCopy[field].valid = valid
+
+    // store input in state
+    this.setState({
+      form: formCopy,
+    })
+    console.log(this.state.form)
+  }
 
   render() {
     return (
@@ -61,52 +102,71 @@ class AddItemScreen extends React.Component {
           backgroundColor: 'white',
         }}
       >
-        <View style={{ marginHorizontal: '5%' }}>
-          <Text style={styles.txtLabel}>Title</Text>
-          <TextInput
-            style={styles.txtInput}
-            onChangeText={value => this.updateInput('name', value)}
-            value={this.state.form.name.value}
-            placeholder="Name of product"
-          />
-          <Text style={styles.txtLabel}>Condition</Text>
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 10,
-            }}
+        {this.state.uid ? (
+          <View style={{ marginHorizontal: '5%' }}>
+            <Text style={styles.txtLabel}>Title</Text>
+            <TextInput
+              style={styles.txtInput}
+              onChangeText={value => this.updateInput('name', value)}
+              value={this.state.form.name.value}
+              placeholder="Name of product"
+            />
+            <Text style={styles.txtLabel}>Condition</Text>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 10,
+              }}
+              onPress={() => {
+                this.props.navigation.navigate('Condition')
+              }}
+            >
+              <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
+              <Text> New</Text>
+            </TouchableOpacity>
+            {/* show selected choice and this view can be pressed to go to new selecting radio buttons choices */}
+            <Text style={styles.txtLabel}>Pricing</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  marginTop: 10,
+                }}
+              >
+                £
+              </Text>
+              <TextInput
+                style={styles.txtInput}
+                onChangeText={value => this.updateInput('price', value)}
+                value={this.state.form.price.value}
+                placeholder="9"
+                keyboardType="number-pad"
+              />
+            </View>
+            <Text style={styles.txtLabel}>Prefered selling location</Text>
+            <TextInput
+              style={styles.txtInput}
+              onChangeText={value => this.updateInput('location', value)}
+              value={this.state.form.location.value}
+              placeholder="Enter location you preferred to sell this product/service"
+            />
+            <Text style={styles.txtLabel}>Product/Service Type</Text>
+            <TextInput
+              style={styles.txtInput}
+              onChangeText={value => this.updateInput('type', value)}
+              value={this.state.form.type.value}
+              placeholder="Tablet, Novel, Computing, ..."
+            />
+          </View>
+        ) : (
+          <Button
+            title="go sign up"
             onPress={() => {
-              this.props.navigation.navigate('Condition')
+              this.props.navigation.navigate('Signin')
             }}
-          >
-            <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
-            <Text> New</Text>
-          </TouchableOpacity>
-          {/* show selected choice and this view can be pressed to go to new selecting radio buttons choices */}
-          <Text style={styles.txtLabel}>Pricing</Text>
-          <TextInput
-            style={styles.txtInput}
-            onChangeText={value => this.updateInput('price', value)}
-            value={`£ ${this.state.form.price.value}`}
-            placeholder="£9"
-            keyboardType="number-pad"
           />
-          <Text style={styles.txtLabel}>Prefered selling location</Text>
-          <TextInput
-            style={styles.txtInput}
-            onChangeText={value => this.updateInput('location', value)}
-            value={this.state.form.location.value}
-            placeholder="Enter location you preferred to sell this product/service"
-          />
-          <Text style={styles.txtLabel}>Product/Service Type</Text>
-          <TextInput
-            style={styles.txtInput}
-            onChangeText={value => this.updateInput('type', value)}
-            value={this.state.form.type.value}
-            placeholder="Tablet, Novel, Computing, ..."
-          />
-        </View>
+        )}
       </ScrollView>
     )
   }
