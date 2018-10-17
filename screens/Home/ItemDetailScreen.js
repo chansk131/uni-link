@@ -19,6 +19,7 @@ import {
   CartButton,
   BuyButton,
   MessageSellerButton,
+  WishListButton,
 } from '../../components/itemDetail/Buttons'
 import { Divider } from '../../components/itemDetail/Divider'
 import { ContentHeader } from '../../components/itemDetail/ContentHeader'
@@ -43,9 +44,10 @@ class ItemDetail extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props.user.uid)
     const { navigation } = this.props
-    const products = navigation.getParam('products')
-    this.fetchDetail(products.objectID)
+    const product = navigation.getParam('products')
+    this.fetchDetail(product.objectID)
   }
 
   fetchDetail = objectID => {
@@ -66,6 +68,7 @@ class ItemDetail extends React.Component {
             product: product,
             itemLoaded: true,
             pictures: picsArr,
+            objectID: objectID,
           })
 
           this.fetchSimilarItems(objectID)
@@ -161,23 +164,6 @@ class ItemDetail extends React.Component {
         />
       )
     }
-    // return this.state.similarItemLoaded ? (
-    //   <FlatList
-    //     style={{ height: 240, paddingLeft: '5%' }}
-    //     ListFooterComponent={<View style={{ margin: 10 }} />}
-    //     horizontal={true}
-    //     renderItem={({ item }) => (
-    //       <ProductCard
-    //         navigation={this.props.navigation}
-    //         key={item.key}
-    //         {...item}
-    //       />
-    //     )}
-    //     data={this.state.similarItems}
-    //   />
-    // ) : (
-    //   <ActivityIndicator />
-    // )
   }
 
   renderDetail = () => {
@@ -196,7 +182,16 @@ class ItemDetail extends React.Component {
       <View>
         <BuyButton />
         <CartButton />
-        <MessageSellerButton onPress={this.onMessageSellerButtonPress} />
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-evenly',
+          }}
+        >
+          <MessageSellerButton onPress={this.onMessageSellerButtonPress} />
+          <WishListButton onPress={() => this.addWishList(product)} />
+        </View>
         <Divider />
         <ContentHeader text={'About this item'} />
         <View style={{ marginHorizontal: '8%' }}>
@@ -237,13 +232,15 @@ class ItemDetail extends React.Component {
       // Write the new post's data simultaneously in the posts list and the user's post list.
       var updates = {}
       updates[
-        '/wishlist/' + this.props.user.uid + '/' + products.keyFirebase
+        '/wishlist/' + this.props.user.uid + '/' + this.state.objectID
       ] = postData
 
       return firebase
         .database()
         .ref()
         .update(updates)
+    } else {
+      this.props.navigation.navigate('Signin')
     }
   }
 
