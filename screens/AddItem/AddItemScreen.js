@@ -22,6 +22,13 @@ class AddItemScreen extends React.Component {
   state = {
     uid: null,
     form: {
+      condition: {
+        value: '',
+        valid: false,
+        rules: {
+          isRequired: true,
+        },
+      },
       name: {
         value: '',
         valid: false,
@@ -55,11 +62,18 @@ class AddItemScreen extends React.Component {
   }
 
   componentDidMount() {
+    console.log('activated')
     this.checkAuth()
+    this._onFocusListener = this.props.navigation.addListener(
+      'didFocus',
+      payload => {
+        this.checkCondition()
+        console.log(this.state.form)
+      }
+    )
   }
 
   checkAuth = () => {
-    // const currentUser = firebase.auth().currentUser
     if (this.props.user.uid) {
       const uid = this.props.user.uid
       this.setState({ uid })
@@ -94,6 +108,15 @@ class AddItemScreen extends React.Component {
     console.log(this.state.form)
   }
 
+  checkCondition = () => {
+    const { navigation } = this.props
+    const condition = navigation.getParam('condition')
+    if (condition != undefined) {
+      console.log(`condition is ${condition}`)
+      this.updateInput('condition', condition)
+    }
+  }
+
   renderCondition = () => {
     const { navigation } = this.props
     const condition = navigation.getParam('condition')
@@ -106,7 +129,7 @@ class AddItemScreen extends React.Component {
             marginTop: 10,
           }}
           onPress={() => {
-            this.props.navigation.navigate('Condition')
+            this.props.navigation.navigate('Condition', { condition })
           }}
         >
           <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
@@ -172,7 +195,7 @@ class AddItemScreen extends React.Component {
                 keyboardType="number-pad"
               />
             </View>
-            <Text style={styles.txtLabel}>Prefered selling location</Text>
+            <Text style={styles.txtLabel}>Prefered location</Text>
             <TextInput
               style={styles.txtInput}
               onChangeText={value => this.updateInput('location', value)}

@@ -8,6 +8,12 @@ export default class ConditionScreen extends React.Component {
     checked: null,
   }
 
+  componentDidMount() {
+    const { navigation } = this.props
+    const condition = navigation.getParam('condition')
+    this.setState({ checked: condition })
+  }
+
   check = value => {
     this.setState({})
   }
