@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 export default class MyOrderScreen extends React.Component {
@@ -13,15 +13,15 @@ export default class MyOrderScreen extends React.Component {
           backgroundColor: 'white',
         }}
       >
-        <View style={{ flex: 1 }}>
+        <TouchableOpacity style={{ flex: 1 }} onPress={()=>this.props.navigation.navigate('MyRequested')}>
           <Text>Requested</Text>
-        </View>
-        <View style={{ flex: 1 }}>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ flex: 1 }} onPress={()=>this.props.navigation.navigate('MyAccepted')}>
           <Text>Accepted</Text>
-        </View>
-        <View style={{ flex: 1 }}>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ flex: 1 }} onPress={()=>this.props.navigation.navigate('MyPurchased')}>
           <Text>Purchased</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     )
   }

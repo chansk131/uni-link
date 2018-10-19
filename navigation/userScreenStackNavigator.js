@@ -64,7 +64,7 @@ export const UserScreenStackNavigator = createStackNavigator({
       headerRight: <MessageHeader navigation={navigation} />,
     }),
   },
-  MyAccpeted: {
+  MyAccepted: {
     screen: MyAcceptedOrderScreen,
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
