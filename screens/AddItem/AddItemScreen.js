@@ -155,6 +155,44 @@ class AddItemScreen extends React.Component {
     }
   }
 
+  renderCategory = () => {
+    const { navigation } = this.props
+    const category = navigation.getParam('category')
+    if (category) {
+      return (
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginTop: 10,
+          }}
+          onPress={() => {
+            this.props.navigation.navigate('CategoryItem', { category })
+          }}
+        >
+          <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
+          <Text> {category}</Text>
+        </TouchableOpacity>
+      )
+    } else {
+      return (
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginTop: 10,
+          }}
+          onPress={() => {
+            this.props.navigation.navigate('CategoryItem')
+          }}
+        >
+          <Ionicons name={'md-radio-button-off'} size={20} color={'black'} />
+          <Text style={{ color: 'lightgrey' }}> Press to choose category</Text>
+        </TouchableOpacity>
+      )
+    }
+  }
+
   render() {
     return (
       <ScrollView
@@ -173,10 +211,6 @@ class AddItemScreen extends React.Component {
               value={this.state.form.name.value}
               placeholder="Name of product"
             />
-            <Text style={styles.txtLabel}>Condition</Text>
-            {/* {this.props.isFocused ? this.renderCondition() : null} */}
-            {this.renderCondition()}
-            {/* show selected choice and this view can be pressed to go to new selecting radio buttons choices */}
             <Text style={styles.txtLabel}>Photos</Text>
             <TouchableOpacity
               onPress={() => {
@@ -185,6 +219,10 @@ class AddItemScreen extends React.Component {
             >
               <Text>Photos</Text>
             </TouchableOpacity>
+            <Text style={styles.txtLabel}>Condition</Text>
+            {this.renderCondition()}
+            {/* show selected choice and this view can be pressed to go to new selecting radio buttons choices */}
+
             <Text style={styles.txtLabel}>Pricing</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
@@ -203,6 +241,16 @@ class AddItemScreen extends React.Component {
                 keyboardType="number-pad"
               />
             </View>
+
+            <Text style={styles.txtLabel}>Category</Text>
+            {this.renderCategory()}
+            <Text style={styles.txtLabel}>Product/Service Type</Text>
+            <TextInput
+              style={styles.txtInput}
+              onChangeText={value => this.updateInput('type', value)}
+              value={this.state.form.type.value}
+              placeholder="Tablet, Novel, Computing, ..."
+            />
             <Text style={styles.txtLabel}>About</Text>
             <TouchableOpacity
               onPress={() => {
@@ -217,13 +265,6 @@ class AddItemScreen extends React.Component {
               onChangeText={value => this.updateInput('location', value)}
               value={this.state.form.location.value}
               placeholder="Enter location you preferred to sell this product/service"
-            />
-            <Text style={styles.txtLabel}>Product/Service Type</Text>
-            <TextInput
-              style={styles.txtInput}
-              onChangeText={value => this.updateInput('type', value)}
-              value={this.state.form.type.value}
-              placeholder="Tablet, Novel, Computing, ..."
             />
           </View>
         ) : (
