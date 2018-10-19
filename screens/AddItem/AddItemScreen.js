@@ -177,6 +177,14 @@ class AddItemScreen extends React.Component {
             {/* {this.props.isFocused ? this.renderCondition() : null} */}
             {this.renderCondition()}
             {/* show selected choice and this view can be pressed to go to new selecting radio buttons choices */}
+            <Text style={styles.txtLabel}>Photos</Text>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('PhotoUpload')
+              }}
+            >
+              <Text>Photos</Text>
+            </TouchableOpacity>
             <Text style={styles.txtLabel}>Pricing</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
@@ -195,6 +203,14 @@ class AddItemScreen extends React.Component {
                 keyboardType="number-pad"
               />
             </View>
+            <Text style={styles.txtLabel}>About</Text>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('AboutItem')
+              }}
+            >
+              <Text>ABOUT</Text>
+            </TouchableOpacity>
             <Text style={styles.txtLabel}>Prefered location</Text>
             <TextInput
               style={styles.txtInput}
