@@ -29,6 +29,13 @@ class AddItemScreen extends React.Component {
           isRequired: true,
         },
       },
+      category: {
+        value: '',
+        valid: false,
+        rules: {
+          isRequired: true,
+        },
+      },
       name: {
         value: '',
         valid: false,
@@ -62,12 +69,19 @@ class AddItemScreen extends React.Component {
   }
 
   componentDidMount() {
+    const newPostKey = firebase
+      .database()
+      .ref()
+      .child('posts')
+      .push().key
+    this.setState({ key: newPostKey })
     console.log('activated')
     this.checkAuth()
     this._onFocusListener = this.props.navigation.addListener(
       'didFocus',
       payload => {
         this.checkCondition()
+        this.checkCategory()
         console.log(this.state.form)
       }
     )
@@ -114,6 +128,15 @@ class AddItemScreen extends React.Component {
     if (condition != undefined) {
       console.log(`condition is ${condition}`)
       this.updateInput('condition', condition)
+    }
+  }
+
+  checkCategory = () => {
+    const { navigation } = this.props
+    const category = navigation.getParam('category')
+    if (category != undefined) {
+      console.log(`category is ${category}`)
+      this.updateInput('category', category)
     }
   }
 

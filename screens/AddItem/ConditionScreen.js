@@ -52,12 +52,17 @@ export default class ConditionScreen extends React.Component {
           checked={this.state.checked == 'Parts'}
           onPress={() => this.setState({ checked: 'Parts' })}
         />
-        <TouchableOpacity
-          style={styles.bntContainer}
-          onPress={() => this.submit()}
-        >
-          <Text style={styles.btnTxt}>OKAY</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ flex: 2 }} />
+          <View style={{ flex: 2 }} />
+
+          <TouchableOpacity
+            style={[styles.bntContainer, { flex: 1, alignItems: 'center' }]}
+            onPress={() => this.submit()}
+          >
+            <Text style={styles.btnTxt}>OKAY</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
