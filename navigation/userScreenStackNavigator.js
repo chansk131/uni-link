@@ -20,6 +20,9 @@ import MyOrderScreen from '../screens/User/MyOrderScreen'
 import { MessageListScreen, AddUserScreen, ChatScreen } from '../screens'
 import { HelpScreenStackNavigator } from './helpScreenStackNavigator'
 import NotificationSettingScreen from '../screens/User/NotificationSettingScreen'
+import MyRequestedOrderScreen from '../screens/User/MyRequestedOrderScreen'
+import MyAcceptedOrderScreen from '../screens/User/MyAcceptedOrderScreen'
+import MyPurchasedOrderScreen from '../screens/User/MyPurchasedScreen'
 
 export const UserScreenStackNavigator = createStackNavigator({
   UserContent: {
@@ -29,7 +32,70 @@ export const UserScreenStackNavigator = createStackNavigator({
     }),
   },
   WishList: { screen: WishListScreen },
-  MyOrder: { screen: MyOrderScreen },
+  MyOrder: {
+    screen: MyOrderScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeaderWithText text={'My Order'} />,
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
+  MyRequested: {
+    screen: MyRequestedOrderScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeaderWithText text={'My Order'} />,
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
+  MyAccpeted: {
+    screen: MyAcceptedOrderScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeaderWithText text={'My Order'} />,
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
+  MyPurchased: {
+    screen: MyPurchasedOrderScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeaderWithText text={'My Order'} />,
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
   InviteFriends: { screen: InviteFriendsScreen },
   Signin: {
     screen: LoginPanel,
