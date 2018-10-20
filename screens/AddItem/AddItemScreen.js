@@ -21,6 +21,7 @@ import ValidationRules from '../../components/forms/validationRules'
 class AddItemScreen extends React.Component {
   state = {
     uid: null,
+    key: null,
     form: {
       condition: {
         value: '',
@@ -237,7 +238,9 @@ class AddItemScreen extends React.Component {
             <Text style={styles.txtLabel}>Photos</Text>
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate('PhotoUpload')
+                this.props.navigation.navigate('PhotoUpload', {
+                  firebaseKey: this.state.key,
+                })
               }}
             >
               <Text>Photos</Text>

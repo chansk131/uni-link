@@ -7,10 +7,14 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native'
+import Expo from 'expo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import * as firebase from 'firebase'
 
 export default class PhotoUploadScreen extends React.Component {
   state = {
+    firebaseKey: null,
+    chosenImage: null,
     pictures: {
       pic1: '',
       pic2: '',
@@ -25,6 +29,48 @@ export default class PhotoUploadScreen extends React.Component {
       pic11: '',
       pic12: '',
     },
+  }
+
+  componentDidMount() {
+    const { navigation } = this.props
+    const firebaseKey = navigation.getParam('firebaseKey')
+    this.setState({ firebaseKey })
+    console.log(firebaseKey)
+  }
+
+  launchCameraRollAsync = async () => {
+    let { status } = await Expo.Permissions.askAsync(
+      Expo.Permissions.CAMERA_ROLL
+    )
+    if (status != 'granted') {
+      console.error('Camera roll perms not granted')
+      return
+    }
+
+    let img = await Expo.ImagePicker.launchImageLibraryAsync()
+    this.handleImagePicked(img, this.state.firebaseKey)
+    this.setState({ chosenImage: img })
+
+    console.log(this.state.chosenImage)
+  }
+
+  handleImagePicked = async (pickerResult, imgId) => {
+    try {
+      this.setState({ uploading: true })
+
+      if (!pickerResult.cancelled) {
+        uploadUrl = await uploadImageAsync(pickerResult.uri, imgId)
+        this.setState({ form: { ...this.state.form, pic: uploadUrl } })
+      }
+    } catch (e) {
+      console.log(e)
+      alert('Upload failed, sorry :(')
+      return false
+    } finally {
+      this.setState({ uploading: false })
+      console.log('success')
+      return true
+    }
   }
 
   renderPhotos = () => {
@@ -186,6 +232,9 @@ export default class PhotoUploadScreen extends React.Component {
             width: '90%',
             marginHorizontal: '5%',
           }}
+          onPress={() => {
+            this.launchCameraRollAsync()
+          }}
         >
           <Text>Add</Text>
         </TouchableOpacity>
@@ -203,3 +252,20 @@ const styles = StyleSheet.create({
     height: imgWidth,
   },
 })
+
+async function uploadImageAsync(uri, imgId) {
+  try {
+    const response = await fetch(uri)
+    const blob = await response.blob()
+    const ref = firebase
+      .storage()
+      .ref()
+      .child('products/' + imgId)
+
+    const snapshot = await ref.put(blob)
+    const url = await ref.getDownloadURL()
+    return url
+  } catch (e) {
+    console.log(e)
+  }
+}
