@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   Dimensions,
+  FlatList,
 } from 'react-native'
 import Expo from 'expo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -47,11 +48,22 @@ export default class PhotoUploadScreen extends React.Component {
       return
     }
 
+    if (this.state.pictures.pic12 != '') {
+      console.error('Cannot upload more images')
+      alert('Maximum number of photos reached')
+      return
+    }
+
     let img = await Expo.ImagePicker.launchImageLibraryAsync()
+    // const manipResult = await Expo.ImageManipulator.manipulate(
+    //   img.uri,
+    //   [{ resize: { width: 1080 } }],
+    //   { format: 'jpeg', compress: 0.8 }
+    // )
+    // img.uri = manipResult
+    console.log(this.state.chosenImage)
     this.handleImagePicked(img, this.state.firebaseKey)
     this.setState({ chosenImage: img })
-
-    console.log(this.state.chosenImage)
   }
 
   handleImagePicked = async (pickerResult, imgId) => {
@@ -59,162 +71,75 @@ export default class PhotoUploadScreen extends React.Component {
       this.setState({ uploading: true })
 
       if (!pickerResult.cancelled) {
-        uploadUrl = await uploadImageAsync(pickerResult.uri, imgId)
-        this.setState({ form: { ...this.state.form, pic: uploadUrl } })
+        let form = this.state.pictures
+
+        for (let key in form) {
+          if (form['pic12'] != '') {
+            console.log('cannot add more photos')
+            return
+          } else if (form[key] == '') {
+            console.log(`uploading to key ${key}`)
+            console.log(this.state.pictures)
+            uploadUrl = await uploadImageAsync(pickerResult.uri, imgId, key)
+            break
+          }
+        }
+      } else {
+        throw 'Photo chosen cancelled!'
       }
     } catch (e) {
       console.log(e)
       alert('Upload failed, sorry :(')
       return false
     } finally {
-      this.setState({ uploading: false })
+      let form = this.state.pictures
+      console.log(`url is ${uploadUrl}`)
+      for (let key in form) {
+        if (form['pic12'] != '') {
+          console.log('cannot add more photos')
+          return false
+        }
+        if (form[key] == '') {
+          form[key] = uploadUrl
+          break
+        }
+      }
+      this.setState({ uploading: false, pictures: form })
       console.log('success')
       return true
+      // Object.keys(this.state.pictures).forEach(key => {
+      //   if (this.state.pictures[key] == '') {
+
+      //   }
+      // })
+      // console.log('Too many pics')
+      // return false
     }
   }
 
-  renderPhotos = () => {
-    // let picsArr = []
-    // picsArr = Object.values(this.state.pictures)
-    // return (
-    //   <View style={{ marginHorizontal: '5%', flex: 1, padding: 10 }}>
-    //     {picsArr.map((val, key) => (
-    //       <Image
-    //         key={key}
-    //         style={styles.imgContainer}
-    //         source={
-    //           val != ''
-    //             ? { uri: val }
-    //             : require('../../assets/images/placeholder.png')
-    //         }
-    //       />
-    //     ))}
-    //   </View>
-    // )
+  renderPhotoGrid = () => {
+    let picsArr = []
+    Object.keys(this.state.pictures).forEach(key => {
+      picsArr.push({ key: key, pics: this.state.pictures[key] })
+    })
 
     return (
-      <View style={{ marginHorizontal: '5%' }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            marginTop: 2,
-          }}
-        >
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic1 != ''
-                ? { uri: this.state.pictures.pic1 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic2 != ''
-                ? { uri: this.state.pictures.pic2 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic3 != ''
-                ? { uri: this.state.pictures.pic3 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic4 != ''
-                ? { uri: this.state.pictures.pic4 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            marginTop: 2,
-          }}
-        >
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic5 != ''
-                ? { uri: this.state.pictures.pic5 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic6 != ''
-                ? { uri: this.state.pictures.pic6 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic7 != ''
-                ? { uri: this.state.pictures.pic7 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic8 != ''
-                ? { uri: this.state.pictures.pic8 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            marginTop: 2,
-          }}
-        >
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic9 != ''
-                ? { uri: this.state.pictures.pic9 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic10 != ''
-                ? { uri: this.state.pictures.pic10 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic11 != ''
-                ? { uri: this.state.pictures.pic11 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-          <Image
-            style={styles.imgContainer}
-            source={
-              this.state.pictures.pic12 != ''
-                ? { uri: this.state.pictures.pic12 }
-                : require('../../assets/images/placeholder.png')
-            }
-          />
-        </View>
+      <View style={{ marginHorizontal: '5%', marginTop: 10 }}>
+        <FlatList
+          numColumns={4}
+          data={picsArr}
+          renderItem={({ item }) => (
+            <Image
+              key={item.key}
+              style={styles.imgContainer}
+              source={
+                item.pics != ''
+                  ? { uri: item.pics }
+                  : require('../../assets/images/placeholder.png')
+              }
+            />
+          )}
+        />
       </View>
     )
   }
@@ -238,7 +163,7 @@ export default class PhotoUploadScreen extends React.Component {
         >
           <Text>Add</Text>
         </TouchableOpacity>
-        {this.renderPhotos()}
+        {this.renderPhotoGrid()}
       </View>
     )
   }
@@ -250,17 +175,18 @@ const styles = StyleSheet.create({
   imgContainer: {
     width: imgWidth,
     height: imgWidth,
+    margin: 1,
   },
 })
 
-async function uploadImageAsync(uri, imgId) {
+async function uploadImageAsync(uri, imgId, index) {
   try {
     const response = await fetch(uri)
     const blob = await response.blob()
     const ref = firebase
       .storage()
       .ref()
-      .child('products/' + imgId)
+      .child('products/' + imgId + '/' + index)
 
     const snapshot = await ref.put(blob)
     const url = await ref.getDownloadURL()
