@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native'
 import { CheckBox } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -22,6 +23,7 @@ class AddItemScreen extends React.Component {
   state = {
     uid: null,
     key: null,
+    pic: null,
     form: {
       condition: {
         value: '',
@@ -31,6 +33,13 @@ class AddItemScreen extends React.Component {
         },
       },
       category: {
+        value: '',
+        valid: false,
+        rules: {
+          isRequired: true,
+        },
+      },
+      pic: {
         value: '',
         valid: false,
         rules: {
@@ -141,6 +150,15 @@ class AddItemScreen extends React.Component {
     }
   }
 
+  checkPic = () => {
+    const { navigation } = this.props
+    const pic = navigation.getParam('pic')
+    if (pic != undefined) {
+      console.log(`category is ${pic}`)
+      this.updateInput('pic', pic.pic1)
+    }
+  }
+
   renderCondition = () => {
     const { navigation } = this.props
     const condition = navigation.getParam('condition')
@@ -217,6 +235,65 @@ class AddItemScreen extends React.Component {
     }
   }
 
+  renderPic = () => {
+    const { navigation } = this.props
+    const pic = navigation.getParam('pic')
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: 10,
+        }}
+      >
+        {pic ? (
+          <Image
+            style={{
+              width: screenWidth * 0.6,
+              aspectRatio: 16 / 9,
+              borderRadius: 5,
+              marginLeft: '5%',
+              resizeMode: 'contain',
+            }}
+            source={{
+              uri: pic.pic1,
+            }}
+          />
+        ) : (
+          <View
+            style={{
+              width: screenWidth * 0.6,
+              aspectRatio: 16 / 9,
+              borderRadius: 5,
+              marginLeft: '5%',
+              backgroundColor: 'lightgrey',
+            }}
+          />
+        )}
+
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate('PhotoUpload', {
+              firebaseKey: this.state.key,
+              pic,
+            })
+          }}
+          style={{
+            width: screenWidth * 0.2,
+            borderRadius: 5,
+            borderWidth: 1,
+            borderColor: 'lightgrey',
+            marginRight: '5%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ fontSize: 48, color: 'lightgrey' }}>+</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   render() {
     return (
       <ScrollView
@@ -236,15 +313,7 @@ class AddItemScreen extends React.Component {
               placeholder="Name of product"
             />
             <Text style={styles.txtLabel}>Photos</Text>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate('PhotoUpload', {
-                  firebaseKey: this.state.key,
-                })
-              }}
-            >
-              <Text>Photos</Text>
-            </TouchableOpacity>
+            {this.renderPic()}
             <Text style={styles.txtLabel}>Condition</Text>
             {this.renderCondition()}
             {/* show selected choice and this view can be pressed to go to new selecting radio buttons choices */}
@@ -326,6 +395,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 })
+
+const screenWidth = Dimensions.get('window').width
 
 /*
 https://uni-link-9f8f5.firebaseio.com/products.json/

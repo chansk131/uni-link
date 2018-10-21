@@ -16,6 +16,8 @@ export default class PhotoUploadScreen extends React.Component {
   state = {
     firebaseKey: null,
     chosenImage: null,
+    firstFreeKey: 'pic1',
+    uploading: false,
     pictures: {
       pic1: '',
       pic2: '',
@@ -35,7 +37,10 @@ export default class PhotoUploadScreen extends React.Component {
   componentDidMount() {
     const { navigation } = this.props
     const firebaseKey = navigation.getParam('firebaseKey')
-    this.setState({ firebaseKey })
+    const pic = navigation.getParam('pic')
+    pic != null
+      ? this.setState({ firebaseKey, pictures: pic })
+      : this.setState({ firebaseKey })
     console.log(firebaseKey)
   }
 
@@ -49,43 +54,40 @@ export default class PhotoUploadScreen extends React.Component {
     }
 
     if (this.state.pictures.pic12 != '') {
-      console.error('Cannot upload more images')
+      console.log('Cannot upload more images')
       alert('Maximum number of photos reached')
       return
     }
 
     let img = await Expo.ImagePicker.launchImageLibraryAsync()
-    // const manipResult = await Expo.ImageManipulator.manipulate(
-    //   img.uri,
-    //   [{ resize: { width: 1080 } }],
-    //   { format: 'jpeg', compress: 0.8 }
-    // )
-    // img.uri = manipResult
-    console.log(this.state.chosenImage)
-    this.handleImagePicked(img, this.state.firebaseKey)
-    this.setState({ chosenImage: img })
+    console.log(img.uri)
+    const manipResult = await Expo.ImageManipulator.manipulate(
+      img.uri,
+      [{ resize: { width: 1080 } }],
+      { format: 'jpeg', compress: 0.8 }
+    )
+    console.log(manipResult)
+    img.uri = manipResult.uri
+    if (!img.cancelled) {
+      this.setState({ chosenImage: img })
+      this.handleImagePicked(img, this.state.firebaseKey)
+    }
   }
 
   handleImagePicked = async (pickerResult, imgId) => {
     try {
       this.setState({ uploading: true })
+      let form = this.state.pictures
 
-      if (!pickerResult.cancelled) {
-        let form = this.state.pictures
-
-        for (let key in form) {
-          if (form['pic12'] != '') {
-            console.log('cannot add more photos')
-            return
-          } else if (form[key] == '') {
-            console.log(`uploading to key ${key}`)
-            console.log(this.state.pictures)
-            uploadUrl = await uploadImageAsync(pickerResult.uri, imgId, key)
-            break
-          }
+      for (let key in form) {
+        if (form['pic12'] != '') {
+          console.log('cannot add more photos')
+          return
+        } else if (form[key] == '') {
+          console.log(`uploading to key ${key}`)
+          uploadUrl = await uploadImageAsync(pickerResult.uri, imgId, key)
+          break
         }
-      } else {
-        throw 'Photo chosen cancelled!'
       }
     } catch (e) {
       console.log(e)
@@ -93,7 +95,10 @@ export default class PhotoUploadScreen extends React.Component {
       return false
     } finally {
       let form = this.state.pictures
+      console.log(this.state)
+      console.log('not cancelled')
       console.log(`url is ${uploadUrl}`)
+      let firstFreeKey = 'pic1'
       for (let key in form) {
         if (form['pic12'] != '') {
           console.log('cannot add more photos')
@@ -101,10 +106,11 @@ export default class PhotoUploadScreen extends React.Component {
         }
         if (form[key] == '') {
           form[key] = uploadUrl
+          firstFreeKey = key
           break
         }
       }
-      this.setState({ uploading: false, pictures: form })
+      this.setState({ uploading: false, pictures: form, firstFreeKey })
       console.log('success')
       return true
       // Object.keys(this.state.pictures).forEach(key => {
@@ -128,17 +134,21 @@ export default class PhotoUploadScreen extends React.Component {
         <FlatList
           numColumns={4}
           data={picsArr}
-          renderItem={({ item }) => (
-            <Image
-              key={item.key}
-              style={styles.imgContainer}
-              source={
-                item.pics != ''
-                  ? { uri: item.pics }
-                  : require('../../assets/images/placeholder.png')
-              }
-            />
-          )}
+          renderItem={({ item }) =>
+            item.pics == '' ? (
+              <View
+                style={[styles.imgContainer, { backgroundColor: 'lightgrey' }]}
+              />
+            ) : (
+              <Image
+                key={item.key}
+                style={styles.imgContainer}
+                source={
+                  { uri: item.pics } // show uploading actionindicator
+                }
+              />
+            )
+          }
         />
       </View>
     )
@@ -147,23 +157,44 @@ export default class PhotoUploadScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <Text>PhotoUploadScreen!</Text>
+        <Text style={styles.txtLabel}>PhotoUploadScreen!</Text>
 
         <TouchableOpacity
           style={{
+            marginTop: 10,
             borderWidth: 1,
             borderColor: 'lightgrey',
             padding: 10,
             width: '90%',
             marginHorizontal: '5%',
+            alignItems: 'center',
           }}
           onPress={() => {
             this.launchCameraRollAsync()
           }}
         >
-          <Text>Add</Text>
+          <Text>Select photo to upload</Text>
         </TouchableOpacity>
         {this.renderPhotoGrid()}
+
+        <TouchableOpacity
+          style={{
+            marginTop: 10,
+            borderWidth: 1,
+            borderColor: 'lightgrey',
+            padding: 10,
+            width: '90%',
+            marginHorizontal: '5%',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            this.props.navigation.navigate('Add', {
+              pic: this.state.pictures,
+            })
+          }}
+        >
+          <Text>Done</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -172,6 +203,11 @@ export default class PhotoUploadScreen extends React.Component {
 const screenWidth = Dimensions.get('window').width
 const imgWidth = (screenWidth * 0.9 - 5) * 0.25
 const styles = StyleSheet.create({
+  txtLabel: {
+    fontSize: 20,
+    marginTop: 10,
+    marginHorizontal: '5%',
+  },
   imgContainer: {
     width: imgWidth,
     height: imgWidth,
