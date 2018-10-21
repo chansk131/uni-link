@@ -68,7 +68,19 @@
       },
       productIdTwo
     }
-  }
+  },
+  orders: {
+    userId: {
+      productIdOne: {
+        name,
+        pic,
+        price,
+        timeStamp,
+        status: Requested, Accepted, Ordered
+      },
+      productIdTwo
+    }
+  },
   recent search: {
     userId: {
       productIdOne: {
