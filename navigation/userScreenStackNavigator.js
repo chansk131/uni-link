@@ -92,7 +92,7 @@ export const UserScreenStackNavigator = createStackNavigator({
         elevation: 3,
       },
       // headerLeft: <HamburgerHeader navigation={navigation} />,
-      headerTitle: <LogoHeaderWithText text={'My Order'} />,
+      headerTitle: <LogoHeaderWithText text={'My Purchased Items'} />,
       headerRight: <MessageHeader navigation={navigation} />,
     }),
   },
