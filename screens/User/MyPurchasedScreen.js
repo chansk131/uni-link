@@ -72,19 +72,21 @@ class MyPurchasedOrderScreen extends React.Component {
       console.log(`item found`)
       console.log(this.state.purchasedItems.length)
       return (
-        <FlatList
-          style={{ height: 240, paddingLeft: '5%' }}
-          ListFooterComponent={<View style={{ margin: 10 }} />}
-          horizontal={true}
-          renderItem={({ item }) => (
-            <ProductPurchasedCard
-              navigation={this.props.navigation}
-              key={item.key}
-              {...item}
-            />
-          )}
-          data={this.state.purchasedItems}
-        />
+        <View style={{ marginTop: 10 }}>
+          <FlatList
+            style={{ height: 240 }}
+            // ListFooterComponent={<View style={{ margin: 10 }} />}
+            horizontal={true}
+            renderItem={({ item }) => (
+              <ProductPurchasedCard
+                navigation={this.props.navigation}
+                key={item.key}
+                {...item}
+              />
+            )}
+            data={this.state.purchasedItems}
+          />
+        </View>
       )
     }
   }

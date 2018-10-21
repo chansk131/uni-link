@@ -79,13 +79,14 @@ export const ProductPurchasedCard = props => {
   }
   return (
     <TouchableOpacity
+      style={{ justifyContent: 'center', width: screenWidth }}
       onPress={() =>
         props.navigation.push('ItemDetail', {
           products: props,
         })
       }
     >
-      <Card containerStyle={styles.cardFeedbackContainer}>
+      <View style={styles.cardFeedbackContainer}>
         <Text style={styles.txtFeedback}>{name}</Text>
         {name.length > 45 ? null : <Text />}
         <View style={{ flexDirection: 'row' }}>
@@ -129,7 +130,7 @@ export const ProductPurchasedCard = props => {
             <Text style={{ color: 'black' }}>Give Feedback</Text>
           </TouchableOpacity>
         </View>
-      </Card>
+      </View>
     </TouchableOpacity>
   )
 }
@@ -168,10 +169,20 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   cardFeedbackContainer: {
+    backgroundColor: 'white',
     marginHorizontal: 0.02 * screenWidth,
     borderRadius: 10,
     height: 210,
     width: 0.9 * screenWidth,
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    padding: 10,
+    marginTop: 10,
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: 'grey',
+    shadowOpacity: 0.5,
+    elevation: 3,
+    marginHorizontal: '5%',
   },
   txt: { fontSize: 12, color: 'black' },
   txtFeedback: { fontSize: 20, color: 'black' },
@@ -182,7 +193,7 @@ const styles = StyleSheet.create({
     shadowColor: 'grey',
     shadowOpacity: 0.5,
     elevation: 3,
-    paddingVertical: 2,
+    paddingVertical: 4,
     alignItems: 'center',
     justifyContent: 'center',
   },
