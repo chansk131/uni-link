@@ -9,8 +9,6 @@ import {
 } from 'react-native'
 import { Card } from 'react-native-elements'
 
-// TODO: fix timestamp
-
 export const ProductCard = props => {
   // shorten long name
   var name = props.name
@@ -41,6 +39,34 @@ export const ProductCard = props => {
 }
 
 export const ProductOrderedCard = props => {
+  // shorten long name
+  var name = props.name
+  if (name.length > 45) {
+    name = name.substring(0, 45) + '...'
+  }
+  return (
+    <TouchableOpacity
+      onPress={() =>
+        props.navigation.push('ItemDetail', {
+          products: props,
+        })
+      }
+    >
+      <Card containerStyle={[styles.cardContainer, { height: 180 }]}>
+        <Image style={styles.imageContainer} source={{ uri: props.pic }} />
+        <View>
+          <Text style={styles.txt}>{name}</Text>
+          {name.length > 45 ? null : <Text />}
+          <Text style={[styles.txt, { fontWeight: 'bold' }]}>
+            £{props.price}
+          </Text>
+        </View>
+      </Card>
+    </TouchableOpacity>
+  )
+}
+
+export const ProductPurchasedCard = props => {
   // shorten long name
   var name = props.name
   if (name.length > 45) {

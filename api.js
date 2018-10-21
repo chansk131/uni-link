@@ -76,7 +76,7 @@
         pic,
         price,
         timeStamp,
-        status: Requested, Accepted, Ordered
+        status: Requested, Accepted, Purchased
       },
       productIdTwo
     }

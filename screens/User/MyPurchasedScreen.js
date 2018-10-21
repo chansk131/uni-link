@@ -9,8 +9,9 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import * as firebase from 'firebase'
 import { connect } from 'react-redux'
-import { ProductOrderedCard } from '../../components/productCard/ProductCard'
+import { ProductPurchasedCard } from '../../components/productCard/ProductCard'
 
+// TODO: fix timestamp
 class MyPurchasedOrderScreen extends React.Component {
   state = {
     purchasedItems: null,
@@ -27,7 +28,7 @@ class MyPurchasedOrderScreen extends React.Component {
       .database()
       .ref('/orders/' + this.props.user.uid + '/')
       .orderByChild('status')
-      .equalTo('Ordered')
+      .equalTo('Purchased')
       .once('value')
       .then(snapshot => {
         var products = snapshot.val()
@@ -46,7 +47,7 @@ class MyPurchasedOrderScreen extends React.Component {
 
   renderPurchasedItems = () => {
     if (!this.state.itemLoaded) {
-      console.log('similar item loading')
+      console.log('item loading')
       return (
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
@@ -57,18 +58,18 @@ class MyPurchasedOrderScreen extends React.Component {
     }
 
     if (this.state.purchasedItems.length == 0) {
-      console.log(`no similar item`)
+      console.log(`no item`)
       return (
         <View>
           <Text
             style={{ fontSize: 16, marginHorizontal: '8%', marginBottom: 10 }}
           >
-            No similar item found
+            No item found
           </Text>
         </View>
       )
     } else {
-      console.log(`similar item found`)
+      console.log(`item found`)
       console.log(this.state.purchasedItems.length)
       return (
         <FlatList
@@ -76,7 +77,7 @@ class MyPurchasedOrderScreen extends React.Component {
           ListFooterComponent={<View style={{ margin: 10 }} />}
           horizontal={true}
           renderItem={({ item }) => (
-            <ProductOrderedCard
+            <ProductPurchasedCard
               navigation={this.props.navigation}
               key={item.key}
               {...item}
