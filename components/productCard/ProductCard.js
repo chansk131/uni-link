@@ -121,22 +121,36 @@ export const ProductPurchasedCard = props => {
           >
             <Text style={{ color: 'white' }}>Buy Again</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate('Feedback', {
-                sellerId: props.sellerId,
-                sellerUsername: props.sellerUsername,
-                productName: name,
-                productId: props.objectId,
-              })
-            }}
-            style={[
-              styles.btnContainer,
-              { backgroundColor: 'white', marginLeft: 5 },
-            ]}
-          >
-            <Text style={{ color: 'black' }}>Give Feedback</Text>
-          </TouchableOpacity>
+          {props.feedbackStatus == 'Waiting' ? (
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('Feedback', {
+                  sellerId: props.sellerId,
+                  sellerUsername: props.sellerUsername,
+                  productName: name,
+                  productId: props.objectId,
+                })
+              }}
+              style={[
+                styles.btnContainer,
+                { backgroundColor: 'white', marginLeft: 5 },
+              ]}
+            >
+              <Text style={{ color: 'black' }}>Give Feedback</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                alert('Already Given Feedback')
+              }}
+              style={[
+                styles.btnContainer,
+                { backgroundColor: 'white', marginLeft: 5 },
+              ]}
+            >
+              <Text style={{ color: 'lightgrey' }}>Give Feedback</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </TouchableOpacity>

@@ -79,6 +79,7 @@
         status: Requested, Accepted, Purchased,
         sellerId:,
         sellerUsername
+        feedbackStatus: N/A (for non-purchased items), Waiting, Given
       },
       productIdTwo
     }

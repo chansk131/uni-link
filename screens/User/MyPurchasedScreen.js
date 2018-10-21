@@ -19,7 +19,12 @@ class MyPurchasedOrderScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchMyPurchased()
+    this._onFocusListener = this.props.navigation.addListener(
+      'didFocus',
+      payload => {
+        this.fetchMyPurchased()
+      }
+    )
   }
 
   fetchMyPurchased = () => {

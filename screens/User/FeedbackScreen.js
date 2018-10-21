@@ -131,11 +131,21 @@ class FeedbackScreen extends React.Component {
     updates[
       '/feedback/' + this.state.sellerId + '/countFeedback'
     ] = countFeedback
+    updates[
+      '/orders/' +
+        this.props.user.uid +
+        '/' +
+        this.state.productId +
+        '/feedbackStatus'
+    ] = 'Given'
 
     return firebase
       .database()
       .ref()
       .update(updates)
+      .then(() => {
+        this.props.navigation.goBack()
+      })
   }
 
   render() {
