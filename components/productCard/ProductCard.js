@@ -52,8 +52,13 @@ export const ProductOrderedCard = props => {
         })
       }
     >
-      <Card containerStyle={[styles.cardContainer, { height: 180 }]}>
-        <Image style={styles.imageContainer} source={{ uri: props.pic }} />
+      <View
+        style={[
+          styles.cardOrderContainer,
+          { borderWidth: 1, borderColor: 'lightgrey' },
+        ]}
+      >
+        <Image style={styles.imageOrderContainer} source={{ uri: props.pic }} />
         <View>
           <Text style={styles.txt}>{name}</Text>
           {name.length > 45 ? null : <Text />}
@@ -61,7 +66,7 @@ export const ProductOrderedCard = props => {
             £{props.price}
           </Text>
         </View>
-      </Card>
+      </View>
     </TouchableOpacity>
   )
 }
@@ -144,6 +149,21 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 160,
     height: 120,
+    borderRadius: 10,
+    marginBottom: 4,
+  },
+  cardOrderContainer: {
+    marginLeft: 0,
+    marginRight: 6,
+    borderRadius: 10,
+    height: 150,
+    width: 176,
+    padding: 8,
+  },
+  imageOrderContainer: {
+    resizeMode: 'contain',
+    width: 160,
+    height: 90,
     borderRadius: 10,
     marginBottom: 4,
   },

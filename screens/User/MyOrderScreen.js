@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
+  StyleSheet,
 } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import * as firebase from 'firebase'
@@ -119,8 +120,6 @@ class MyOrderScreen extends React.Component {
       <View
         style={{
           flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
           backgroundColor: 'white',
         }}
       >
@@ -128,21 +127,21 @@ class MyOrderScreen extends React.Component {
           style={{ flex: 1 }}
           onPress={() => this.props.navigation.navigate('MyRequested')}
         >
-          <Text>Requested</Text>
+          <Text style={styles.txtLabel}>Requested</Text>
           {this.renderItems('Requested')}
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flex: 1 }}
           onPress={() => this.props.navigation.navigate('MyAccepted')}
         >
-          <Text>Accepted</Text>
+          <Text style={styles.txtLabel}>Accepted</Text>
           {this.renderItems('Accepted')}
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flex: 1 }}
           onPress={() => this.props.navigation.navigate('MyPurchased')}
         >
-          <Text>Purchased</Text>
+          <Text style={styles.txtLabel}>Purchased</Text>
           {this.renderItems('Purchased')}
         </TouchableOpacity>
       </View>
@@ -154,3 +153,12 @@ const mapStateToProps = state => ({
   user: state.user,
 })
 export default connect(mapStateToProps)(MyOrderScreen)
+
+const styles = StyleSheet.create({
+  txtLabel: {
+    fontSize: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    marginHorizontal: '5%',
+  },
+})
