@@ -39,11 +39,12 @@ export const AddUserHeader = ({ navigation }) => (
 )
 
 export const LogoHeader = () => (
-  <View style={{ flex: 1, alignItems: 'flex-start' }}>
+  <View style={{ flex: 1, alignItems: 'flex-start', flexDirection: 'row' }}>
     <Image
       style={{ width: 36, height: 36 }}
       source={require('../../assets/images/LogoULinks-small.jpeg')}
     />
+    <View style={{ flex: 6 }} />
   </View>
 )
 
@@ -64,7 +65,7 @@ export const LogoHeaderWithText = props => (
     </View>
     <View
       style={{
-        flex: 3,
+        flex: 6,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -72,6 +73,5 @@ export const LogoHeaderWithText = props => (
     >
       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{props.text}</Text>
     </View>
-    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start' }} />
   </View>
 )
