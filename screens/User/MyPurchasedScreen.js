@@ -1,9 +1,15 @@
 import React from 'react'
-import { Text, View, ActivityIndicator, FlatList } from 'react-native'
+import {
+  Text,
+  View,
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+} from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import * as firebase from 'firebase'
 import { connect } from 'react-redux'
-import { ProductCard } from '../../components/productCard/ProductCard'
+import { ProductOrderedCard } from '../../components/productCard/ProductCard'
 
 class MyPurchasedOrderScreen extends React.Component {
   state = {
@@ -41,7 +47,13 @@ class MyPurchasedOrderScreen extends React.Component {
   renderPurchasedItems = () => {
     if (!this.state.itemLoaded) {
       console.log('similar item loading')
-      return <ActivityIndicator />
+      return (
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
+          <ActivityIndicator />
+        </View>
+      )
     }
 
     if (this.state.purchasedItems.length == 0) {
@@ -64,7 +76,7 @@ class MyPurchasedOrderScreen extends React.Component {
           ListFooterComponent={<View style={{ margin: 10 }} />}
           horizontal={true}
           renderItem={({ item }) => (
-            <ProductCard
+            <ProductOrderedCard
               navigation={this.props.navigation}
               key={item.key}
               {...item}
@@ -79,7 +91,6 @@ class MyPurchasedOrderScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <Text>MyPurchasedOrderScreen!</Text>
         {this.renderPurchasedItems()}
       </View>
     )
@@ -90,3 +101,11 @@ const mapStateToProps = state => ({
   user: state.user,
 })
 export default connect(mapStateToProps)(MyPurchasedOrderScreen)
+
+const styles = StyleSheet.create({
+  txtLabel: {
+    fontSize: 20,
+    marginTop: 10,
+    marginHorizontal: '5%',
+  },
+})
