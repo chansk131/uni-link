@@ -111,6 +111,8 @@
   },
   feedback: {
     userIdOne: {
+      countFeedback: number of feedbacks
+      rating: average rating
       feedbackId: {
         productName,
         productId,

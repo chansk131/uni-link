@@ -22,6 +22,8 @@ class FeedbackScreen extends React.Component {
     productId: null,
     pictureLoaded: true,
     rating: 3,
+    totalRating: 0,
+    countFeedback: 0,
     note: '',
   }
 
@@ -36,24 +38,48 @@ class FeedbackScreen extends React.Component {
     const sellerUsername = navigation.getParam('sellerUsername')
     const productName = navigation.getParam('productName')
     const productId = navigation.getParam('productId')
-    this.setState({
-      sellerId,
-      sellerUsername,
-      productName,
-      productId,
-    })
+    this.setState(
+      {
+        sellerId,
+        sellerUsername,
+        productName,
+        productId,
+      },
+      () => {
+        this.fetchUserDetail()
+        this.fetchPrevRating()
+      }
+    )
   }
 
   fetchUserDetail = () => {
+    var sellerId = this.state.sellerId
     this.setState({ pictureLoaded: false })
     return firebase
       .database()
-      .ref('/users/' + this.state.sellerId + '/pic')
+      .ref('/users/' + sellerId)
       .once('value')
       .then(snapshot => {
-        var pic = snapshot.val()
+        var pic = snapshot.val().pic
+        console.log(pic)
         if (pic !== null) {
           this.setState({ pic, pictureLoaded: true })
+        }
+      })
+  }
+
+  fetchPrevRating = async () => {
+    var sellerId = this.state.sellerId
+    return firebase
+      .database()
+      .ref('/feedback/' + sellerId)
+      .once('value')
+      .then(snapshot => {
+        var feedback = snapshot.val()
+        var totalRating = feedback.totalRating
+        var countFeedback = feedback.countFeedback
+        if (countFeedback !== null && totalRating !== null) {
+          this.setState({ totalRating, countFeedback })
         }
       })
   }
@@ -69,7 +95,7 @@ class FeedbackScreen extends React.Component {
 
   ratingCompleted = rating => {
     console.log(rating)
-    this.setState(this.rating)
+    this.setState({ rating })
   }
 
   updateInput = value => {
@@ -77,13 +103,17 @@ class FeedbackScreen extends React.Component {
   }
 
   submit = () => {
+    var countFeedback = this.state.countFeedback + 1
+    var totalRating = this.state.totalRating + this.state.rating
+    var newRating = totalRating / countFeedback
+    console.log(newRating)
     var postData = {
       productName: this.state.productName,
       productId: this.state.productId,
       note: this.state.note,
       // buyerUsername: this.state.username
       buyerId: this.props.user.uid,
-      rating: this.state.rating,
+      rating: newRating,
     }
 
     // Get a key for a new Post.
@@ -95,12 +125,16 @@ class FeedbackScreen extends React.Component {
 
     // Write the new post's data simultaneously in the posts list and the user's post list.
     var updates = {}
-    updates[newPostKey] = postData
+    updates['/feedback/' + this.state.sellerId + '/' + newPostKey] = postData
+    updates['/feedback/' + this.state.sellerId + '/rating'] = newRating
+    updates['/feedback/' + this.state.sellerId + '/totalRating'] = totalRating
+    updates[
+      '/feedback/' + this.state.sellerId + '/countFeedback'
+    ] = countFeedback
 
     return firebase
       .database()
       .ref()
-      .child('feedback/' + this.state.sellerId)
       .update(updates)
   }
 
