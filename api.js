@@ -76,7 +76,9 @@
         pic,
         price,
         timeStamp,
-        status: Requested, Accepted, Purchased
+        status: Requested, Accepted, Purchased,
+        sellerId:,
+        sellerUsername
       },
       productIdTwo
     }
@@ -110,12 +112,12 @@
   feedback: {
     userIdOne: {
       feedbackId: {
-        title,
-        desc,
-        isPositive: boolean wheter the feedback is positive or not,
-        productId,
         productName,
-        feedbackGiverName, // a better name please
+        productId,
+        rating: 
+        note: 
+        buyerUsername, // a better name please
+        buyerId
       }
     }
   },

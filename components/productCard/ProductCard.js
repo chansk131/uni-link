@@ -106,7 +106,7 @@ export const ProductPurchasedCard = props => {
                   £{props.price}
                 </Text>
                 <Text style={[styles.txt, { fontWeight: 'bold' }]}>
-                  {props.user}
+                  {props.sellerUsername}
                 </Text>
               </View>
             </View>
@@ -122,6 +122,14 @@ export const ProductPurchasedCard = props => {
             <Text style={{ color: 'white' }}>Buy Again</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate('Feedback', {
+                sellerId: props.sellerId,
+                sellerUsername: props.sellerUsername,
+                productName: name,
+                productId: props.objectId,
+              })
+            }}
             style={[
               styles.btnContainer,
               { backgroundColor: 'white', marginLeft: 5 },

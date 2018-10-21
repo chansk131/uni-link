@@ -23,6 +23,7 @@ import NotificationSettingScreen from '../screens/User/NotificationSettingScreen
 import MyRequestedOrderScreen from '../screens/User/MyRequestedOrderScreen'
 import MyAcceptedOrderScreen from '../screens/User/MyAcceptedOrderScreen'
 import MyPurchasedOrderScreen from '../screens/User/MyPurchasedScreen'
+import FeedbackScreen from '../screens/User/FeedbackScreen'
 
 export const UserScreenStackNavigator = createStackNavigator({
   UserContent: {
@@ -94,6 +95,21 @@ export const UserScreenStackNavigator = createStackNavigator({
       // headerLeft: <HamburgerHeader navigation={navigation} />,
       headerTitle: <LogoHeaderWithText text={'My Purchased Items'} />,
       headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
+  Feedback: {
+    screen: FeedbackScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeaderWithText text={'My Purchased Items'} />,
     }),
   },
   InviteFriends: { screen: InviteFriendsScreen },

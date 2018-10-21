@@ -35,7 +35,7 @@ class MyPurchasedOrderScreen extends React.Component {
         if (products !== null) {
           let productsArr = []
           Object.keys(products).forEach(function(key) {
-            productsArr.push({ key: key, ...products[key] })
+            productsArr.push({ key: key, objectId: key, ...products[key] })
           })
           this.setState({
             purchasedItems: productsArr,
