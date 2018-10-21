@@ -8,7 +8,8 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  KeyboardAvoidingView,
 } from 'react-native'
 import ValidationRules from '../../components/forms/validationRules'
 import * as firebase from 'firebase'
@@ -26,18 +27,18 @@ class LoginForm extends React.Component {
         valid: false,
         rules: {
           isRequired: true,
-          isEmail: true
-        }
+          isEmail: true,
+        },
       },
       password: {
         value: '',
         valid: false,
         rules: {
           isRequired: true,
-          minLength: 6
-        }
-      }
-    }
+          minLength: 6,
+        },
+      },
+    },
   }
 
   componentDidMount = () => {
@@ -71,7 +72,7 @@ class LoginForm extends React.Component {
 
     // store input in state
     this.setState({
-      form: formCopy
+      form: formCopy,
     })
   }
 
@@ -118,63 +119,67 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-        <View style={{ flex: 3, justifyContent: 'flex-end' }}>
-          <Image
-            style={{ width: 128, height: 128 }}
-            source={require('../../assets/images/LogoULinks-small.jpeg')}
-          />
-        </View>
-        <View style={{ flex: 1 }} />
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
         <View
-          style={{
-            flex: 5,
-            justifyContent: 'flex-start',
-            width: '100%',
-            padding: '20%'
-          }}
+          style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}
         >
-          <TextInput
-            style={styles.txtInput}
-            onChangeText={value => this.updateInput('email', value)}
-            value={this.state.form.email.value}
-            placeholder="University email"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.txtInput}
-            onChangeText={value => this.updateInput('password', value)}
-            value={this.state.form.password.value}
-            placeholder="Password"
-            secureTextEntry
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-          <View style={{ width: '100%', height: 20 }}>
-            {this.formHasErrors()}
+          <View style={{ flex: 3 }} />
+          <View style={{ flex: 3, justifyContent: 'flex-end' }}>
+            <Image
+              style={{ width: 128, height: 128 }}
+              source={require('../../assets/images/LogoULinks-small.jpeg')}
+            />
           </View>
           <View
             style={{
+              flex: 5,
+              justifyContent: 'flex-start',
               width: '100%',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              flexDirection: 'row',
-              marginTop: 10
+              padding: '20%',
             }}
           >
-            {this.state.isSubmitting ? (
-              <ActivityIndicator size="large" color="lightgrey" />
-            ) : (
-              <TouchableOpacity
-                style={styles.bntContainer}
-                onPress={() => this.submitForm()}
-              >
-                <Text style={styles.btnTxt}>OKAY</Text>
-              </TouchableOpacity>
-            )}
+            <TextInput
+              style={styles.txtInput}
+              onChangeText={value => this.updateInput('email', value)}
+              value={this.state.form.email.value}
+              placeholder="University email"
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.txtInput}
+              onChangeText={value => this.updateInput('password', value)}
+              value={this.state.form.password.value}
+              placeholder="Password"
+              secureTextEntry
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <View style={{ width: '100%', height: 20 }}>
+              {this.formHasErrors()}
+            </View>
+            <View
+              style={{
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                flexDirection: 'row',
+                marginTop: 10,
+              }}
+            >
+              {this.state.isSubmitting ? (
+                <ActivityIndicator size="large" color="lightgrey" />
+              ) : (
+                <TouchableOpacity
+                  style={styles.bntContainer}
+                  onPress={() => this.submitForm()}
+                >
+                  <Text style={styles.btnTxt}>OKAY</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -183,7 +188,7 @@ const styles = StyleSheet.create({
   txtInputContainer: {
     marginLeft: 0,
     paddingHorizontal: '10%',
-    marginBottom: 5
+    marginBottom: 5,
   },
   txtInput: {
     width: '100%',
@@ -191,7 +196,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eaeaea',
     fontSize: 14,
     padding: 5,
-    marginBottom: 20
+    marginBottom: 20,
   },
   bntContainer: {
     backgroundColor: 'white',
@@ -201,10 +206,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowColor: 'grey',
     shadowOpacity: 0.5,
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   btnTxt: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   errorContainer: {
     // marginBottom: 20,
@@ -212,8 +217,8 @@ const styles = StyleSheet.create({
   },
   errorLabel: {
     color: 'red',
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 })
 
 export default connect(

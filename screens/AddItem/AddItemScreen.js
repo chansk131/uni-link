@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
   Dimensions,
 } from 'react-native'
 import { CheckBox } from 'react-native-elements'
@@ -296,81 +297,83 @@ class AddItemScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView
-        style={{
-          flex: 1,
-          paddingTop: 10,
-          backgroundColor: 'white',
-        }}
-      >
-        {this.state.uid ? (
-          <View style={{ marginHorizontal: '5%' }}>
-            <Text style={styles.txtLabel}>Title</Text>
-            <TextInput
-              style={styles.txtInput}
-              onChangeText={value => this.updateInput('name', value)}
-              value={this.state.form.name.value}
-              placeholder="Name of product"
-            />
-            <Text style={styles.txtLabel}>Photos</Text>
-            {this.renderPic()}
-            <Text style={styles.txtLabel}>Condition</Text>
-            {this.renderCondition()}
-            {/* show selected choice and this view can be pressed to go to new selecting radio buttons choices */}
-
-            <Text style={styles.txtLabel}>Pricing</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  marginTop: 10,
-                }}
-              >
-                £
-              </Text>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="height" enabled>
+        <ScrollView
+          style={{
+            flex: 1,
+            paddingTop: 10,
+            backgroundColor: 'white',
+          }}
+        >
+          {this.state.uid ? (
+            <View style={{ marginHorizontal: '5%' }}>
+              <Text style={styles.txtLabel}>Title</Text>
               <TextInput
                 style={styles.txtInput}
-                onChangeText={value => this.updateInput('price', value)}
-                value={this.state.form.price.value}
-                placeholder="9"
-                keyboardType="number-pad"
+                onChangeText={value => this.updateInput('name', value)}
+                value={this.state.form.name.value}
+                placeholder="Name of product"
+              />
+              <Text style={styles.txtLabel}>Photos</Text>
+              {this.renderPic()}
+              <Text style={styles.txtLabel}>Condition</Text>
+              {this.renderCondition()}
+              {/* show selected choice and this view can be pressed to go to new selecting radio buttons choices */}
+
+              <Text style={styles.txtLabel}>Pricing</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    marginTop: 10,
+                  }}
+                >
+                  £
+                </Text>
+                <TextInput
+                  style={styles.txtInput}
+                  onChangeText={value => this.updateInput('price', value)}
+                  value={this.state.form.price.value}
+                  placeholder="9"
+                  keyboardType="number-pad"
+                />
+              </View>
+
+              <Text style={styles.txtLabel}>Category</Text>
+              {this.renderCategory()}
+              <Text style={styles.txtLabel}>Product/Service Type</Text>
+              <TextInput
+                style={styles.txtInput}
+                onChangeText={value => this.updateInput('type', value)}
+                value={this.state.form.type.value}
+                placeholder="Tablet, Novel, Computing, ..."
+              />
+              <Text style={styles.txtLabel}>About</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('AboutItem')
+                }}
+              >
+                <Text>ABOUT</Text>
+              </TouchableOpacity>
+              <Text style={styles.txtLabel}>Prefered location</Text>
+              <TextInput
+                style={styles.txtInput}
+                onChangeText={value => this.updateInput('location', value)}
+                value={this.state.form.location.value}
+                placeholder="Enter location you preferred to sell this product/service"
               />
             </View>
-
-            <Text style={styles.txtLabel}>Category</Text>
-            {this.renderCategory()}
-            <Text style={styles.txtLabel}>Product/Service Type</Text>
-            <TextInput
-              style={styles.txtInput}
-              onChangeText={value => this.updateInput('type', value)}
-              value={this.state.form.type.value}
-              placeholder="Tablet, Novel, Computing, ..."
-            />
-            <Text style={styles.txtLabel}>About</Text>
-            <TouchableOpacity
+          ) : (
+            <Button
+              title="go sign up"
               onPress={() => {
-                this.props.navigation.navigate('AboutItem')
+                this.props.navigation.navigate('Signin')
               }}
-            >
-              <Text>ABOUT</Text>
-            </TouchableOpacity>
-            <Text style={styles.txtLabel}>Prefered location</Text>
-            <TextInput
-              style={styles.txtInput}
-              onChangeText={value => this.updateInput('location', value)}
-              value={this.state.form.location.value}
-              placeholder="Enter location you preferred to sell this product/service"
             />
-          </View>
-        ) : (
-          <Button
-            title="go sign up"
-            onPress={() => {
-              this.props.navigation.navigate('Signin')
-            }}
-          />
-        )}
-      </ScrollView>
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
     )
   }
 }

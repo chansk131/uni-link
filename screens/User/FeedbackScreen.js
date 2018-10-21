@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  KeyboardAvoidingView,
 } from 'react-native'
 import { Rating, AirbnbRating } from 'react-native-ratings'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -150,56 +151,58 @@ class FeedbackScreen extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            paddingBottom: 10,
-          }}
-        >
-          {this.renderSellerPic()}
-        </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-          }}
-        >
-          <Text style={{ fontSize: 24 }}>{this.state.sellerUsername}</Text>
-          <Text style={{ fontSize: 20 }}>{this.state.productName}</Text>
-        </View>
-        <View style={{ flex: 2, alignItems: 'center' }}>
-          <AirbnbRating
-            imageSize={60}
-            onFinishRating={this.ratingCompleted}
-            defaultRating={3}
-          />
-          <TextInput
-            style={styles.txtInput}
-            onChangeText={value => this.updateInput(value)}
-            value={this.state.note}
-            placeholder="Leave a thank you note"
-          />
-          <TouchableOpacity
-            onPress={() => this.submit()}
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+          <View
             style={{
-              paddingVertical: 8,
-              backgroundColor: 'black',
-              borderRadius: 10,
-              marginTop: 10,
-              width: '90%',
-              marginHorizontal: '5%',
-              justifyContent: 'center',
+              flex: 1,
               alignItems: 'center',
+              justifyContent: 'flex-end',
+              paddingBottom: 10,
             }}
           >
-            <Text style={{ color: 'white' }}>Submit</Text>
-          </TouchableOpacity>
+            {this.renderSellerPic()}
+          </View>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'space-evenly',
+            }}
+          >
+            <Text style={{ fontSize: 24 }}>{this.state.sellerUsername}</Text>
+            <Text style={{ fontSize: 20 }}>{this.state.productName}</Text>
+          </View>
+          <View style={{ flex: 2, alignItems: 'center' }}>
+            <AirbnbRating
+              imageSize={60}
+              onFinishRating={this.ratingCompleted}
+              defaultRating={3}
+            />
+            <TextInput
+              style={styles.txtInput}
+              onChangeText={value => this.updateInput(value)}
+              value={this.state.note}
+              placeholder="Leave a thank you note"
+            />
+            <TouchableOpacity
+              onPress={() => this.submit()}
+              style={{
+                paddingVertical: 8,
+                backgroundColor: 'black',
+                borderRadius: 10,
+                marginTop: 10,
+                width: '90%',
+                marginHorizontal: '5%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ color: 'white' }}>Submit</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

@@ -439,7 +439,7 @@ class RegisterForm extends React.Component {
           alignItems: 'center',
           backgroundColor: 'white',
         }}
-        behavior="padding"
+        behavior="height"
         enabled
       >
         <ScrollView
