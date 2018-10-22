@@ -15,6 +15,8 @@ class DescriptionScreen extends React.Component {
   state = {
     input: '',
     description: [],
+    height: 50,
+    newValue: '',
   }
 
   componentDidMount() {}
@@ -83,7 +85,17 @@ class DescriptionScreen extends React.Component {
     })
   }
 
+  updateSize = height => {
+    this.setState({ height })
+  }
+
   render() {
+    const { newValue, height } = this.state
+    let newStyle = {
+      height,
+      width: '100%',
+      marginBottom: 5,
+    }
     return (
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="height" enabled>
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -97,21 +109,24 @@ class DescriptionScreen extends React.Component {
           <View
             style={{
               width: '100%',
-              height: 50,
+              height: height + 30,
               backgroundColor: '#eaeaea',
-              justifyContent: 'center',
+              justifyContent: 'flex-end',
               alignItems: 'center',
               position: 'absolute',
               bottom: 50,
               paddingHorizontal: '5%',
+              paddingVertical: 10,
             }}
           >
             <TextInput
-              style={{
-                width: '100%',
-                height: 50,
-              }}
+              style={newStyle}
               onChangeText={value => this.updateInput(value)}
+              onContentSizeChange={e =>
+                this.updateSize(e.nativeEvent.contentSize.height)
+              }
+              multiline
+              editable
               value={this.state.input}
             />
             <TouchableOpacity
@@ -124,7 +139,12 @@ class DescriptionScreen extends React.Component {
                 paddingHorizontal: '5%',
               }}
             >
-              <Ionicons name={'ios-paper-plane'} size={25} color={'grey'} />
+              <Ionicons
+                style={{ marginBottom: 10 }}
+                name={'ios-paper-plane'}
+                size={25}
+                color={'grey'}
+              />
             </TouchableOpacity>
           </View>
           <TouchableOpacity

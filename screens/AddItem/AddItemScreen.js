@@ -494,12 +494,12 @@ class AddItemScreen extends React.Component {
 
               <Text style={styles.txtLabel}>Category</Text>
               {this.renderCategory()}
-              <Text style={styles.txtLabel}>Product/Service Type</Text>
+              <Text style={styles.txtLabel}>Product/ Type</Text>
               <TextInput
                 style={styles.txtInput}
                 onChangeText={value => this.updateInput('type', value)}
                 value={this.state.form.type.value}
-                placeholder="Tablet, Novel, Computing, ..."
+                placeholder="Tablet, Novel, Shoes..."
               />
               <Text style={styles.txtLabel}>Brand</Text>
               <TextInput
