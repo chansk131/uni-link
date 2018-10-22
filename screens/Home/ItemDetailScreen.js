@@ -169,12 +169,19 @@ class ItemDetail extends React.Component {
   renderDetail = () => {
     const product = this.state.product
     var aboutArr = []
+    var descriptionArr = []
     if (product !== null) {
       if (product.about !== undefined) {
         const aboutObj = product.about
         Object.keys(aboutObj).forEach(function(key) {
           let nameKey = key.charAt(0).toUpperCase() + key.slice(1)
           aboutArr.push({ key: nameKey, value: aboutObj[key] })
+        })
+      }
+      if (product.description !== undefined) {
+        const descriptionObj = product.description
+        Object.keys(descriptionObj).forEach(function(key) {
+          descriptionArr.push({ key, value: descriptionObj[key] })
         })
       }
     }
@@ -197,17 +204,21 @@ class ItemDetail extends React.Component {
         <View style={{ marginHorizontal: '8%' }}>
           <AboutItem label={'Condition'} text={product.condition} />
           <AboutItem label={'Type'} text={product.type} />
+          <AboutItem label={'Brand'} text={product.brand} />
           {aboutArr.map(about => (
             <AboutItem key={about.key} label={about.key} text={about.value} />
           ))}
         </View>
         <Divider />
         <ContentHeader text={'Item description'} />
-        <Text
-          style={{ fontSize: 16, marginHorizontal: '8%', marginBottom: 10 }}
-        >
-          {product.description}
-        </Text>
+        {descriptionArr.map(desc => (
+          <Text
+            key={desc.key}
+            style={{ fontSize: 16, marginHorizontal: '8%', marginBottom: 10 }}
+          >
+            {'\u2022' + '   ' + desc.value}
+          </Text>
+        ))}
 
         <Divider />
         <ContentHeader text={'Similar Items'} />

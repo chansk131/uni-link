@@ -176,7 +176,11 @@ class AddItemScreen extends React.Component {
     if (pic != undefined) {
       console.log(`category is ${pic}`)
       this.updateInput('pic', pic.pic1)
-      this.setState({ pic })
+      let pictures = {}
+      for (let picture in pic) {
+        if (pic[picture] != '') pictures[picture] = pic[picture]
+      }
+      this.setState({ pic: pictures })
     }
   }
 
@@ -386,6 +390,7 @@ class AddItemScreen extends React.Component {
           price: this.state.form.price.value,
           timestamp: firebase.database.ServerValue.TIMESTAMP,
           objecID: this.state.key,
+          user: this.props.user.username,
         }
         this.props.navigation.navigate('ItemDetail', {
           products: postProductByOwnerData,
@@ -397,6 +402,14 @@ class AddItemScreen extends React.Component {
   }
 
   addToDatabase = () => {
+    let description = {}
+
+    for (let key in this.state.description) {
+      description[this.state.description[key]['key']] = this.state.description[
+        key
+      ]['value']
+    }
+
     let postProductData = {
       condition: this.state.form.condition.value,
       category: this.state.form.category.value,
@@ -407,6 +420,7 @@ class AddItemScreen extends React.Component {
       type: this.state.form.type.value,
       brand: this.state.form.brand.value,
       pictures: this.state.pic,
+      description,
       uid: this.props.user.uid,
       user: this.props.user.username,
       isAvailable: true,
