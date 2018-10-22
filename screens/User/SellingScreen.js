@@ -37,15 +37,17 @@ class SellingScreen extends React.Component {
       .once('value')
       .then(snapshot => {
         var results = snapshot.val()
-        console.log(results)
         let resultsArr = []
-        Object.keys(results).forEach(function(key) {
-          resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
-        })
-        this.setState({
-          products: { ...this.state.products, unSold: resultsArr },
-        })
-        console.log(this.state)
+        if (results) {
+          Object.keys(results).forEach(function(key) {
+            resultsArr.push({ key: key, objectID: key, ...results[key] })
+          })
+          this.setState({
+            products: { ...this.state.products, unSold: resultsArr },
+            itemLoaded: true,
+          })
+          // console.log(this.state)
+        }
       })
   }
 
@@ -60,14 +62,16 @@ class SellingScreen extends React.Component {
       .then(snapshot => {
         var results = snapshot.val()
         let resultsArr = []
-        Object.keys(results).forEach(function(key) {
-          resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
-        })
-        this.setState({
-          products: { ...this.state.products, sold: resultsArr },
-          itemLoaded: true,
-        })
-        console.log(this.state)
+        if (results) {
+          Object.keys(results).forEach(function(key) {
+            resultsArr.push({ key: key, objectID: key, ...results[key] })
+          })
+          this.setState({
+            products: { ...this.state.products, sold: resultsArr },
+            itemLoaded: true,
+          })
+        }
+        // console.log(this.state)
       })
   }
 
@@ -135,9 +139,15 @@ class SellingScreen extends React.Component {
           {this.state.itemLoaded ? (
             <ScrollView style={{ flex: 1 }}>
               {this.state.showUnsold ? (
-                <UnsoldItemView {...this.state.products.unSold} />
+                <UnsoldItemView
+                  {...this.state.products.unSold}
+                  navigation={this.props.navigation}
+                />
               ) : (
-                <SoldItemView {...this.state.products.sold} />
+                <SoldItemView
+                  {...this.state.products.sold}
+                  navigation={this.props.navigation}
+                />
               )}
             </ScrollView>
           ) : null}
@@ -155,7 +165,13 @@ const SoldItemView = props => {
         <FlatList
           style={{ flex: 1 }}
           // ListFooterComponent={<View style={{ margin: 10 }} />}
-          renderItem={({ item }) => <ListedItem key={item.key} {...item} />}
+          renderItem={({ item }) => (
+            <ListedItem
+              key={item.key}
+              {...item}
+              navigation={props.navigation}
+            />
+          )}
           data={result}
         />
       </View>
@@ -165,6 +181,7 @@ const SoldItemView = props => {
 }
 
 const UnsoldItemView = props => {
+  console.log(props)
   var result = Object.values(props)
   if (result.length) {
     return (
@@ -172,7 +189,13 @@ const UnsoldItemView = props => {
         <FlatList
           style={{ flex: 1 }}
           // ListFooterComponent={<View style={{ margin: 10 }} />}
-          renderItem={({ item }) => <ListedItem key={item.key} {...item} />}
+          renderItem={({ item }) => (
+            <ListedItem
+              key={item.key}
+              {...item}
+              navigation={props.navigation}
+            />
+          )}
           data={result}
         />
       </View>
@@ -182,7 +205,10 @@ const UnsoldItemView = props => {
 }
 
 const ListedItem = props => (
-  <View style={{ flexDirection: 'row', alignContent: 'flex-start' }}>
+  <TouchableOpacity
+    onPress={() => props.navigation.navigate('ItemDetail', { products: props })}
+    style={{ flexDirection: 'row', alignContent: 'flex-start' }}
+  >
     <Image
       style={{
         resizeMode: 'contain',
@@ -199,7 +225,7 @@ const ListedItem = props => (
       <Text>£{props.price}</Text>
       <Text>Viewers: </Text>
     </View>
-  </View>
+  </TouchableOpacity>
 )
 
 const mapStateToProps = state => ({
