@@ -140,12 +140,12 @@ class SellingScreen extends React.Component {
             <ScrollView style={{ flex: 1 }}>
               {this.state.showUnsold ? (
                 <UnsoldItemView
-                  {...this.state.products.unSold}
+                  products={this.state.products.unSold}
                   navigation={this.props.navigation}
                 />
               ) : (
                 <SoldItemView
-                  {...this.state.products.sold}
+                  products={this.state.products.sold}
                   navigation={this.props.navigation}
                 />
               )}
@@ -158,7 +158,25 @@ class SellingScreen extends React.Component {
 }
 
 const SoldItemView = props => {
-  var result = Object.values(props)
+  var result = []
+  if (props.products) {
+    result = Object.values(props.products)
+  } else {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingTop: 30,
+        }}
+      >
+        <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'lightgrey' }}>
+          No Item Found
+        </Text>
+      </View>
+    )
+  }
   if (result.length) {
     return (
       <View style={{ paddingTop: 30, paddingHorizontal: 20 }}>
@@ -181,8 +199,25 @@ const SoldItemView = props => {
 }
 
 const UnsoldItemView = props => {
-  console.log(props)
-  var result = Object.values(props)
+  var result = []
+  if (props.products) {
+    result = Object.values(props.products)
+  } else {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingTop: 30,
+        }}
+      >
+        <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'lightgrey' }}>
+          No Item Found
+        </Text>
+      </View>
+    )
+  }
   if (result.length) {
     return (
       <View style={{ paddingTop: 30, paddingHorizontal: 20 }}>
