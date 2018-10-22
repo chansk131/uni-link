@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Dimensions,
+  FlatList,
 } from 'react-native'
 import { CheckBox } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -25,6 +26,7 @@ class AddItemScreen extends React.Component {
     uid: null,
     key: null,
     pic: null,
+    description: [],
     form: {
       condition: {
         value: '',
@@ -76,6 +78,13 @@ class AddItemScreen extends React.Component {
           // isRequired: true,
         },
       },
+      brand: {
+        value: '',
+        valid: false,
+        rules: {
+          // isRequired: true,
+        },
+      },
     },
   }
 
@@ -93,6 +102,8 @@ class AddItemScreen extends React.Component {
       payload => {
         this.checkCondition()
         this.checkCategory()
+        this.checkPic()
+        this.checkDescription()
         console.log(this.state.form)
       }
     )
@@ -151,12 +162,21 @@ class AddItemScreen extends React.Component {
     }
   }
 
+  checkDescription = () => {
+    const { navigation } = this.props
+    const description = navigation.getParam('description')
+    if (description != undefined) {
+      this.setState({ description })
+    }
+  }
+
   checkPic = () => {
     const { navigation } = this.props
     const pic = navigation.getParam('pic')
     if (pic != undefined) {
       console.log(`category is ${pic}`)
       this.updateInput('pic', pic.pic1)
+      this.setState({ pic })
     }
   }
 
@@ -295,6 +315,125 @@ class AddItemScreen extends React.Component {
     )
   }
 
+  renderDescription = () => {
+    const { navigation } = this.props
+    const description = navigation.getParam('description')
+    console.log(description)
+    if (description == null || description.length == 0) {
+      return (
+        <TouchableOpacity
+          style={{ marginTop: 10 }}
+          onPress={() => {
+            this.props.navigation.navigate('DescriptionItem', {
+              firebaseKey: this.state.key,
+            })
+          }}
+        >
+          <Text style={{ marginHorizontal: '5%', color: 'lightgrey' }}>
+            Add Description
+          </Text>
+        </TouchableOpacity>
+      )
+    } else {
+      return (
+        <TouchableOpacity
+          style={{ marginTop: 10 }}
+          onPress={() => {
+            this.props.navigation.navigate('DescriptionItem', {
+              firebaseKey: this.state.key,
+            })
+          }}
+        >
+          <FlatList
+            data={this.state.description}
+            renderItem={({ item }) => (
+              <View
+                key={item.key}
+                style={{
+                  paddingVertical: 4,
+                  paddingHorizontal: '5%',
+                }}
+              >
+                <Text style={{ fontSize: 16 }}>
+                  {BULLET + '  ' + item.value}
+                </Text>
+              </View>
+            )}
+          />
+        </TouchableOpacity>
+      )
+    }
+  }
+
+  submit = () => {
+    // check if form is valid
+    let isformValid = true
+    const formCopy = this.state.form
+    for (let key in formCopy) {
+      isformValid = isformValid && formCopy[key].valid
+    }
+    if (isformValid) {
+      try {
+        this.addToDatabase()
+      } catch (e) {
+        console.log(e)
+        return
+      } finally {
+        let postProductByOwnerData = {
+          isAvailable: true,
+          name: this.state.form.name.value,
+          pic: this.state.form.pic.value,
+          price: this.state.form.price.value,
+          timestamp: firebase.database.ServerValue.TIMESTAMP,
+          objecID: this.state.key,
+        }
+        this.props.navigation.navigate('ItemDetail', {
+          products: postProductByOwnerData,
+        })
+      }
+    } else {
+      console.log('not valid')
+    }
+  }
+
+  addToDatabase = () => {
+    let postProductData = {
+      condition: this.state.form.condition.value,
+      category: this.state.form.category.value,
+      pic: this.state.form.pic.value,
+      name: this.state.form.name.value,
+      price: this.state.form.price.value,
+      location: this.state.form.location.value,
+      type: this.state.form.type.value,
+      brand: this.state.form.brand.value,
+      pictures: this.state.pic,
+      uid: this.props.user.uid,
+      user: this.props.user.username,
+      isAvailable: true,
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
+    }
+
+    let postProductByOwnerData = {
+      isAvailable: true,
+      name: this.state.form.name.value,
+      pic: this.state.form.pic.value,
+      price: this.state.form.price.value,
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
+    }
+
+    let updates = {}
+
+    updates['/products/' + this.state.key] = postProductData
+    updates[
+      '/productsByOwners/' + this.props.user.uid + '/' + this.state.key
+    ] = postProductByOwnerData
+
+    return firebase
+      .database()
+      .ref()
+      .update(updates)
+  }
+
   render() {
     return (
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="height" enabled>
@@ -348,14 +487,25 @@ class AddItemScreen extends React.Component {
                 value={this.state.form.type.value}
                 placeholder="Tablet, Novel, Computing, ..."
               />
-              <Text style={styles.txtLabel}>About</Text>
+              <Text style={styles.txtLabel}>Brand</Text>
+              <TextInput
+                style={styles.txtInput}
+                onChangeText={value => this.updateInput('brand', value)}
+                value={this.state.form.brand.value}
+                placeholder="Enter product brand, ..."
+              />
+
+              {/* <Text style={styles.txtLabel}>About</Text>
               <TouchableOpacity
                 onPress={() => {
                   this.props.navigation.navigate('AboutItem')
                 }}
               >
                 <Text>ABOUT</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+              <Text style={styles.txtLabel}>Description</Text>
+              {this.renderDescription()}
+
               <Text style={styles.txtLabel}>Prefered location</Text>
               <TextInput
                 style={styles.txtInput}
@@ -372,6 +522,36 @@ class AddItemScreen extends React.Component {
               }}
             />
           )}
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flex: 3 }} />
+            <TouchableOpacity
+              onPress={() => this.submit()}
+              style={{
+                flex: 1,
+                backgroundColor: 'white',
+                shadowOffset: { width: 1, height: 1 },
+                shadowColor: 'grey',
+                shadowOpacity: 0.5,
+                elevation: 3,
+                paddingVertical: 4,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 10,
+                marginBottom: 50,
+                marginHorizontal: '5%',
+                borderRadius: 20,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 20,
+                }}
+              >
+                OKAY
+              </Text>
+            </TouchableOpacity>
+            <View style={{ height: 50 }} />
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     )
@@ -400,6 +580,7 @@ const styles = StyleSheet.create({
 })
 
 const screenWidth = Dimensions.get('window').width
+const BULLET = '\u2022'
 
 /*
 https://uni-link-9f8f5.firebaseio.com/products.json/

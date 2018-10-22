@@ -12,6 +12,7 @@ import { Card } from 'react-native-elements'
 export const ProductCard = props => {
   // shorten long name
   var name = props.name
+  if (name == undefined) return null
   if (name.length > 45) {
     name = name.substring(0, 45) + '...'
   }

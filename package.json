@@ -26,6 +26,7 @@
     "react-native-modal": "^6.5.0",
     "react-native-ratings": "^6.0.0",
     "react-native-swiper": "^1.5.13",
+    "react-native-zss-rich-text-editor": "^1.1.0",
     "react-navigation": "^2.18.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
