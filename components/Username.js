@@ -4,6 +4,14 @@ import { Rating } from 'react-native-elements'
 
 export const Username = ({ user }) => {
   console.log(user)
+  var date = user.create_at ? new Date(user.create_at) : 'N/A'
+  var rating = user.rating ? user.create_at : 0
+  var location = user.location ? user.location : 'N/A'
+  // if (user.create_at) {
+  //   var date = new Date(user.create_at)
+  // } else {
+  //   var date = 'N/A'
+  // }
   return (
     <View style={{ marginBottom: 5 }}>
       <Text style={styles.txt}>{user.username}</Text>
@@ -11,15 +19,15 @@ export const Username = ({ user }) => {
         <Rating
           imageSize={10}
           readonly
-          startingValue={user.rating / 20}
+          startingValue={rating}
           style={{ paddingRight: 5 }}
         />
         <Text style={styles.txt}>
-          (rating: {user.rating}
+          (rating: {rating * 5}
           %)
         </Text>
       </View>
-      <Text style={styles.txt}>Member since {user.create_at}</Text>
+      <Text style={styles.txt}>Member since {date}</Text>
       <Text style={styles.txt}>Location: {user.location}</Text>
     </View>
   )
@@ -28,7 +36,7 @@ export const Username = ({ user }) => {
 const styles = StyleSheet.create({
   ratingContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  txt: { fontSize: 14, color: '#313131' }
+  txt: { fontSize: 14, color: '#313131' },
 })
