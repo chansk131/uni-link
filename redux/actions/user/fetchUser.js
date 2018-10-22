@@ -3,9 +3,9 @@ import {
   FETCH_CHAT_SUCCESS,
   DELETE_CHAT_SUCCESS,
   FETCH_CHAT_CONNECTION_STATUS_SUCCESS,
-  UPDATE_USER
+  UPDATE_USER,
 } from '../types'
-import months from '../../../utils/months'
+import { months } from '../../../utils/months'
 
 export const fetchUser = () => dispatch => {
   listenToChatChanges(dispatch)
@@ -31,7 +31,7 @@ const listenToChatChanges = dispatch => {
         .on('value', snapshot => {
           dispatch({
             type: FETCH_CHAT_SUCCESS,
-            payload: { chatId, chat: snapshot.val() }
+            payload: { chatId, chat: snapshot.val() },
           })
         })
 
@@ -53,7 +53,7 @@ const listenToChatChanges = dispatch => {
                 if (snapshot.val() === 'online') true
                 dispatch({
                   type: FETCH_CHAT_CONNECTION_STATUS_SUCCESS,
-                  payload: connectionStatusPayload
+                  payload: connectionStatusPayload,
                 })
               })
           } else {
@@ -71,7 +71,7 @@ const listenToChatChanges = dispatch => {
       const chatId = snapshot.key
       dispatch({
         type: DELETE_CHAT_SUCCESS,
-        payload: chatId
+        payload: chatId,
       })
     })
 }
@@ -84,7 +84,7 @@ const listenToUsernameChanges = dispatch => {
     .on('value', snapshot => {
       dispatch({
         type: UPDATE_USER,
-        payload: { username: snapshot.val() }
+        payload: { username: snapshot.val() },
       })
     })
 }
@@ -97,7 +97,7 @@ const listenToRatingChanges = dispatch => {
     .on('value', snapshot => {
       dispatch({
         type: UPDATE_USER,
-        payload: { rating: snapshot.val() }
+        payload: { rating: snapshot.val() },
       })
     })
 }
@@ -115,8 +115,8 @@ const listenToCreatedAtChanges = dispatch => {
         payload: {
           created_at: `${createdAtDate.getDate()} ${
             months[createdAtDate.getMonth()]
-          } ${createdAtDate.getFullYear()}`
-        }
+          } ${createdAtDate.getFullYear()}`,
+        },
       })
     })
 }
@@ -129,7 +129,7 @@ const listenToLocationChanges = dispatch => {
     .on('value', snapshot => {
       dispatch({
         type: UPDATE_USER,
-        payload: { location: snapshot.val() }
+        payload: { location: snapshot.val() },
       })
     })
 }
@@ -142,7 +142,7 @@ const listenToFollowerChanges = dispatch => {
     .on('value', snapshot => {
       dispatch({
         type: UPDATE_USER,
-        payload: { followers: snapshot.val() }
+        payload: { followers: snapshot.val() },
       })
     })
 }
@@ -155,7 +155,7 @@ const listenToFollowingChanges = dispatch => {
     .on('value', snapshot => {
       dispatch({
         type: UPDATE_USER,
-        payload: { following: snapshot.val() }
+        payload: { following: snapshot.val() },
       })
     })
 }

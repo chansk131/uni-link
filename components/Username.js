@@ -4,8 +4,8 @@ import { Rating } from 'react-native-elements'
 
 export const Username = ({ user }) => {
   console.log(user)
-  var date = user.create_at ? new Date(user.create_at) : 'N/A'
-  var rating = user.rating ? user.create_at : 0
+  var date = user.created_at ? user.created_at : 'N/A'
+  var rating = user.rating ? user.rating : 0
   var location = user.location ? user.location : 'N/A'
   // if (user.create_at) {
   //   var date = new Date(user.create_at)
