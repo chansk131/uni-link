@@ -37,6 +37,7 @@ class SellingScreen extends React.Component {
       .once('value')
       .then(snapshot => {
         var results = snapshot.val()
+        console.log(results)
         let resultsArr = []
         Object.keys(results).forEach(function(key) {
           resultsArr.push({ key: key, keyFirebase: key, ...results[key] })

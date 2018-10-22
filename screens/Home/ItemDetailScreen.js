@@ -44,7 +44,6 @@ class ItemDetail extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.user.uid)
     const { navigation } = this.props
     const product = navigation.getParam('products')
     this.fetchDetail(product.objectID)
@@ -60,10 +59,12 @@ class ItemDetail extends React.Component {
         var productStatus = snapshot.val() && snapshot.val().isAvailable
         if (productStatus) {
           var product = snapshot.val()
+          var date = new Date(product.timestamp)
           let picsArr = []
           if (product.pictures) {
             picsArr = Object.values(product.pictures)
           }
+          console.log(picsArr)
           this.setState({
             product: product,
             itemLoaded: true,

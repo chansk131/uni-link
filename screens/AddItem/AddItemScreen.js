@@ -389,7 +389,7 @@ class AddItemScreen extends React.Component {
           pic: this.state.form.pic.value,
           price: this.state.form.price.value,
           timestamp: firebase.database.ServerValue.TIMESTAMP,
-          objecID: this.state.key,
+          objectID: this.state.key,
           user: this.props.user.username,
         }
         this.props.navigation.navigate('ItemDetail', {
@@ -487,7 +487,7 @@ class AddItemScreen extends React.Component {
                   style={styles.txtInput}
                   onChangeText={value => this.updateInput('price', value)}
                   value={this.state.form.price.value}
-                  placeholder="9"
+                  placeholder="50.00"
                   keyboardType="number-pad"
                 />
               </View>

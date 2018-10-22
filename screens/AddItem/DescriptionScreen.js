@@ -85,7 +85,7 @@ class DescriptionScreen extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="height" enabled>
         <View style={{ flex: 1, backgroundColor: 'white' }}>
           <Text style={{ fontSize: 20, marginHorizontal: '5%', marginTop: 10 }}>
             Product Description
