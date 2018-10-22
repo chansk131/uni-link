@@ -527,6 +527,36 @@ class AddItemScreen extends React.Component {
                 value={this.state.form.location.value}
                 placeholder="Enter location you preferred to sell this product/service"
               />
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 3 }} />
+                <TouchableOpacity
+                  onPress={() => this.submit()}
+                  style={{
+                    flex: 1,
+                    backgroundColor: 'white',
+                    shadowOffset: { width: 1, height: 1 },
+                    shadowColor: 'grey',
+                    shadowOpacity: 0.5,
+                    elevation: 3,
+                    paddingVertical: 4,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 10,
+                    marginBottom: 50,
+                    marginHorizontal: '5%',
+                    borderRadius: 20,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 20,
+                    }}
+                  >
+                    OKAY
+                  </Text>
+                </TouchableOpacity>
+                <View style={{ height: 50 }} />
+              </View>
             </View>
           ) : (
             <Button
@@ -536,36 +566,6 @@ class AddItemScreen extends React.Component {
               }}
             />
           )}
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 3 }} />
-            <TouchableOpacity
-              onPress={() => this.submit()}
-              style={{
-                flex: 1,
-                backgroundColor: 'white',
-                shadowOffset: { width: 1, height: 1 },
-                shadowColor: 'grey',
-                shadowOpacity: 0.5,
-                elevation: 3,
-                paddingVertical: 4,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 10,
-                marginBottom: 50,
-                marginHorizontal: '5%',
-                borderRadius: 20,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 20,
-                }}
-              >
-                OKAY
-              </Text>
-            </TouchableOpacity>
-            <View style={{ height: 50 }} />
-          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     )
