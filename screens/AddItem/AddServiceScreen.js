@@ -21,7 +21,7 @@ import { withNavigationFocus } from 'react-navigation'
 
 import ValidationRules from '../../components/forms/validationRules'
 
-class AddItemScreen extends React.Component {
+class AddServiceScreen extends React.Component {
   state = {
     uid: null,
     key: null,
@@ -494,7 +494,7 @@ class AddItemScreen extends React.Component {
 
               <Text style={styles.txtLabel}>Category</Text>
               {this.renderCategory()}
-              <Text style={styles.txtLabel}>Product Type</Text>
+              <Text style={styles.txtLabel}>Product/ Type</Text>
               <TextInput
                 style={styles.txtInput}
                 onChangeText={value => this.updateInput('type', value)}
@@ -576,7 +576,7 @@ const mapStateToProps = state => ({
   user: state.user,
 })
 
-export default connect(mapStateToProps)(withNavigationFocus(AddItemScreen))
+export default connect(mapStateToProps)(withNavigationFocus(AddServiceScreen))
 
 const styles = StyleSheet.create({
   txtLabel: {
