@@ -1,42 +1,42 @@
-import React from 'react'
-import { View } from 'react-native'
-import { createBottomTabNavigator } from 'react-navigation'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import React from 'react';
+import { View } from 'react-native';
+import { createBottomTabNavigator } from 'react-navigation';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { HomeScreenStackNavigator } from './homeScreenStackNavigator'
-import { SellingScreenStackNavigator } from './sellingScreenStackNavigator'
-import { UserScreenStackNavigator } from './userScreenStackNavigator'
+import { HomeScreenStackNavigator } from './homeScreenStackNavigator';
+import { SellingScreenStackNavigator } from './sellingScreenStackNavigator';
+import { UserScreenStackNavigator } from './userScreenStackNavigator';
 
-import NotificationScreen from '../screens/Notification/NotificationScreen'
-import { HamburgerHeader, LogoHeader } from '../components/header/HeaderIcons'
-import { AddItemScreenStackNavigator } from './addItemScreenStackNavigator'
+import { NotificationScreenStackNavigator } from './notificationStackNavigator';
+import { HamburgerHeader, LogoHeader } from '../components/header/HeaderIcons';
+import { AddItemScreenStackNavigator } from './addItemScreenStackNavigator';
 
 export const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeScreenStackNavigator,
     Selling: SellingScreenStackNavigator,
     Add: AddItemScreenStackNavigator,
-    Notifications: NotificationScreen,
+    Notifications: NotificationScreenStackNavigator,
     User: {
       screen: UserScreenStackNavigator,
-      navigationOptions: { tabBarLabel: 'My U-Links' },
-    },
+      navigationOptions: { tabBarLabel: 'My U-Links' }
+    }
   },
   {
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
-        const { routeName } = navigation.state
-        let iconName
+        const { routeName } = navigation.state;
+        let iconName;
         if (routeName === 'Home') {
-          iconName = `ios-home${focused ? '' : '-outline'}`
+          iconName = `ios-home${focused ? '' : '-outline'}`;
         } else if (routeName === 'Selling') {
-          iconName = `ios-pricetag${focused ? '' : '-outline'}`
+          iconName = `ios-pricetag${focused ? '' : '-outline'}`;
         } else if (routeName === 'Add') {
-          iconName = `ios-add${focused ? '' : '-outline'}`
+          iconName = `ios-add${focused ? '' : '-outline'}`;
         } else if (routeName === 'Notifications') {
-          iconName = `ios-notifications${focused ? '' : '-outline'}`
+          iconName = `ios-notifications${focused ? '' : '-outline'}`;
         } else if (routeName === 'User') {
-          iconName = `ios-person${focused ? '' : '-outline'}`
+          iconName = `ios-person${focused ? '' : '-outline'}`;
         }
 
         // You can return any component that you like here! We usually use an
@@ -60,8 +60,8 @@ export const TabNavigator = createBottomTabNavigator(
               <Text style={{ color: "white", fontSize: 9 }}>4</Text>
             </View> */}
           </View>
-        )
-      },
+        );
+      }
     }),
     tabBarOptions: {
       activeTintColor: 'black',
@@ -71,8 +71,8 @@ export const TabNavigator = createBottomTabNavigator(
         shadowOffset: { width: 1, height: 1 },
         shadowColor: 'grey',
         shadowOpacity: 0.5,
-        elevation: 5,
-      },
-    },
+        elevation: 5
+      }
+    }
   }
-)
+);

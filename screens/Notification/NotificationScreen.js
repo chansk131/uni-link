@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   ScrollView
-} from 'react-native';
+} from 'react-native'
 
 export default class NotificationScreen extends React.Component {
   render() {
@@ -82,7 +82,7 @@ export default class NotificationScreen extends React.Component {
           </View>
         </View>
       </ScrollView>
-    );
+    )
   }
 }
 
@@ -93,7 +93,7 @@ export const CloseText = () => (
     </TouchableOpacity>
     <Text style={styles.txt2}>started following you</Text>
   </View>
-);
+)
 export const CloseText1 = () => (
   <View style={styles.ctnContainer}>
     <TouchableOpacity>
@@ -101,7 +101,7 @@ export const CloseText1 = () => (
     </TouchableOpacity>
     <Text style={styles.txt2}>has been sold</Text>
   </View>
-);
+)
 export const CloseText2 = () => (
   <View style={styles.ctnContainer}>
     <TouchableOpacity>
@@ -109,7 +109,7 @@ export const CloseText2 = () => (
     </TouchableOpacity>
     <Text style={styles.txt2}>is being watched</Text>
   </View>
-);
+)
 export const CloseText3 = () => (
   <View style={styles.ctnContainer}>
     <Text style={styles.txt2}>You have recieved an offer for your </Text>
@@ -117,7 +117,7 @@ export const CloseText3 = () => (
       <Text style={styles.txt}>#Service </Text>
     </TouchableOpacity>
   </View>
-);
+)
 
 const styles = StyleSheet.create({
   screenContainer: { flex: 1, backgroundColor: 'white' },
@@ -154,4 +154,4 @@ const styles = StyleSheet.create({
   txt: { fontSize: 12, fontWeight: 'bold' },
   txt2: { fontSize: 12 },
   txt3: { fontSize: 12, textDecorationLine: 'underline' }
-});
+})
