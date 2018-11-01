@@ -37,9 +37,10 @@ export default class PhotoUploadScreen extends React.Component {
   componentDidMount() {
     const { navigation } = this.props
     const firebaseKey = navigation.getParam('firebaseKey')
+    const section = navigation.getParam('section')
     const pic = navigation.getParam('pic')
     pic != null
-      ? this.setState({ firebaseKey, pictures: pic })
+      ? this.setState({ firebaseKey, pictures: pic, section })
       : this.setState({ firebaseKey })
     console.log(firebaseKey)
   }
@@ -157,7 +158,7 @@ export default class PhotoUploadScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <Text style={styles.txtLabel}>PhotoUploadScreen!</Text>
+        <Text style={styles.txtLabel}>Upload photo of the product/service</Text>
 
         <TouchableOpacity
           style={{
@@ -188,7 +189,7 @@ export default class PhotoUploadScreen extends React.Component {
             alignItems: 'center',
           }}
           onPress={() => {
-            this.props.navigation.navigate('Add', {
+            this.props.navigation.navigate('AddItem', {
               pic: this.state.pictures,
             })
           }}

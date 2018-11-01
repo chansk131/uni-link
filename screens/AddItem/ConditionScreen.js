@@ -5,13 +5,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 export default class ConditionScreen extends React.Component {
   state = {
+    section: null,
     checked: null,
   }
 
   componentDidMount() {
     const { navigation } = this.props
     const condition = navigation.getParam('condition')
-    this.setState({ checked: condition })
+    const section = navigation.getParam('section')
+    this.setState({ checked: condition, section })
   }
 
   check = value => {
@@ -19,14 +21,17 @@ export default class ConditionScreen extends React.Component {
   }
 
   submit = () => {
-    this.props.navigation.navigate('Add', { condition: this.state.checked })
+    this.props.navigation.navigate('AddItem', {
+      condition: this.state.checked,
+      section: this.state.section,
+    })
   }
 
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={{ marginHorizontal: '5%', marginTop: 10 }}>
-          <Text style={{ fontSize: 20 }}>Condition!</Text>
+          <Text style={{ fontSize: 20 }}>Select Item Condition</Text>
         </View>
         <CheckBox
           title="New"
@@ -45,7 +50,7 @@ export default class ConditionScreen extends React.Component {
           onPress={() => this.setState({ checked: 'Used' })}
         />
         <CheckBox
-          title="Part"
+          title="Part/Not working"
           checkedIcon="dot-circle-o"
           uncheckedIcon="circle-o"
           checkedColor="black"

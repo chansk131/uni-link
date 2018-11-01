@@ -13,6 +13,9 @@ import AboutItemScreen from '../screens/AddItem/AboutItemScreen'
 import PhotoUploadScreen from '../screens/AddItem/PhotoUploadScreen'
 import CategoryItemScreen from '../screens/AddItem/CategoryItemScreen'
 import DescriptionScreen from '../screens/AddItem/DescriptionScreen'
+import QualificationScreen from '../screens/AddItem/QualificationScreen'
+import AddServiceScreen from '../screens/AddItem/AddServiceScreen'
+import AddTitleScreen from '../screens/AddItem/AddTitleScreen'
 
 export const AddItemScreenStackNavigator = createStackNavigator({
   Add: {
@@ -46,8 +49,8 @@ export const AddItemScreenStackNavigator = createStackNavigator({
       headerTitle: <LogoHeader />,
     }),
   },
-  AddService: {
-    screen: AddItemScreen,
+  AddTitle: {
+    screen: AddTitleScreen,
     headerLayoutPreset: 'left',
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
@@ -123,6 +126,21 @@ export const AddItemScreenStackNavigator = createStackNavigator({
   },
   DescriptionItem: {
     screen: DescriptionScreen,
+    headerLayoutPreset: 'left',
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      headerTitle: <LogoHeader />,
+    }),
+  },
+  QualificationItem: {
+    screen: QualificationScreen,
     headerLayoutPreset: 'left',
     navigationOptions: ({ navigation }) => ({
       headerStyle: {

@@ -3,6 +3,7 @@ import { Text, View, FlatList, Image } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux'
 import * as firebase from 'firebase'
+import { ProductCard } from '../../components/productCard/ProductCard'
 
 class WishListScreen extends React.Component {
   state = {
@@ -22,7 +23,6 @@ class WishListScreen extends React.Component {
       .once('value')
       .then(snapshot => {
         var results = snapshot.val()
-        console.log(results)
         let resultsArr = []
         Object.keys(results).forEach(function(key) {
           resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
@@ -31,22 +31,88 @@ class WishListScreen extends React.Component {
       })
   }
 
-  renderWishlist = props => {
+  renderWishlistProducts = props => {
     if (props !== null) {
       var result = Object.values(props)
+      console.log(result.length)
       if (result.length) {
         return (
-          <View style={{ paddingTop: 30, paddingHorizontal: 20 }}>
+          <View style={{ flex: 1 }}>
             <FlatList
-              style={{ flex: 1 }}
+              horizontal={true}
+              style={{
+                marginTop: 10,
+                marginLeft: '5%',
+                height: 2,
+              }}
               // ListFooterComponent={<View style={{ margin: 10 }} />}
-              renderItem={({ item }) => <ListedItem key={item.key} {...item} />}
+              renderItem={({ item }) => (
+                <ProductCard key={item.key} {...item} />
+              )}
               data={result}
             />
           </View>
         )
       }
-      return false
+      return (
+        <View
+          style={{
+            margin: 20,
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Text
+            style={{ fontSize: 20, color: 'lightgrey', fontWeight: 'bold' }}
+          >
+            No Product Wishlist Found
+          </Text>
+        </View>
+      )
+    }
+
+    return false
+  }
+
+  renderWishlistServices = props => {
+    if (props !== null) {
+      var result = Object.values(props)
+      console.log(result.length)
+      if (0) {
+        return (
+          <View style={{ flex: 1 }}>
+            <FlatList
+              horizontal={true}
+              style={{
+                marginTop: 10,
+                marginHorizontal: '5%',
+                height: 200,
+              }}
+              // ListFooterComponent={<View style={{ margin: 10 }} />}
+              renderItem={({ item }) => (
+                <ProductCard key={item.key} {...item} />
+              )}
+              data={result}
+            />
+          </View>
+        )
+      }
+      return (
+        <View
+          style={{
+            margin: 20,
+            alignContent: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          }}
+        >
+          <Text
+            style={{ fontSize: 20, color: 'lightgrey', fontWeight: 'bold' }}
+          >
+            No Product Wishlist Found
+          </Text>
+        </View>
+      )
     }
 
     return false
@@ -54,9 +120,20 @@ class WishListScreen extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>WishListScreen!</Text>
-        {this.renderWishlist(this.state.products)}
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'white',
+        }}
+      >
+        <Text style={{ marginTop: 10, marginHorizontal: '5%', fontSize: 20 }}>
+          Products
+        </Text>
+        {this.renderWishlistProducts(this.state.products)}
+        <Text style={{ marginTop: 10, marginHorizontal: '5%', fontSize: 20 }}>
+          Services
+        </Text>
+        {this.renderWishlistServices(this.state.products)}
       </View>
     )
   }

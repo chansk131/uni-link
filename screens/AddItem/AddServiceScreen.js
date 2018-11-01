@@ -27,14 +27,8 @@ class AddServiceScreen extends React.Component {
     key: null,
     pic: null,
     description: [],
+    qualification: [],
     form: {
-      condition: {
-        value: '',
-        valid: false,
-        rules: {
-          isRequired: true,
-        },
-      },
       category: {
         value: '',
         valid: false,
@@ -78,13 +72,6 @@ class AddServiceScreen extends React.Component {
           // isRequired: true,
         },
       },
-      brand: {
-        value: '',
-        valid: false,
-        rules: {
-          // isRequired: true,
-        },
-      },
     },
   }
 
@@ -100,10 +87,10 @@ class AddServiceScreen extends React.Component {
     this._onFocusListener = this.props.navigation.addListener(
       'didFocus',
       payload => {
-        this.checkCondition()
         this.checkCategory()
         this.checkPic()
         this.checkDescription()
+        this.checkQualification()
         console.log(this.state.form)
       }
     )
@@ -144,15 +131,6 @@ class AddServiceScreen extends React.Component {
     console.log(this.state.form)
   }
 
-  checkCondition = () => {
-    const { navigation } = this.props
-    const condition = navigation.getParam('condition')
-    if (condition != undefined) {
-      console.log(`condition is ${condition}`)
-      this.updateInput('condition', condition)
-    }
-  }
-
   checkCategory = () => {
     const { navigation } = this.props
     const category = navigation.getParam('category')
@@ -170,6 +148,14 @@ class AddServiceScreen extends React.Component {
     }
   }
 
+  checkQualification = () => {
+    const { navigation } = this.props
+    const qualification = navigation.getParam('qualification')
+    if (qualification != undefined) {
+      this.setState({ qualification })
+    }
+  }
+
   checkPic = () => {
     const { navigation } = this.props
     const pic = navigation.getParam('pic')
@@ -181,44 +167,6 @@ class AddServiceScreen extends React.Component {
         if (pic[picture] != '') pictures[picture] = pic[picture]
       }
       this.setState({ pic: pictures })
-    }
-  }
-
-  renderCondition = () => {
-    const { navigation } = this.props
-    const condition = navigation.getParam('condition')
-    if (condition) {
-      return (
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 10,
-          }}
-          onPress={() => {
-            this.props.navigation.navigate('Condition', { condition })
-          }}
-        >
-          <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
-          <Text> {condition}</Text>
-        </TouchableOpacity>
-      )
-    } else {
-      return (
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 10,
-          }}
-          onPress={() => {
-            this.props.navigation.navigate('Condition')
-          }}
-        >
-          <Ionicons name={'md-radio-button-off'} size={20} color={'black'} />
-          <Text style={{ color: 'lightgrey' }}> Press to choose condition</Text>
-        </TouchableOpacity>
-      )
     }
   }
 
@@ -301,6 +249,7 @@ class AddServiceScreen extends React.Component {
             this.props.navigation.navigate('PhotoUpload', {
               firebaseKey: this.state.key,
               pic,
+              section: 'service',
             })
           }}
           style={{
@@ -369,6 +318,56 @@ class AddServiceScreen extends React.Component {
     }
   }
 
+  renderQualification = () => {
+    const { navigation } = this.props
+    const qualification = navigation.getParam('qualification')
+    console.log(qualification)
+    if (qualification == null || qualification.length == 0) {
+      return (
+        <TouchableOpacity
+          style={{ marginTop: 10 }}
+          onPress={() => {
+            this.props.navigation.navigate('QualificationItem', {
+              firebaseKey: this.state.key,
+            })
+          }}
+        >
+          <Text style={{ marginHorizontal: '5%', color: 'lightgrey' }}>
+            Add Qualification
+          </Text>
+        </TouchableOpacity>
+      )
+    } else {
+      return (
+        <TouchableOpacity
+          style={{ marginTop: 10 }}
+          onPress={() => {
+            this.props.navigation.navigate('QualificationItem', {
+              firebaseKey: this.state.key,
+            })
+          }}
+        >
+          <FlatList
+            data={this.state.qualification}
+            renderItem={({ item }) => (
+              <View
+                key={item.key}
+                style={{
+                  paddingVertical: 4,
+                  paddingHorizontal: '5%',
+                }}
+              >
+                <Text style={{ fontSize: 16 }}>
+                  {BULLET + '  ' + item.value}
+                </Text>
+              </View>
+            )}
+          />
+        </TouchableOpacity>
+      )
+    }
+  }
+
   submit = () => {
     // check if form is valid
     let isformValid = true
@@ -410,17 +409,24 @@ class AddServiceScreen extends React.Component {
       ]['value']
     }
 
+    let qualification = {}
+
+    for (let key in this.state.qualification) {
+      qualification[
+        this.state.qualification[key]['key']
+      ] = this.state.qualification[key]['value']
+    }
+
     let postProductData = {
-      condition: this.state.form.condition.value,
       category: this.state.form.category.value,
       pic: this.state.form.pic.value,
       name: this.state.form.name.value,
       price: this.state.form.price.value,
       location: this.state.form.location.value,
       type: this.state.form.type.value,
-      brand: this.state.form.brand.value,
       pictures: this.state.pic,
       description,
+      qualification,
       uid: this.props.user.uid,
       user: this.props.user.username,
       isAvailable: true,
@@ -465,13 +471,10 @@ class AddServiceScreen extends React.Component {
                 style={styles.txtInput}
                 onChangeText={value => this.updateInput('name', value)}
                 value={this.state.form.name.value}
-                placeholder="Name of product"
+                placeholder="Name of Service"
               />
               <Text style={styles.txtLabel}>Photos</Text>
               {this.renderPic()}
-              <Text style={styles.txtLabel}>Condition</Text>
-              {this.renderCondition()}
-              {/* show selected choice and this view can be pressed to go to new selecting radio buttons choices */}
 
               <Text style={styles.txtLabel}>Pricing</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -494,38 +497,25 @@ class AddServiceScreen extends React.Component {
 
               <Text style={styles.txtLabel}>Category</Text>
               {this.renderCategory()}
-              <Text style={styles.txtLabel}>Product/ Type</Text>
+              <Text style={styles.txtLabel}>Service Type</Text>
               <TextInput
                 style={styles.txtInput}
                 onChangeText={value => this.updateInput('type', value)}
                 value={this.state.form.type.value}
-                placeholder="Tablet, Novel, Shoes..."
-              />
-              <Text style={styles.txtLabel}>Brand</Text>
-              <TextInput
-                style={styles.txtInput}
-                onChangeText={value => this.updateInput('brand', value)}
-                value={this.state.form.brand.value}
-                placeholder="Enter product brand, ..."
+                placeholder="Tutorial, photography, cooking..."
               />
 
-              {/* <Text style={styles.txtLabel}>About</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate('AboutItem')
-                }}
-              >
-                <Text>ABOUT</Text>
-              </TouchableOpacity> */}
               <Text style={styles.txtLabel}>Description</Text>
               {this.renderDescription()}
+              <Text style={styles.txtLabel}>Qualification</Text>
+              {this.renderQualification()}
 
               <Text style={styles.txtLabel}>Prefered location</Text>
               <TextInput
                 style={styles.txtInput}
                 onChangeText={value => this.updateInput('location', value)}
                 value={this.state.form.location.value}
-                placeholder="Enter location you preferred to sell this product/service"
+                placeholder="Enter location you preferred to sell this service"
               />
               <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 3 }} />

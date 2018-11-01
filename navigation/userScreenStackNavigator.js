@@ -32,7 +32,22 @@ export const UserScreenStackNavigator = createStackNavigator({
       header: null,
     }),
   },
-  WishList: { screen: WishListScreen },
+  WishList: {
+    screen: WishListScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeaderWithText text={'Wishlist'} />,
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
   MyOrder: {
     screen: MyOrderScreen,
     navigationOptions: ({ navigation }) => ({

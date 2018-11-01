@@ -171,6 +171,7 @@ class ItemDetail extends React.Component {
     const product = this.state.product
     var aboutArr = []
     var descriptionArr = []
+    var qualificationArr = []
     if (product !== null) {
       if (product.about !== undefined) {
         const aboutObj = product.about
@@ -183,6 +184,12 @@ class ItemDetail extends React.Component {
         const descriptionObj = product.description
         Object.keys(descriptionObj).forEach(function(key) {
           descriptionArr.push({ key, value: descriptionObj[key] })
+        })
+      }
+      if (product.qualification !== undefined) {
+        const qualificationObj = product.qualification
+        Object.keys(qualificationObj).forEach(function(key) {
+          qualificationArr.push({ key, value: qualificationObj[key] })
         })
       }
     }

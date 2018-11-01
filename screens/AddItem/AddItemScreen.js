@@ -23,6 +23,7 @@ import ValidationRules from '../../components/forms/validationRules'
 
 class AddItemScreen extends React.Component {
   state = {
+    section: null,
     uid: null,
     key: null,
     pic: null,
@@ -73,14 +74,21 @@ class AddItemScreen extends React.Component {
       },
       type: {
         value: '',
-        valid: false,
+        valid: true,
         rules: {
           // isRequired: true,
         },
       },
       brand: {
         value: '',
-        valid: false,
+        valid: true,
+        rules: {
+          // isRequired: true,
+        },
+      },
+      qualification: {
+        value: '',
+        valid: true,
         rules: {
           // isRequired: true,
         },
@@ -89,6 +97,11 @@ class AddItemScreen extends React.Component {
   }
 
   componentDidMount() {
+    // check is it product or service page
+    const { navigation } = this.props
+    const section = navigation.getParam('section')
+    this.setState({ section })
+
     const newPostKey = firebase
       .database()
       .ref()
@@ -124,7 +137,7 @@ class AddItemScreen extends React.Component {
         }
       })
     }
-    console.log(this.props.user)
+    console.log(`user is ${this.props.user}`)
   }
 
   updateInput = (field, value) => {
@@ -141,7 +154,6 @@ class AddItemScreen extends React.Component {
     this.setState({
       form: formCopy,
     })
-    console.log(this.state.form)
   }
 
   checkCondition = () => {
@@ -184,42 +196,140 @@ class AddItemScreen extends React.Component {
     }
   }
 
+  renderTitle = () => {
+    return (
+      <View>
+        <Label label={'Title'} required={true} />
+        <TextInput
+          style={styles.txtInput}
+          onFocus={() =>
+            this.props.navigation.navigate('AddTitle', { uid: this.state.uid })
+          }
+          onChangeText={value => this.updateInput('name', value)}
+          value={this.state.form.name.value}
+          placeholder={`Name of ${this.state.section}`}
+        />
+      </View>
+    )
+  }
+
+  renderPic = () => {
+    const { navigation } = this.props
+    const pic = navigation.getParam('pic')
+    return (
+      <View>
+        <Label label={'Photos'} required={true} />
+        <View style={styles.photoSectionContainer}>
+          {pic ? (
+            <Image
+              style={styles.photoContainer}
+              source={{
+                uri: pic.pic1,
+              }}
+            />
+          ) : (
+            <View
+              style={{
+                width: screenWidth * 0.6,
+                aspectRatio: 16 / 9,
+                borderRadius: 5,
+                marginLeft: '5%',
+                borderWidth: 1,
+                borderColor: 'lightgrey',
+                // backgroundColor: '#eaeaea',
+              }}
+            />
+          )}
+
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate('PhotoUpload', {
+                firebaseKey: this.state.key,
+                pic,
+              })
+            }}
+            style={{
+              width: screenWidth * 0.2,
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: 'lightgrey',
+              marginRight: '5%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.photoAddTxt}>+</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
+
   renderCondition = () => {
     const { navigation } = this.props
     const condition = navigation.getParam('condition')
-    if (condition) {
-      return (
+    return this.state.section == 'product' ? (
+      <View>
+        <Label label={'Condition'} required={true} />
+
         <TouchableOpacity
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
             marginTop: 10,
           }}
           onPress={() => {
             this.props.navigation.navigate('Condition', { condition })
           }}
         >
-          <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
-          <Text> {condition}</Text>
+          {condition ? (
+            <View style={styles.conditionRadioBtn}>
+              <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
+              <Text> {condition}</Text>
+            </View>
+          ) : (
+            <View style={styles.conditionRadioBtn}>
+              <Ionicons
+                name={'md-radio-button-off'}
+                size={20}
+                color={'black'}
+              />
+              <Text style={{ color: 'lightgrey' }}>
+                {' '}
+                Press to choose condition
+              </Text>
+            </View>
+          )}
         </TouchableOpacity>
-      )
-    } else {
-      return (
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 10,
-          }}
-          onPress={() => {
-            this.props.navigation.navigate('Condition')
-          }}
-        >
-          <Ionicons name={'md-radio-button-off'} size={20} color={'black'} />
-          <Text style={{ color: 'lightgrey' }}> Press to choose condition</Text>
-        </TouchableOpacity>
-      )
-    }
+      </View>
+    ) : null
+  }
+
+  renderPricing = () => {
+    return (
+      <View>
+        <Label label={'Pricing'} required={true} />
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text
+            style={{
+              fontSize: 14,
+              marginTop: 10,
+            }}
+          >
+            £
+          </Text>
+          <TextInput
+            style={styles.txtInput}
+            onChangeText={value => this.updateInput('price', value)}
+            value={this.state.form.price.value}
+            placeholder="50.00"
+            keyboardType="number-pad"
+          />
+        </View>
+      </View>
+    )
+  }
+
+  renderUnit = () => {
+    return this.state.section == 'skillshare' ? <Text>UNIT</Text> : null
   }
 
   renderCategory = () => {
@@ -227,146 +337,163 @@ class AddItemScreen extends React.Component {
     const category = navigation.getParam('category')
     if (category) {
       return (
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 10,
-          }}
-          onPress={() => {
-            this.props.navigation.navigate('CategoryItem', { category })
-          }}
-        >
-          <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
-          <Text> {category}</Text>
-        </TouchableOpacity>
+        <View>
+          <Label label={'Category'} required={true} />
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}
+            onPress={() => {
+              this.props.navigation.navigate('CategoryItem', { category })
+            }}
+          >
+            <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
+            <Text> {category}</Text>
+          </TouchableOpacity>
+        </View>
       )
     } else {
       return (
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 10,
-          }}
-          onPress={() => {
-            this.props.navigation.navigate('CategoryItem')
-          }}
-        >
-          <Ionicons name={'md-radio-button-off'} size={20} color={'black'} />
-          <Text style={{ color: 'lightgrey' }}> Press to choose category</Text>
-        </TouchableOpacity>
+        <View>
+          <Label label={'Category'} required={true} />
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}
+            onPress={() => {
+              this.props.navigation.navigate('CategoryItem', {
+                section: this.state.section,
+              })
+            }}
+          >
+            <Ionicons name={'md-radio-button-off'} size={20} color={'black'} />
+            <Text style={{ color: 'lightgrey' }}>
+              {' '}
+              Press to choose category
+            </Text>
+          </TouchableOpacity>
+        </View>
       )
     }
   }
 
-  renderPic = () => {
-    const { navigation } = this.props
-    const pic = navigation.getParam('pic')
+  renderType = () => {
+    if (this.state.section == 'product') {
+      var type = 'Product Type'
+      var placeholder = 'Tablet, Novel, Shoes...'
+    } else if (this.state.section == 'skillshare') {
+      var type = 'Skillshare Type'
+      var placeholder = 'Engineering Mathematics, Photoshops, Python...'
+    }
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginTop: 10,
-        }}
-      >
-        {pic ? (
-          <Image
-            style={{
-              width: screenWidth * 0.6,
-              aspectRatio: 16 / 9,
-              borderRadius: 5,
-              marginLeft: '5%',
-              resizeMode: 'contain',
-            }}
-            source={{
-              uri: pic.pic1,
-            }}
-          />
-        ) : (
-          <View
-            style={{
-              width: screenWidth * 0.6,
-              aspectRatio: 16 / 9,
-              borderRadius: 5,
-              marginLeft: '5%',
-              backgroundColor: 'lightgrey',
-            }}
-          />
-        )}
-
-        <TouchableOpacity
-          onPress={() => {
-            this.props.navigation.navigate('PhotoUpload', {
-              firebaseKey: this.state.key,
-              pic,
-            })
-          }}
-          style={{
-            width: screenWidth * 0.2,
-            borderRadius: 5,
-            borderWidth: 1,
-            borderColor: 'lightgrey',
-            marginRight: '5%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Text style={{ fontSize: 48, color: 'lightgrey' }}>+</Text>
-        </TouchableOpacity>
+      <View>
+        <Label label={type} required={false} />
+        <TextInput
+          style={styles.txtInput}
+          onChangeText={value => this.updateInput('type', value)}
+          value={this.state.form.type.value}
+          placeholder={placeholder}
+        />
       </View>
     )
+  }
+
+  renderProductBrand = () => {
+    return this.state.section == 'product' ? (
+      <View>
+        <Label label={'Brand'} required={false} />
+        <TextInput
+          style={styles.txtInput}
+          onChangeText={value => this.updateInput('brand', value)}
+          value={this.state.form.brand.value}
+          placeholder="Enter product brand, ..."
+        />
+      </View>
+    ) : null
   }
 
   renderDescription = () => {
     const { navigation } = this.props
     const description = navigation.getParam('description')
-    console.log(description)
+    console.log(`description is ${description}`)
     if (description == null || description.length == 0) {
       return (
-        <TouchableOpacity
-          style={{ marginTop: 10 }}
-          onPress={() => {
-            this.props.navigation.navigate('DescriptionItem', {
-              firebaseKey: this.state.key,
-            })
-          }}
-        >
-          <Text style={{ marginHorizontal: '5%', color: 'lightgrey' }}>
-            Add Description
-          </Text>
-        </TouchableOpacity>
+        <View>
+          <Label label={'Description'} required={false} />
+          <TouchableOpacity
+            style={{ marginTop: 10 }}
+            onPress={() => {
+              this.props.navigation.navigate('DescriptionItem', {
+                firebaseKey: this.state.key,
+              })
+            }}
+          >
+            <Text style={{ marginHorizontal: '5%', color: 'lightgrey' }}>
+              Add Description
+            </Text>
+          </TouchableOpacity>
+        </View>
       )
     } else {
       return (
-        <TouchableOpacity
-          style={{ marginTop: 10 }}
-          onPress={() => {
-            this.props.navigation.navigate('DescriptionItem', {
-              firebaseKey: this.state.key,
-            })
-          }}
-        >
-          <FlatList
-            data={this.state.description}
-            renderItem={({ item }) => (
-              <View
-                key={item.key}
-                style={{
-                  paddingVertical: 4,
-                  paddingHorizontal: '5%',
-                }}
-              >
-                <Text style={{ fontSize: 16 }}>
-                  {BULLET + '  ' + item.value}
-                </Text>
-              </View>
-            )}
-          />
-        </TouchableOpacity>
+        <View>
+          <Label label={'Description'} required={false} />
+          <TouchableOpacity
+            style={{ marginTop: 10 }}
+            onPress={() => {
+              this.props.navigation.navigate('DescriptionItem', {
+                firebaseKey: this.state.key,
+              })
+            }}
+          >
+            <FlatList
+              data={this.state.description}
+              renderItem={({ item }) => (
+                <View key={item.key} style={styles.listItemContainer}>
+                  <Text style={styles.listItemTxt}>
+                    {BULLET + '  ' + item.value}
+                  </Text>
+                </View>
+              )}
+            />
+          </TouchableOpacity>
+        </View>
       )
     }
+  }
+
+  renderQualification = () => {
+    return this.state.section == 'skillshare' ? (
+      <View>
+        <Label label={'Relevant Qualification'} required={false} />
+        <TextInput
+          style={styles.txtInput}
+          onChangeText={value => this.updateInput('qualification', value)}
+          value={this.state.form.qualification.value}
+          placeholder="Enter relevant qualification"
+        />
+      </View>
+    ) : null
+  }
+
+  renderPreferedLocation = () => {
+    var placeholder =
+      'Enter location you preferred to sell this ' + this.state.section
+    return (
+      <View>
+        <Label label={'Prefered location'} required={true} />
+        <TextInput
+          style={styles.txtInput}
+          onChangeText={value => this.updateInput('location', value)}
+          value={this.state.form.location.value}
+          placeholder={placeholder}
+        />
+      </View>
+    )
   }
 
   submit = () => {
@@ -377,25 +504,26 @@ class AddItemScreen extends React.Component {
       isformValid = isformValid && formCopy[key].valid
     }
     if (isformValid) {
-      try {
-        this.addToDatabase()
-      } catch (e) {
-        console.log(e)
-        return
-      } finally {
-        let postProductByOwnerData = {
-          isAvailable: true,
-          name: this.state.form.name.value,
-          pic: this.state.form.pic.value,
-          price: this.state.form.price.value,
-          timestamp: firebase.database.ServerValue.TIMESTAMP,
-          objectID: this.state.key,
-          user: this.props.user.username,
-        }
-        this.props.navigation.navigate('ItemDetail', {
-          products: postProductByOwnerData,
-        })
-      }
+      console.log('valid')
+      // try {
+      //   this.addToDatabase()
+      // } catch (e) {
+      //   console.log(e)
+      //   return
+      // } finally {
+      //   let postProductByOwnerData = {
+      //     isAvailable: true,
+      //     name: this.state.form.name.value,
+      //     pic: this.state.form.pic.value,
+      //     price: this.state.form.price.value,
+      //     timestamp: firebase.database.ServerValue.TIMESTAMP,
+      //     objectID: this.state.key,
+      //     user: this.props.user.username,
+      //   }
+      //   this.props.navigation.navigate('ItemDetail', {
+      //     products: postProductByOwnerData,
+      //   })
+      // }
     } else {
       console.log('not valid')
     }
@@ -450,7 +578,7 @@ class AddItemScreen extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="height" enabled>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
         <ScrollView
           style={{
             flex: 1,
@@ -460,100 +588,27 @@ class AddItemScreen extends React.Component {
         >
           {this.state.uid ? (
             <View style={{ marginHorizontal: '5%' }}>
-              <Text style={styles.txtLabel}>Title</Text>
-              <TextInput
-                style={styles.txtInput}
-                onChangeText={value => this.updateInput('name', value)}
-                value={this.state.form.name.value}
-                placeholder="Name of product"
-              />
-              <Text style={styles.txtLabel}>Photos</Text>
+              {this.renderTitle()}
               {this.renderPic()}
-              <Text style={styles.txtLabel}>Condition</Text>
+              {/* product condition only for product */}
               {this.renderCondition()}
-              {/* show selected choice and this view can be pressed to go to new selecting radio buttons choices */}
-
-              <Text style={styles.txtLabel}>Pricing</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    marginTop: 10,
-                  }}
-                >
-                  £
-                </Text>
-                <TextInput
-                  style={styles.txtInput}
-                  onChangeText={value => this.updateInput('price', value)}
-                  value={this.state.form.price.value}
-                  placeholder="50.00"
-                  keyboardType="number-pad"
-                />
-              </View>
-
-              <Text style={styles.txtLabel}>Category</Text>
+              {this.renderPricing()}
+              {/* unit only for skillshare */}
+              {this.renderUnit()}
               {this.renderCategory()}
-              <Text style={styles.txtLabel}>Product Type</Text>
-              <TextInput
-                style={styles.txtInput}
-                onChangeText={value => this.updateInput('type', value)}
-                value={this.state.form.type.value}
-                placeholder="Tablet, Novel, Shoes..."
-              />
-              <Text style={styles.txtLabel}>Brand</Text>
-              <TextInput
-                style={styles.txtInput}
-                onChangeText={value => this.updateInput('brand', value)}
-                value={this.state.form.brand.value}
-                placeholder="Enter product brand, ..."
-              />
-
-              {/* <Text style={styles.txtLabel}>About</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate('AboutItem')
-                }}
-              >
-                <Text>ABOUT</Text>
-              </TouchableOpacity> */}
-              <Text style={styles.txtLabel}>Description</Text>
+              {this.renderType()}
+              {this.renderProductBrand()}
               {this.renderDescription()}
+              {this.renderQualification()}
+              {this.renderPreferedLocation()}
 
-              <Text style={styles.txtLabel}>Prefered location</Text>
-              <TextInput
-                style={styles.txtInput}
-                onChangeText={value => this.updateInput('location', value)}
-                value={this.state.form.location.value}
-                placeholder="Enter location you preferred to sell this product/service"
-              />
               <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 3 }} />
                 <TouchableOpacity
                   onPress={() => this.submit()}
-                  style={{
-                    flex: 1,
-                    backgroundColor: 'white',
-                    shadowOffset: { width: 1, height: 1 },
-                    shadowColor: 'grey',
-                    shadowOpacity: 0.5,
-                    elevation: 3,
-                    paddingVertical: 4,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: 10,
-                    marginBottom: 50,
-                    marginHorizontal: '5%',
-                    borderRadius: 20,
-                  }}
+                  style={styles.submitButtonContainer}
                 >
-                  <Text
-                    style={{
-                      fontSize: 20,
-                    }}
-                  >
-                    OKAY
-                  </Text>
+                  <Text style={styles.submitButtonTxt}>OKAY</Text>
                 </TouchableOpacity>
                 <View style={{ height: 50 }} />
               </View>
@@ -579,9 +634,17 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(withNavigationFocus(AddItemScreen))
 
 const styles = StyleSheet.create({
+  txtLabelContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+  },
   txtLabel: {
     fontSize: 20,
-    marginTop: 10,
+  },
+  txtRequired: {
+    fontSize: 20,
+
+    color: 'red',
   },
   txtInput: {
     width: '100%',
@@ -591,10 +654,57 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 10,
   },
+  photoSectionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  photoContainer: {
+    width: screenWidth * 0.6,
+    aspectRatio: 16 / 9,
+    borderRadius: 5,
+    marginLeft: '5%',
+    resizeMode: 'contain',
+  },
+  photoAddTxt: { fontSize: 48, color: 'lightgrey' },
+  conditionRadioBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  listItemContainer: {
+    paddingVertical: 4,
+    paddingHorizontal: '5%',
+  },
+  listItemTxt: { fontSize: 16 },
+  submitButtonContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: 'grey',
+    shadowOpacity: 0.5,
+    elevation: 3,
+    paddingVertical: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 50,
+    marginHorizontal: '5%',
+    borderRadius: 20,
+  },
+  submitButtonTxt: {
+    fontSize: 20,
+  },
 })
 
 const screenWidth = Dimensions.get('window').width
 const BULLET = '\u2022'
+
+const Label = ({ label, required }) => (
+  <View style={styles.txtLabelContainer}>
+    <Text style={styles.txtLabel}>{label}</Text>
+    {required ? <Text style={styles.txtRequired}>*</Text> : null}
+  </View>
+)
 
 /*
 https://uni-link-9f8f5.firebaseio.com/products.json/
