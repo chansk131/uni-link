@@ -16,6 +16,7 @@ import DescriptionScreen from '../screens/AddItem/DescriptionScreen'
 import QualificationScreen from '../screens/AddItem/QualificationScreen'
 import AddServiceScreen from '../screens/AddItem/AddServiceScreen'
 import AddTitleScreen from '../screens/AddItem/AddTitleScreen'
+import AddPriceScreen from '../screens/AddItem/AddPriceScreen'
 
 export const AddItemScreenStackNavigator = createStackNavigator({
   Add: {
@@ -51,6 +52,21 @@ export const AddItemScreenStackNavigator = createStackNavigator({
   },
   AddTitle: {
     screen: AddTitleScreen,
+    headerLayoutPreset: 'left',
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      headerTitle: <LogoHeader />,
+    }),
+  },
+  AddPrice: {
+    screen: AddPriceScreen,
     headerLayoutPreset: 'left',
     navigationOptions: ({ navigation }) => ({
       headerStyle: {

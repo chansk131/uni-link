@@ -113,6 +113,8 @@ class AddItemScreen extends React.Component {
     this._onFocusListener = this.props.navigation.addListener(
       'didFocus',
       payload => {
+        this.checkTitle()
+        this.checkPrice()
         this.checkCondition()
         this.checkCategory()
         this.checkPic()
@@ -156,12 +158,44 @@ class AddItemScreen extends React.Component {
     })
   }
 
+  checkTitle = () => {
+    const { navigation } = this.props
+    const name = navigation.getParam('name')
+    if (name != undefined) {
+      console.log(`name is ${name}`)
+      this.updateInput('name', name)
+    }
+  }
+
+  checkPic = () => {
+    const { navigation } = this.props
+    const pic = navigation.getParam('pic')
+    if (pic != undefined) {
+      console.log(`category is ${pic}`)
+      this.updateInput('pic', pic.pic1)
+      let pictures = {}
+      for (let picture in pic) {
+        if (pic[picture] != '') pictures[picture] = pic[picture]
+      }
+      this.setState({ pic: pictures })
+    }
+  }
+
   checkCondition = () => {
     const { navigation } = this.props
     const condition = navigation.getParam('condition')
     if (condition != undefined) {
       console.log(`condition is ${condition}`)
       this.updateInput('condition', condition)
+    }
+  }
+
+  checkPrice = () => {
+    const { navigation } = this.props
+    const price = navigation.getParam('price')
+    if (price != undefined) {
+      console.log(`price is ${price}`)
+      this.updateInput('price', price)
     }
   }
 
@@ -182,20 +216,6 @@ class AddItemScreen extends React.Component {
     }
   }
 
-  checkPic = () => {
-    const { navigation } = this.props
-    const pic = navigation.getParam('pic')
-    if (pic != undefined) {
-      console.log(`category is ${pic}`)
-      this.updateInput('pic', pic.pic1)
-      let pictures = {}
-      for (let picture in pic) {
-        if (pic[picture] != '') pictures[picture] = pic[picture]
-      }
-      this.setState({ pic: pictures })
-    }
-  }
-
   renderTitle = () => {
     return (
       <View>
@@ -203,7 +223,12 @@ class AddItemScreen extends React.Component {
         <TextInput
           style={styles.txtInput}
           onFocus={() =>
-            this.props.navigation.navigate('AddTitle', { uid: this.state.uid })
+            this.props.navigation.navigate('AddTitle', {
+              uid: this.state.uid,
+              key: this.state.key,
+              section: this.state.section,
+              name: this.state.form.name.value,
+            })
           }
           onChangeText={value => this.updateInput('name', value)}
           value={this.state.form.name.value}
@@ -317,6 +342,14 @@ class AddItemScreen extends React.Component {
             £
           </Text>
           <TextInput
+            onFocus={() =>
+              this.props.navigation.navigate('AddPrice', {
+                uid: this.state.uid,
+                key: this.state.key,
+                section: this.state.section,
+                price: this.state.form.price.value,
+              })
+            }
             style={styles.txtInput}
             onChangeText={value => this.updateInput('price', value)}
             value={this.state.form.price.value}

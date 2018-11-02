@@ -10,17 +10,18 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import ValidationRules from '../../components/forms/validationRules'
 import * as firebase from 'firebase'
 
-export default class AddTitleScreen extends React.Component {
+export default class AddPriceScreen extends React.Component {
   state = {
     uid: null,
     key: null,
     section: null,
     form: {
-      name: {
+      price: {
         value: '',
         valid: false,
         rules: {
           isRequired: true,
+          isNumber: true,
         },
       },
     },
@@ -31,9 +32,9 @@ export default class AddTitleScreen extends React.Component {
     const uid = navigation.getParam('uid') || null
     const key = navigation.getParam('key') || null
     const section = navigation.getParam('section') || null
-    const name = navigation.getParam('name') || ''
-    if (name != '') {
-      this.updateInput('name', name)
+    const price = navigation.getParam('price') || ''
+    if (price != '') {
+      this.updateInput('price', price)
     }
     this.setState({ uid, key, section })
   }
@@ -56,7 +57,7 @@ export default class AddTitleScreen extends React.Component {
 
   submit = () => {
     if (
-      this.state.form.name.valid &&
+      this.state.form.price.valid &&
       this.state.key != null &&
       this.state.uid != null
     ) {
@@ -66,20 +67,20 @@ export default class AddTitleScreen extends React.Component {
         console.log(e)
       } finally {
         this.props.navigation.navigate('AddItem', {
-          name: this.state.form.name.value,
+          price: this.state.form.price.value,
           section: this.state.section,
         })
       }
     } else {
-      alert('Please add title')
+      alert('Please add correct price')
     }
   }
 
   addToDatabase = () => {
     let updates = {}
     updates[
-      '/products/' + this.state.key + '/name'
-    ] = this.state.form.name.value
+      '/products/' + this.state.key + '/price'
+    ] = this.state.form.price.value
     updates['/products/' + this.state.key + '/isAvailable'] = false
 
     return firebase
@@ -98,14 +99,25 @@ export default class AddTitleScreen extends React.Component {
           paddingTop: 10,
         }}
       >
-        <Label label={'Title'} required={true} />
-        <TextInput
-          autoFocus
-          style={styles.txtInput}
-          onChangeText={value => this.updateInput('name', value)}
-          value={this.state.form.name.value}
-          placeholder={`Name of ${this.state.section}`}
-        />
+        <Label label={'Pricing'} required={true} />
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text
+            style={{
+              fontSize: 14,
+              marginTop: 10,
+            }}
+          >
+            £
+          </Text>
+          <TextInput
+            autoFocus
+            style={styles.txtInput}
+            onChangeText={value => this.updateInput('price', value)}
+            value={this.state.form.price.value}
+            placeholder="50.00"
+            keyboardType="number-pad"
+          />
+        </View>
         <View style={{ flexDirection: 'row' }}>
           <View style={{ flex: 3 }} />
           <TouchableOpacity
