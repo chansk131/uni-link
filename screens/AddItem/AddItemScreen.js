@@ -205,6 +205,11 @@ class AddItemScreen extends React.Component {
       console.log(`location is ${location}`)
       this.updateInput('location', location)
     }
+    const qualification = navigation.getParam('qualification')
+    if (qualification != undefined) {
+      console.log(`qualification is ${qualification}`)
+      this.updateInput('qualification', qualification)
+    }
   }
 
   checkPic = () => {
@@ -550,6 +555,14 @@ class AddItemScreen extends React.Component {
       <View>
         <Label label={'Relevant Qualification'} required={false} />
         <TextInput
+          onFocus={() =>
+            this.props.navigation.navigate('AddQualification', {
+              uid: this.state.uid,
+              key: this.state.key,
+              section: this.state.section,
+              qualification: this.state.form.qualification.value,
+            })
+          }
           style={styles.txtInput}
           onChangeText={value => this.updateInput('qualification', value)}
           value={this.state.form.qualification.value}
@@ -566,6 +579,14 @@ class AddItemScreen extends React.Component {
       <View>
         <Label label={'Prefered location'} required={true} />
         <TextInput
+          onFocus={() =>
+            this.props.navigation.navigate('AddLocation', {
+              uid: this.state.uid,
+              key: this.state.key,
+              section: this.state.section,
+              location: this.state.form.location.value,
+            })
+          }
           style={styles.txtInput}
           onChangeText={value => this.updateInput('location', value)}
           value={this.state.form.location.value}

@@ -80,16 +80,18 @@ export default class AddBrandScreen extends React.Component {
   }
 
   addToDatabase = () => {
-    let updates = {}
-    updates[
-      '/products/' + this.state.key + '/brand'
-    ] = this.state.form.brand.value
-    updates['/products/' + this.state.key + '/isAvailable'] = false
+    if (this.state.form.brand.value != '') {
+      let updates = {}
+      updates[
+        '/products/' + this.state.key + '/brand'
+      ] = this.state.form.brand.value
+      updates['/products/' + this.state.key + '/isAvailable'] = false
 
-    return firebase
-      .database()
-      .ref()
-      .update(updates)
+      return firebase
+        .database()
+        .ref()
+        .update(updates)
+    }
   }
 
   render() {
