@@ -152,7 +152,7 @@ class LoginForm extends React.Component {
               value={this.state.form.password.value}
               placeholder="Password"
               secureTextEntry
-              keyboardType={Platform.OS === 'ios' ? 'email-address' : ''}
+              keyboardType={Platform.OS === 'ios' ? 'email-address' : 'default'}
               autoCapitalize="none"
             />
             <View style={{ width: '100%', height: 20 }}>
