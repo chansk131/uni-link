@@ -39,7 +39,8 @@ class ItemDetail extends React.Component {
     this.state = {
       product: null,
       itemLoaded: false,
-      similarItemLoaded: false
+      similarItemLoaded: false,
+      messageSellerButtonDisable: false
     }
   }
 
@@ -108,6 +109,7 @@ class ItemDetail extends React.Component {
   async onMessageSellerButtonPress() {
     const { product } = this.state
     if (product) {
+      this.setState({ messageSellerButtonDisable: true })
       const { uid } = product
       const { createChat, navigation } = this.props
 
@@ -117,12 +119,17 @@ class ItemDetail extends React.Component {
         .once('value')
 
       const chatId = chatIdSnapShot.val()
-      if (!chatId) createChat({ receiverId: uid, navigation })
+      if (!chatId) {
+        this.setState({ messageSellerButtonDisable: false })
+        createChat({ receiverId: uid, navigation })
+      }
 
       const snapshot = await firebase
         .database()
         .ref(`users/${firebase.auth().currentUser.uid}/chats/${chatId}`)
         .once('value')
+
+      this.setState({ messageSellerButtonDisable: false })
       if (snapshot.val()) navigation.navigate('Chat', { chatId })
       else createChat({ receiverId: uid, navigation })
     }
@@ -181,7 +188,7 @@ class ItemDetail extends React.Component {
   }
 
   renderDetail = () => {
-    const product = this.state.product
+    const { product, messageSellerButtonDisable } = this.state
     var aboutArr = []
     var descriptionArr = []
     var qualificationArr = []
@@ -217,7 +224,10 @@ class ItemDetail extends React.Component {
             justifyContent: 'space-evenly'
           }}
         >
-          <MessageSellerButton onPress={this.onMessageSellerButtonPress} />
+          <MessageSellerButton
+            onPress={this.onMessageSellerButtonPress}
+            disabled={messageSellerButtonDisable}
+          />
           <WishListButton onPress={() => this.addWishList(product)} />
         </View>
         <Divider />
