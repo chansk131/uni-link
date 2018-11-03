@@ -2,10 +2,10 @@ import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import Modal from 'react-native-modal'
 
-export const SignInModal = ({ auth, onPress }) => {
+export const SignInModal = ({ isVisible, onPress }) => {
   return (
     <View>
-      <Modal isVisible={auth}>
+      <Modal isVisible={isVisible}>
         <View
           style={{
             flex: 1,

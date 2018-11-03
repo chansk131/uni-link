@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import * as firebase from 'firebase'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
@@ -7,16 +6,14 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  Text
+  Text,
+  DeviceEventEmitter
 } from 'react-native'
 import ListItem from './ListItem'
-import { SignInModal } from '../../components'
 
 class MessageList extends Component {
-  constructor(props) {
-    super(props)
-
-    this.signInModalOnPress = this.signInModalOnPress.bind(this)
+  componentWillMount() {
+    DeviceEventEmitter.emit('checkAuth')
   }
 
   keyExtractor = (item, index) => item.id
@@ -33,17 +30,9 @@ class MessageList extends Component {
     )
   }
 
-  signInModalOnPress(e) {
-    this.props.navigation.navigate('Signin')
-  }
-
   render() {
     return (
       <React.Fragment>
-        <SignInModal
-          auth={firebase.auth().currentUser ? true : false}
-          onPress={this.signInModalOnPress}
-        />
         <View style={styles.root}>
           <View style={styles.btnContainer}>
             <TouchableOpacity

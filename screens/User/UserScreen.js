@@ -53,7 +53,7 @@ class UserScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    DeviceEventEmitter.removeListener('checkAuth')
+    //DeviceEventEmitter.removeListener('checkAuth')
   }
 
   checkAuth() {
@@ -83,7 +83,10 @@ class UserScreen extends React.Component {
           paddingTop: Constants.statusBarHeight
         }}
       >
-        <SignInModal auth={modalVisible} onPress={this.signInModalOnPress} />
+        <SignInModal
+          isVisible={modalVisible}
+          onPress={this.signInModalOnPress}
+        />
         <View
           style={{
             height: 180,
