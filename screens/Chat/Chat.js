@@ -177,8 +177,11 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = state => {
-  const { message, user } = state
+const mapStateToProps = (state, props) => {
+  const { user } = state
+  const _message = state.message
+
+  let message = _message[props.navigation.getParam('chatId')]
 
   var previousTime, previousSender
   const messages = _.map(message, (value, time) => {
