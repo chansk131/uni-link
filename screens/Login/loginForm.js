@@ -62,6 +62,9 @@ class LoginForm extends React.Component {
   }
 
   updateInput = (field, value) => {
+    // trim email
+    value = field === 'email' ? value.trim() : value
+
     // copy input into formCopy
     let formCopy = this.state.form
     formCopy[field].value = value
