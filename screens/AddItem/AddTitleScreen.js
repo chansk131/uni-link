@@ -80,12 +80,20 @@ export default class AddTitleScreen extends React.Component {
   }
 
   addToDatabase = () => {
+    const name = this.state.form.name.value
     let updates = {}
-    updates[
-      '/products/' + this.state.key + '/name'
-    ] = this.state.form.name.value
+    updates['/products/' + this.state.key + '/name'] = name
     updates['/products/' + this.state.key + '/isAvailable'] = false
-
+    updates[
+      '/productsByOwners/' + this.state.uid + '/' + this.state.key + '/name'
+    ] = name
+    updates[
+      '/productsByOwners/' +
+        this.state.uid +
+        '/' +
+        this.state.key +
+        '/isAvailable'
+    ] = false
     return firebase
       .database()
       .ref()

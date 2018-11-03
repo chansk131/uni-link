@@ -127,7 +127,16 @@ export default class PhotoUploadScreen extends React.Component {
     updates['/products/' + this.state.key + '/pictures'] = form
     updates['/products/' + this.state.key + '/pic'] = form.pic1
     updates['/products/' + this.state.key + '/isAvailable'] = false
-
+    updates[
+      '/productsByOwners/' + this.state.uid + '/' + this.state.key + '/pic'
+    ] = form.pic1
+    updates[
+      '/productsByOwners/' +
+        this.state.uid +
+        '/' +
+        this.state.key +
+        '/isAvailable'
+    ] = false
     return firebase
       .database()
       .ref()
