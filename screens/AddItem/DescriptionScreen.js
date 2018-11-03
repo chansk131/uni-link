@@ -85,7 +85,7 @@ class DescriptionScreen extends React.Component {
         updates['/products/' + key + '/description/' + val.key] = val.value
         console.log(`val is ${val.value}, key is ${val.key}`)
       })
-      updates['/products/' + key + '/' + 'isAvailable'] = false
+      updates['/products/' + key + '/' + 'status'] = 'draft'
       console.log(updates)
       return firebase
         .database()

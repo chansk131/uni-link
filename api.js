@@ -19,7 +19,8 @@
       including: {
         1: what is included with the product/ service
       }
-      isAvailable: boolean,
+      status, : draft, unsold, sold, expired
+      isAvailable, : true for most case, false for delete?
       uid: firebaseUid,
       user: username,
       timestamp,
@@ -54,6 +55,9 @@
         name,
         pic,
         price,
+        timestamp,
+        status, : draft, unsold, sold, expired
+        isAvailable, : true for most case, false for delete?
       },
       productIdTwo
     }

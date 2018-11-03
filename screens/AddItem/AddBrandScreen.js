@@ -85,7 +85,7 @@ export default class AddBrandScreen extends React.Component {
       updates[
         '/products/' + this.state.key + '/brand'
       ] = this.state.form.brand.value
-      updates['/products/' + this.state.key + '/isAvailable'] = false
+      updates['/products/' + this.state.key + '/status'] = 'draft'
 
       return firebase
         .database()

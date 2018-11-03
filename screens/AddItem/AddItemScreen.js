@@ -650,11 +650,13 @@ class AddItemScreen extends React.Component {
       uid: this.props.user.uid,
       user: this.props.user.username,
       isAvailable: true,
+      status: 'unsold',
       timestamp: firebase.database.ServerValue.TIMESTAMP,
     }
 
     let postProductByOwnerData = {
       isAvailable: true,
+      status: 'unsold',
       name: this.state.form.name.value,
       pic: this.state.form.pic.value,
       price: this.state.form.price.value,

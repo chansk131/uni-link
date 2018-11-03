@@ -126,7 +126,7 @@ export default class PhotoUploadScreen extends React.Component {
     let updates = {}
     updates['/products/' + this.state.key + '/pictures'] = form
     updates['/products/' + this.state.key + '/pic'] = form.pic1
-    updates['/products/' + this.state.key + '/isAvailable'] = false
+    updates['/products/' + this.state.key + '/status'] = 'draft'
     updates[
       '/productsByOwners/' + this.state.uid + '/' + this.state.key + '/pic'
     ] = form.pic1

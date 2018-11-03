@@ -42,7 +42,7 @@ export default class ConditionScreen extends React.Component {
   addToDatabase = () => {
     let updates = {}
     updates['/products/' + this.state.key + '/condition'] = this.state.checked
-    updates['/products/' + this.state.key + '/isAvailable'] = false
+    updates['/products/' + this.state.key + '/status'] = 'draft'
 
     return firebase
       .database()

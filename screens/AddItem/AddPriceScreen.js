@@ -80,17 +80,13 @@ export default class AddPriceScreen extends React.Component {
     const price = this.state.form.price.value
     let updates = {}
     updates['/products/' + this.state.key + '/price'] = price
-    updates['/products/' + this.state.key + '/isAvailable'] = false
+    updates['/products/' + this.state.key + '/status'] = 'draft'
     updates[
       '/productsByOwners/' + this.state.uid + '/' + this.state.key + '/price'
     ] = price
     updates[
-      '/productsByOwners/' +
-        this.state.uid +
-        '/' +
-        this.state.key +
-        '/isAvailable'
-    ] = false
+      '/productsByOwners/' + this.state.uid + '/' + this.state.key + '/status'
+    ] = 'draft'
 
     return firebase
       .database()
