@@ -9,7 +9,7 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity,
+  TouchableOpacity
 } from 'react-native'
 import { DatePicker } from 'native-base'
 import ActionSheet from 'react-native-actionsheet'
@@ -39,65 +39,65 @@ class RegisterForm extends React.Component {
         value: '',
         valid: false,
         rules: {
-          isRequired: true,
-        },
+          isRequired: true
+        }
       },
       surname: {
         value: '',
         valid: false,
         rules: {
-          isRequired: true,
-        },
+          isRequired: true
+        }
       },
       username: {
         value: '',
         valid: false,
         rules: {
-          isRequired: true,
-        },
+          isRequired: true
+        }
       },
       password: {
         value: '',
         valid: false,
         rules: {
           isRequired: true,
-          minLength: 6,
-        },
+          minLength: 6
+        }
       },
       confirmPassword: {
         value: '',
         valid: false,
         rules: {
           isRequired: true,
-          confirmPass: 'password',
-        },
+          confirmPass: 'password'
+        }
       },
       email: {
         value: '',
         valid: false,
         rules: {
           isRequired: true,
-          isEmail: true,
-        },
+          isEmail: true
+        }
       },
       university: {
         value: '',
         valid: false,
         rules: {
-          isRequired: true,
-        },
+          isRequired: true
+        }
       },
       location: {
         value: '',
         valid: false,
-        rules: {},
+        rules: {}
       },
       tel: {
         value: '',
         valid: false,
-        rules: {},
-      },
-    },
+        rules: {}
+      }
+    }
   }
 
   componentDidMount() {
@@ -149,30 +149,30 @@ class RegisterForm extends React.Component {
               ...this.state.form,
               name: {
                 ...this.state.form.name,
-                value: snapshot.val().name,
+                value: snapshot.val().name
               },
               surname: {
                 ...this.state.form.surname,
-                value: snapshot.val().surname,
+                value: snapshot.val().surname
               },
               username: {
                 ...this.state.form.username,
-                value: snapshot.val().username,
+                value: snapshot.val().username
               },
               email: {
                 ...this.state.form.email,
-                value: snapshot.val().email,
+                value: snapshot.val().email
               },
               university: {
                 ...this.state.form.university,
-                value: snapshot.val().university,
+                value: snapshot.val().university
               },
               location: {
                 ...this.state.form.location,
-                value: snapshot.val().location,
+                value: snapshot.val().location
               },
-              tel: { ...this.state.form.tel, value: snapshot.val().tel },
-            },
+              tel: { ...this.state.form.tel, value: snapshot.val().tel }
+            }
           })
           // console.log(this.state.form)
         }
@@ -274,7 +274,7 @@ class RegisterForm extends React.Component {
 
     // store input in state
     this.setState({
-      form: formCopy,
+      form: formCopy
     })
   }
 
@@ -362,7 +362,7 @@ class RegisterForm extends React.Component {
       location: this.state.form.location.value,
       tel: this.state.form.tel.value,
       isAvailable: true,
-      timestamp: Date.now(),
+      timestamp: Date.now()
     }
 
     if (
@@ -426,7 +426,7 @@ class RegisterForm extends React.Component {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'white',
+          backgroundColor: 'white'
         }}
       >
         <ActivityIndicator size="large" color="lightgrey" />
@@ -437,7 +437,7 @@ class RegisterForm extends React.Component {
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: 'white',
+          backgroundColor: 'white'
         }}
         behavior="height"
         enabled
@@ -445,7 +445,7 @@ class RegisterForm extends React.Component {
         <ScrollView
           style={{
             width: '100%',
-            paddingHorizontal: '10%',
+            paddingHorizontal: '10%'
           }}
           contentContainerStyle={{ alignItems: 'center' }}
         >
@@ -513,7 +513,7 @@ class RegisterForm extends React.Component {
               alignContent: 'flex-start',
               fontSize: 13,
               marginTop: 5,
-              color: 'grey',
+              color: 'grey'
             }}
           >
             Date of Birth
@@ -522,7 +522,7 @@ class RegisterForm extends React.Component {
             style={{
               width: '100%',
               flexDirection: 'row',
-              alignItems: 'flex-start',
+              alignItems: 'flex-start'
             }}
           >
             <DatePicker
@@ -573,7 +573,7 @@ class RegisterForm extends React.Component {
               alignItems: 'center',
               justifyContent: 'flex-end',
               flexDirection: 'row',
-              marginTop: 10,
+              marginTop: 10
             }}
           >
             <TouchableOpacity
@@ -599,7 +599,7 @@ const styles = StyleSheet.create({
   txtInputContainer: {
     marginLeft: 0,
     paddingHorizontal: '10%',
-    marginBottom: 5,
+    marginBottom: 5
   },
   txtInput: {
     width: '100%',
@@ -607,13 +607,13 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eaeaea',
     fontSize: 14,
     padding: 5,
-    marginTop: 10,
+    marginTop: 10
   },
   txt: {
     width: '100%',
     fontSize: 14,
     padding: 5,
-    marginTop: 10,
+    marginTop: 10
   },
   bntContainer: {
     backgroundColor: 'white',
@@ -623,15 +623,15 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowColor: 'grey',
     shadowOpacity: 0.5,
-    marginHorizontal: 5,
+    marginHorizontal: 5
   },
   btnTxt: {
-    fontWeight: 'bold',
-  },
+    fontWeight: 'bold'
+  }
 })
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user
 })
 
 export default connect(mapStateToProps)(RegisterForm)
