@@ -92,6 +92,7 @@ class LoginForm extends React.Component {
       this.signIn(formToSubmit.email, formToSubmit.password)
     } else {
       this.setState({ hasErrors: true })
+      this.setState({ isSubmitting: false })
       console.log('form error')
     }
   }
