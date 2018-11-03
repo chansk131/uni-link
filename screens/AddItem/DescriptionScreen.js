@@ -13,16 +13,28 @@ import { connect } from 'react-redux'
 
 class DescriptionScreen extends React.Component {
   state = {
+    uid: null,
+    key: null,
+    section: null,
     input: '',
     description: [],
     height: 50,
     newValue: '',
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { navigation } = this.props
+    const uid = navigation.getParam('uid') || null
+    const key = navigation.getParam('key') || null
+    const section = navigation.getParam('section') || null
+    const description = navigation.getParam('description') || ''
+    if (description) {
+      this.setState({ description })
+    }
+    this.setState({ uid, key, section })
+  }
 
   renderDescription = () => {
-    console.log(this.state.description)
     return (
       <View style={{ marginTop: 10 }}>
         <FlatList
@@ -49,8 +61,8 @@ class DescriptionScreen extends React.Component {
 
   addDescription = () => {
     const { navigation } = this.props
-    const firebaseKey = navigation.getParam('firebaseKey')
-    console.log(firebaseKey)
+    const key = navigation.getParam('key')
+    console.log(key)
     let length = this.state.description.length + 1
     let newKey = 'line' + length
     this.setState(
@@ -61,27 +73,34 @@ class DescriptionScreen extends React.Component {
         ],
         input: '',
       },
-      () => this.updateFirebase(firebaseKey)
+      () => this.updateFirebase(key)
     )
   }
 
-  updateFirebase = firebaseKey => {
-    console.log('updating data to firebase')
-    var updates = {}
-    updates[
-      '/products/' + firebaseKey + '/' + 'description'
-    ] = this.state.description
-    updates['/products/' + firebaseKey + '/' + 'isAvailable'] = false
-
-    firebase
-      .database()
-      .ref()
-      .update(updates)
+  updateFirebase = key => {
+    try {
+      console.log('updating data to firebase')
+      var updates = {}
+      this.state.description.map(val => {
+        updates['/products/' + key + '/description/' + val.key] = val.value
+        console.log(`val is ${val.value}, key is ${val.key}`)
+      })
+      updates['/products/' + key + '/' + 'isAvailable'] = false
+      console.log(updates)
+      return firebase
+        .database()
+        .ref()
+        .update(updates)
+    } catch (e) {
+      console.log(e)
+      alert('Saving description failed')
+    }
   }
 
   submit = () => {
-    this.props.navigation.navigate('Add', {
+    this.props.navigation.navigate('AddItem', {
       description: this.state.description,
+      section: this.state.section,
     })
   }
 

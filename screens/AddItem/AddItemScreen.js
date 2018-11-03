@@ -200,6 +200,11 @@ class AddItemScreen extends React.Component {
     if (description != undefined) {
       this.setState({ description })
     }
+    const location = navigation.getParam('location')
+    if (location != undefined) {
+      console.log(`location is ${location}`)
+      this.updateInput('location', location)
+    }
   }
 
   checkPic = () => {
@@ -496,7 +501,10 @@ class AddItemScreen extends React.Component {
             style={{ marginTop: 10 }}
             onPress={() => {
               this.props.navigation.navigate('DescriptionItem', {
-                firebaseKey: this.state.key,
+                uid: this.state.uid,
+                key: this.state.key,
+                section: this.state.section,
+                description: this.state.description,
               })
             }}
           >
@@ -514,7 +522,10 @@ class AddItemScreen extends React.Component {
             style={{ marginTop: 10 }}
             onPress={() => {
               this.props.navigation.navigate('DescriptionItem', {
-                firebaseKey: this.state.key,
+                uid: this.state.uid,
+                key: this.state.key,
+                section: this.state.section,
+                description: this.state.description,
               })
             }}
           >
