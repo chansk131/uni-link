@@ -13,7 +13,7 @@ export const setTokens = (values, cb) => {
     ['@unilinkApp@token', values.token],
     ['@unilinkApp@refreshToken', values.refToken],
     ['@unilinkApp@expireToken', expiration.toString()],
-    ['@unilinkApp@uid', values.uid]
+    ['@unilinkApp@uid', values.uid],
   ]).then(response => {
     cb()
   })
@@ -24,8 +24,12 @@ export const getTokens = cb => {
     '@unilinkApp@token',
     '@unilinkApp@refreshToken',
     '@unilinkApp@expireToken',
-    '@unilinkApp@uid'
+    '@unilinkApp@uid',
   ]).then(value => {
     cb(value)
   })
+}
+
+export const toUpperFirst = string => {
+  return string.charAt(0).toUpperCase() + string.slice(1)
 }

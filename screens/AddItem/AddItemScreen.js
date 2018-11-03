@@ -18,11 +18,17 @@ import * as firebase from 'firebase'
 import Expo from 'expo'
 import { connect } from 'react-redux'
 import { withNavigationFocus } from 'react-navigation'
+import { toUpperFirst } from '../../utils/misc'
 
 import ValidationRules from '../../components/forms/validationRules'
 
 class AddItemScreen extends React.Component {
   state = {
+    general: {
+      section: null,
+      uid: null,
+      key: null,
+    },
     section: null,
     uid: null,
     key: null,
@@ -101,6 +107,10 @@ class AddItemScreen extends React.Component {
     const { navigation } = this.props
     const section = navigation.getParam('section')
     this.setState({ section })
+    // let general = { ...this.state.general }
+    // general.section = section
+
+    // this.setState({ general }, console.log(this.state.general))
 
     const newPostKey = firebase
       .database()
@@ -113,12 +123,8 @@ class AddItemScreen extends React.Component {
     this._onFocusListener = this.props.navigation.addListener(
       'didFocus',
       payload => {
-        this.checkTitle()
-        this.checkPrice()
-        this.checkCondition()
-        this.checkCategory()
+        this.checkInput()
         this.checkPic()
-        this.checkDescription()
         console.log(this.state.form)
       }
     )
@@ -158,12 +164,41 @@ class AddItemScreen extends React.Component {
     })
   }
 
-  checkTitle = () => {
+  checkInput = () => {
     const { navigation } = this.props
     const name = navigation.getParam('name')
     if (name != undefined) {
       console.log(`name is ${name}`)
       this.updateInput('name', name)
+    }
+    const condition = navigation.getParam('condition')
+    if (condition != undefined) {
+      console.log(`condition is ${condition}`)
+      this.updateInput('condition', condition)
+    }
+    const price = navigation.getParam('price')
+    if (price != undefined) {
+      console.log(`price is ${price}`)
+      this.updateInput('price', price)
+    }
+    const category = navigation.getParam('category')
+    if (category != undefined) {
+      console.log(`category is ${category}`)
+      this.updateInput('category', category)
+    }
+    const type = navigation.getParam('type')
+    if (type != undefined) {
+      console.log(`type is ${type}`)
+      this.updateInput('type', type)
+    }
+    const brand = navigation.getParam('brand')
+    if (brand != undefined) {
+      console.log(`brand is ${brand}`)
+      this.updateInput('brand', brand)
+    }
+    const description = navigation.getParam('description')
+    if (description != undefined) {
+      this.setState({ description })
     }
   }
 
@@ -178,41 +213,6 @@ class AddItemScreen extends React.Component {
         if (pic[picture] != '') pictures[picture] = pic[picture]
       }
       this.setState({ pic: pictures })
-    }
-  }
-
-  checkCondition = () => {
-    const { navigation } = this.props
-    const condition = navigation.getParam('condition')
-    if (condition != undefined) {
-      console.log(`condition is ${condition}`)
-      this.updateInput('condition', condition)
-    }
-  }
-
-  checkPrice = () => {
-    const { navigation } = this.props
-    const price = navigation.getParam('price')
-    if (price != undefined) {
-      console.log(`price is ${price}`)
-      this.updateInput('price', price)
-    }
-  }
-
-  checkCategory = () => {
-    const { navigation } = this.props
-    const category = navigation.getParam('category')
-    if (category != undefined) {
-      console.log(`category is ${category}`)
-      this.updateInput('category', category)
-    }
-  }
-
-  checkDescription = () => {
-    const { navigation } = this.props
-    const description = navigation.getParam('description')
-    if (description != undefined) {
-      this.setState({ description })
     }
   }
 
@@ -247,7 +247,13 @@ class AddItemScreen extends React.Component {
         <View style={styles.photoSectionContainer}>
           {pic ? (
             <Image
-              style={styles.photoContainer}
+              style={{
+                width: screenWidth * 0.6,
+                aspectRatio: 16 / 9,
+                borderRadius: 5,
+                marginLeft: '5%',
+                resizeMode: 'contain',
+              }}
               source={{
                 uri: pic.pic1,
               }}
@@ -269,7 +275,7 @@ class AddItemScreen extends React.Component {
           <TouchableOpacity
             onPress={() => {
               this.props.navigation.navigate('PhotoUpload', {
-                firebaseKey: this.state.key,
+                key: this.state.key,
                 pic,
               })
             }}
@@ -302,7 +308,12 @@ class AddItemScreen extends React.Component {
             marginTop: 10,
           }}
           onPress={() => {
-            this.props.navigation.navigate('Condition', { condition })
+            this.props.navigation.navigate('Condition', {
+              condition,
+              uid: this.state.uid,
+              key: this.state.key,
+              section: this.state.section,
+            })
           }}
         >
           {condition ? (
@@ -367,8 +378,9 @@ class AddItemScreen extends React.Component {
 
   renderCategory = () => {
     const { navigation } = this.props
-    const category = navigation.getParam('category')
-    if (category) {
+    let categorySmall = navigation.getParam('category')
+    if (categorySmall) {
+      let category = toUpperFirst(categorySmall)
       return (
         <View>
           <Label label={'Category'} required={true} />
@@ -379,7 +391,12 @@ class AddItemScreen extends React.Component {
               marginTop: 10,
             }}
             onPress={() => {
-              this.props.navigation.navigate('CategoryItem', { category })
+              this.props.navigation.navigate('CategoryItem', {
+                uid: this.state.uid,
+                key: this.state.key,
+                category: categorySmall,
+                section: this.state.section,
+              })
             }}
           >
             <Ionicons name={'md-radio-button-on'} size={20} color={'black'} />
@@ -399,6 +416,8 @@ class AddItemScreen extends React.Component {
             }}
             onPress={() => {
               this.props.navigation.navigate('CategoryItem', {
+                uid: this.state.uid,
+                key: this.state.key,
                 section: this.state.section,
               })
             }}
@@ -426,6 +445,14 @@ class AddItemScreen extends React.Component {
       <View>
         <Label label={type} required={false} />
         <TextInput
+          onFocus={() =>
+            this.props.navigation.navigate('AddType', {
+              uid: this.state.uid,
+              key: this.state.key,
+              section: this.state.section,
+              type: this.state.form.type.value,
+            })
+          }
           style={styles.txtInput}
           onChangeText={value => this.updateInput('type', value)}
           value={this.state.form.type.value}
@@ -440,6 +467,14 @@ class AddItemScreen extends React.Component {
       <View>
         <Label label={'Brand'} required={false} />
         <TextInput
+          onFocus={() =>
+            this.props.navigation.navigate('AddBrand', {
+              uid: this.state.uid,
+              key: this.state.key,
+              section: this.state.section,
+              brand: this.state.form.brand.value,
+            })
+          }
           style={styles.txtInput}
           onChangeText={value => this.updateInput('brand', value)}
           value={this.state.form.brand.value}

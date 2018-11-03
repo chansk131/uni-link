@@ -10,17 +10,17 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import ValidationRules from '../../components/forms/validationRules'
 import * as firebase from 'firebase'
 
-export default class AddTitleScreen extends React.Component {
+export default class AddTypeScreen extends React.Component {
   state = {
     uid: null,
     key: null,
     section: null,
     form: {
-      name: {
+      type: {
         value: '',
-        valid: false,
+        valid: true,
         rules: {
-          isRequired: true,
+          // isRequired: true,
         },
       },
     },
@@ -31,9 +31,9 @@ export default class AddTitleScreen extends React.Component {
     const uid = navigation.getParam('uid') || null
     const key = navigation.getParam('key') || null
     const section = navigation.getParam('section') || null
-    const name = navigation.getParam('name') || ''
-    if (name != '') {
-      this.updateInput('name', name)
+    const type = navigation.getParam('type') || ''
+    if (type != '') {
+      this.updateInput('type', type)
     }
     this.setState({ uid, key, section })
   }
@@ -56,7 +56,7 @@ export default class AddTitleScreen extends React.Component {
 
   submit = () => {
     if (
-      this.state.form.name.valid &&
+      this.state.form.type.valid &&
       this.state.key != null &&
       this.state.uid != null
     ) {
@@ -74,7 +74,7 @@ export default class AddTitleScreen extends React.Component {
 
   navigateBack = () => {
     this.props.navigation.navigate('AddItem', {
-      name: this.state.form.name.value,
+      type: this.state.form.type.value,
       section: this.state.section,
     })
   }
@@ -82,8 +82,8 @@ export default class AddTitleScreen extends React.Component {
   addToDatabase = () => {
     let updates = {}
     updates[
-      '/products/' + this.state.key + '/name'
-    ] = this.state.form.name.value
+      '/products/' + this.state.key + '/type'
+    ] = this.state.form.type.value
     updates['/products/' + this.state.key + '/isAvailable'] = false
 
     return firebase
@@ -93,6 +93,13 @@ export default class AddTitleScreen extends React.Component {
   }
 
   render() {
+    if (this.state.section == 'product') {
+      var type = 'Product Type'
+      var placeholder = 'Tablet, Novel, Shoes...'
+    } else if (this.state.section == 'skillshare') {
+      var type = 'Skillshare Type'
+      var placeholder = 'Engineering Mathematics, Photoshops, Python...'
+    }
     return (
       <View
         style={{
@@ -102,13 +109,13 @@ export default class AddTitleScreen extends React.Component {
           paddingTop: 10,
         }}
       >
-        <Label label={'Title'} required={true} />
+        <Label label={type} required={false} />
         <TextInput
           autoFocus
           style={styles.txtInput}
-          onChangeText={value => this.updateInput('name', value)}
-          value={this.state.form.name.value}
-          placeholder={`Name of ${this.state.section}`}
+          onChangeText={value => this.updateInput('type', value)}
+          value={this.state.form.type.value}
+          placeholder={placeholder}
         />
         <View style={{ flexDirection: 'row' }}>
           <View style={{ flex: 3 }} />

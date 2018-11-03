@@ -14,7 +14,7 @@ import * as firebase from 'firebase'
 
 export default class PhotoUploadScreen extends React.Component {
   state = {
-    firebaseKey: null,
+    key: null,
     chosenImage: null,
     firstFreeKey: 'pic1',
     uploading: false,
@@ -36,13 +36,13 @@ export default class PhotoUploadScreen extends React.Component {
 
   componentDidMount() {
     const { navigation } = this.props
-    const firebaseKey = navigation.getParam('firebaseKey')
+    const key = navigation.getParam('key')
     const section = navigation.getParam('section')
     const pic = navigation.getParam('pic')
     pic != null
-      ? this.setState({ firebaseKey, pictures: pic, section })
-      : this.setState({ firebaseKey })
-    console.log(firebaseKey)
+      ? this.setState({ key, pictures: pic, section })
+      : this.setState({ key })
+    console.log(key)
   }
 
   launchCameraRollAsync = async () => {
@@ -71,7 +71,7 @@ export default class PhotoUploadScreen extends React.Component {
     img.uri = manipResult.uri
     if (!img.cancelled) {
       this.setState({ chosenImage: img })
-      this.handleImagePicked(img, this.state.firebaseKey)
+      this.handleImagePicked(img, this.state.key)
     }
   }
 
@@ -111,17 +111,27 @@ export default class PhotoUploadScreen extends React.Component {
           break
         }
       }
+      try {
+        this.addToDatabase(form)
+      } catch (err) {
+        console.log(err)
+      }
       this.setState({ uploading: false, pictures: form, firstFreeKey })
       console.log('success')
       return true
-      // Object.keys(this.state.pictures).forEach(key => {
-      //   if (this.state.pictures[key] == '') {
-
-      //   }
-      // })
-      // console.log('Too many pics')
-      // return false
     }
+  }
+
+  addToDatabase = form => {
+    let updates = {}
+    updates['/products/' + this.state.key + '/pictures'] = form
+    updates['/products/' + this.state.key + '/pic'] = form.pic1
+    updates['/products/' + this.state.key + '/isAvailable'] = false
+
+    return firebase
+      .database()
+      .ref()
+      .update(updates)
   }
 
   renderPhotoGrid = () => {

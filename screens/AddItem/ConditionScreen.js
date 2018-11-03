@@ -2,9 +2,11 @@ import React from 'react'
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import { CheckBox } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import * as firebase from 'firebase'
 
 export default class ConditionScreen extends React.Component {
   state = {
+    key: null,
     section: null,
     checked: null,
   }
@@ -13,7 +15,8 @@ export default class ConditionScreen extends React.Component {
     const { navigation } = this.props
     const condition = navigation.getParam('condition')
     const section = navigation.getParam('section')
-    this.setState({ checked: condition, section })
+    const key = navigation.getParam('key')
+    this.setState({ checked: condition, section, key })
   }
 
   check = value => {
@@ -21,6 +24,33 @@ export default class ConditionScreen extends React.Component {
   }
 
   submit = () => {
+    if (this.state.checked == null) {
+      alert('Please select the condition')
+    } else if (this.state.key) {
+      try {
+        this.addToDatabase()
+      } catch (e) {
+        console.log(e)
+      } finally {
+        this.navigateBack()
+      }
+    } else {
+      console.log('error')
+    }
+  }
+
+  addToDatabase = () => {
+    let updates = {}
+    updates['/products/' + this.state.key + '/condition'] = this.state.checked
+    updates['/products/' + this.state.key + '/isAvailable'] = false
+
+    return firebase
+      .database()
+      .ref()
+      .update(updates)
+  }
+
+  navigateBack = () => {
     this.props.navigation.navigate('AddItem', {
       condition: this.state.checked,
       section: this.state.section,
