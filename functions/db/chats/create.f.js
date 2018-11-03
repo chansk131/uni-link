@@ -126,7 +126,7 @@ module.exports = functions.https.onCall((data, context) => {
         .set(key)
     })
     .then(() => {
-      return { success: 'Chat successfully created.' }
+      return { success: 'Chat successfully created.', chatId: key }
     })
     .catch(error => error)
 })

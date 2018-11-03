@@ -1,5 +1,10 @@
 import React from 'react'
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
+import {
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator
+} from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 export const BuyButton = () => (
@@ -14,17 +19,22 @@ export const CartButton = () => (
   </TouchableOpacity>
 )
 
-export const MessageSellerButton = ({ onPress }) => (
-  <TouchableOpacity
-    onPress={onPress}
-    style={[
-      styles.btnContainer,
-      { width: '40%', marginHorizontal: '2%', marginLeft: '5%' },
-    ]}
-  >
-    <Text style={styles.btnTxt}>Message seller</Text>
-  </TouchableOpacity>
-)
+export const MessageSellerButton = ({ onPress, disabled }) => {
+  const opacity = disabled ? 0.5 : 1
+
+  return (
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={onPress}
+      style={[
+        styles.btnContainer,
+        { width: '40%', marginHorizontal: '2%', marginLeft: '5%', opacity }
+      ]}
+    >
+      <Text style={styles.btnTxt}>Message seller</Text>
+    </TouchableOpacity>
+  )
+}
 
 export const WishListButton = ({ onPress }) => (
   <TouchableOpacity
@@ -35,8 +45,8 @@ export const WishListButton = ({ onPress }) => (
         width: '45%',
         marginHorizontal: '2%',
         marginRight: '5%',
-        flexDirection: 'row',
-      },
+        flexDirection: 'row'
+      }
     ]}
   >
     <Ionicons name={'md-heart'} size={20} color={'red'} />
@@ -57,7 +67,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowColor: 'grey',
     shadowOpacity: 0.5,
-    elevation: 3,
+    elevation: 3
   },
-  btnTxt: { fontSize: 18 },
+  btnTxt: { fontSize: 18 }
 })
