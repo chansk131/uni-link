@@ -8,7 +8,6 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Constants } from 'expo'
-import Modal from 'react-native-modal'
 import * as firebase from 'firebase'
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -16,12 +15,14 @@ import { Username } from '../../components/Username'
 import { Followers } from '../../components/FollowingFollower'
 import { ProfilePic } from '../../components/ProfilePic'
 import { MenuButton } from '../../components/setting/MenuButton'
+import { SignInModal } from '../../components'
 
 class UserScreen extends React.Component {
   constructor(props) {
     super(props)
 
     this.checkAuth = this.checkAuth.bind(this)
+    this.signInModalOnPress = this.signInModalOnPress.bind(this)
 
     this.state = {
       modalVisible: false,
@@ -38,7 +39,10 @@ class UserScreen extends React.Component {
     const profilePicRef = firebase
       .storage()
       .ref()
-      .child(`users/${firebase.auth().currentUser.uid}`)
+      .child(
+        `users/${firebase.auth().currentUser &&
+          firebase.auth().currentUser.uid}`
+      )
     let profilePicUrl = null
     try {
       profilePicUrl = await profilePicRef.getDownloadURL()
@@ -49,7 +53,7 @@ class UserScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    DeviceEventEmitter.removeListener('checkAuth')
+    //DeviceEventEmitter.removeListener('checkAuth')
   }
 
   checkAuth() {
@@ -62,42 +66,13 @@ class UserScreen extends React.Component {
     }
   }
 
-  renderModal = () => {
-    const { modalVisible } = this.state
-
-    return (
-      <View>
-        <Modal isVisible={modalVisible}>
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({ modalVisible: false })
-                this.props.navigation.navigate('Signin')
-              }}
-              style={{
-                backgroundColor: 'white',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 20,
-                borderRadius: 5
-              }}
-            >
-              <Text>This feature requires signing in</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-      </View>
-    )
+  signInModalOnPress(e) {
+    this.setState({ modalVisible: false })
+    this.props.navigation.navigate('Signin')
   }
 
   render() {
-    const { profilePicUrl } = this.state
+    const { profilePicUrl, modalVisible } = this.state
     const { user } = this.props
 
     return (
@@ -108,7 +83,10 @@ class UserScreen extends React.Component {
           paddingTop: Constants.statusBarHeight
         }}
       >
-        {this.renderModal()}
+        <SignInModal
+          isVisible={modalVisible}
+          onPress={this.signInModalOnPress}
+        />
         <View
           style={{
             height: 180,

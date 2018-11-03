@@ -6,11 +6,16 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  Text
+  Text,
+  DeviceEventEmitter
 } from 'react-native'
 import ListItem from './ListItem'
 
 class MessageList extends Component {
+  componentWillMount() {
+    DeviceEventEmitter.emit('checkAuth')
+  }
+
   keyExtractor = (item, index) => item.id
 
   renderItem({ item }) {
@@ -27,27 +32,29 @@ class MessageList extends Component {
 
   render() {
     return (
-      <View style={styles.root}>
-        <View style={styles.btnContainer}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('AddUser')}
-            style={styles.btnSettingContainer}
-          >
-            <Text style={styles.btnText}>Create Group</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('AddUser')}
-            style={styles.btnMessageContainer}
-          >
-            <Text style={styles.btnText}>Create Chat</Text>
-          </TouchableOpacity>
+      <React.Fragment>
+        <View style={styles.root}>
+          <View style={styles.btnContainer}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('AddUser')}
+              style={styles.btnSettingContainer}
+            >
+              <Text style={styles.btnText}>Create Group</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('AddUser')}
+              style={styles.btnMessageContainer}
+            >
+              <Text style={styles.btnText}>Create Chat</Text>
+            </TouchableOpacity>
+          </View>
+          <FlatList
+            data={this.props.chats}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+          />
         </View>
-        <FlatList
-          data={this.props.chats}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-        />
-      </View>
+      </React.Fragment>
     )
   }
 }
