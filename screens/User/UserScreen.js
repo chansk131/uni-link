@@ -38,7 +38,10 @@ class UserScreen extends React.Component {
     const profilePicRef = firebase
       .storage()
       .ref()
-      .child(`users/${firebase.auth().currentUser.uid}`)
+      .child(
+        `users/${firebase.auth().currentUser &&
+          firebase.auth().currentUser.uid}`
+      )
     let profilePicUrl = null
     try {
       profilePicUrl = await profilePicRef.getDownloadURL()
