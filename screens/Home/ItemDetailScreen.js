@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   Dimensions,
-  FlatList,
+  FlatList
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 import Swiper from 'react-native-swiper'
@@ -19,7 +19,7 @@ import {
   CartButton,
   BuyButton,
   MessageSellerButton,
-  WishListButton,
+  WishListButton
 } from '../../components/itemDetail/Buttons'
 import { Divider } from '../../components/itemDetail/Divider'
 import { ContentHeader } from '../../components/itemDetail/ContentHeader'
@@ -39,7 +39,7 @@ class ItemDetail extends React.Component {
     this.state = {
       product: null,
       itemLoaded: false,
-      similarItemLoaded: false,
+      similarItemLoaded: false
     }
   }
 
@@ -69,7 +69,7 @@ class ItemDetail extends React.Component {
             product: product,
             itemLoaded: true,
             pictures: picsArr,
-            objectID: objectID,
+            objectID: objectID
           })
 
           this.fetchSimilarItems(objectID)
@@ -99,19 +99,32 @@ class ItemDetail extends React.Component {
           })
           this.setState({
             similarItems: similarArr,
-            similarItemLoaded: true,
+            similarItemLoaded: true
           })
         }
       })
   }
 
-  onMessageSellerButtonPress() {
+  async onMessageSellerButtonPress() {
     const { product } = this.state
     if (product) {
       const { uid } = product
-      const { createChat } = this.props
+      const { createChat, navigation } = this.props
 
-      createChat({ value: uid })
+      const chatIdSnapShot = await firebase
+        .database()
+        .ref(`users/${firebase.auth().currentUser.uid}/connections/${uid}`)
+        .once('value')
+
+      const chatId = chatIdSnapShot.val()
+      if (!chatId) createChat({ receiverId: uid, navigation })
+
+      const snapshot = await firebase
+        .database()
+        .ref(`users/${firebase.auth().currentUser.uid}/chats/${chatId}`)
+        .once('value')
+      if (snapshot.val()) navigation.navigate('Chat', { chatId })
+      else createChat({ receiverId: uid, navigation })
     }
   }
 
@@ -201,7 +214,7 @@ class ItemDetail extends React.Component {
           style={{
             flexDirection: 'row',
             width: '100%',
-            justifyContent: 'space-evenly',
+            justifyContent: 'space-evenly'
           }}
         >
           <MessageSellerButton onPress={this.onMessageSellerButtonPress} />
@@ -246,7 +259,7 @@ class ItemDetail extends React.Component {
       var postData = {
         name: products.name,
         pic: products.pic,
-        price: products.price,
+        price: products.price
       }
       // Write the new post's data simultaneously in the posts list and the user's post list.
       var updates = {}
@@ -270,7 +283,7 @@ class ItemDetail extends React.Component {
       <View
         style={{
           flex: 1,
-          backgroundColor: 'white',
+          backgroundColor: 'white'
         }}
       >
         <SearchButton
@@ -281,7 +294,7 @@ class ItemDetail extends React.Component {
 
         <ScrollView
           style={{
-            flex: 1,
+            flex: 1
             // backgroundColor: 'white',
           }}
         >
@@ -302,7 +315,7 @@ class ItemDetail extends React.Component {
               onPress={() =>
                 this.props.navigation.navigate('Seller', {
                   sellerId: products.uid,
-                  sellerName: products.user,
+                  sellerName: products.user
                 })
               }
             >
@@ -332,21 +345,21 @@ const styles = StyleSheet.create({
     aspectRatio: 16 / 9,
     resizeMode: 'contain',
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 10
   },
   paginationStyle: {
     position: 'absolute',
     bottom: -15,
     left: 0,
-    right: 0,
+    right: 0
   },
   headerTxt: {
-    fontSize: 20,
-  },
+    fontSize: 20
+  }
 })
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user
 })
 export default connect(
   mapStateToProps,
