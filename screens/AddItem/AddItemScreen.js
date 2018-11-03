@@ -118,14 +118,12 @@ class AddItemScreen extends React.Component {
       .child('posts')
       .push().key
     this.setState({ key: newPostKey })
-    console.log('activated')
     this.checkAuth()
     this._onFocusListener = this.props.navigation.addListener(
       'didFocus',
       payload => {
         this.checkInput()
         this.checkPic()
-        console.log(this.state.form)
       }
     )
   }
@@ -216,7 +214,7 @@ class AddItemScreen extends React.Component {
     const { navigation } = this.props
     const pic = navigation.getParam('pic')
     if (pic != undefined) {
-      console.log(`category is ${pic}`)
+      console.log(`pic is ${pic}`)
       this.updateInput('pic', pic.pic1)
       let pictures = {}
       for (let picture in pic) {
@@ -497,7 +495,6 @@ class AddItemScreen extends React.Component {
   renderDescription = () => {
     const { navigation } = this.props
     const description = navigation.getParam('description')
-    console.log(`description is ${description}`)
     if (description == null || description.length == 0) {
       return (
         <View>
@@ -605,25 +602,25 @@ class AddItemScreen extends React.Component {
     }
     if (isformValid) {
       console.log('valid')
-      // try {
-      //   this.addToDatabase()
-      // } catch (e) {
-      //   console.log(e)
-      //   return
-      // } finally {
-      //   let postProductByOwnerData = {
-      //     isAvailable: true,
-      //     name: this.state.form.name.value,
-      //     pic: this.state.form.pic.value,
-      //     price: this.state.form.price.value,
-      //     timestamp: firebase.database.ServerValue.TIMESTAMP,
-      //     objectID: this.state.key,
-      //     user: this.props.user.username,
-      //   }
-      //   this.props.navigation.navigate('ItemDetail', {
-      //     products: postProductByOwnerData,
-      //   })
-      // }
+      try {
+        this.addToDatabase()
+      } catch (e) {
+        console.log(e)
+        return
+      } finally {
+        let postProductByOwnerData = {
+          isAvailable: true,
+          name: this.state.form.name.value,
+          pic: this.state.form.pic.value,
+          price: this.state.form.price.value,
+          timestamp: firebase.database.ServerValue.TIMESTAMP,
+          objectID: this.state.key,
+          user: this.props.user.username,
+        }
+        this.props.navigation.navigate('ItemDetail', {
+          products: postProductByOwnerData,
+        })
+      }
     } else {
       console.log('not valid')
     }
@@ -649,6 +646,7 @@ class AddItemScreen extends React.Component {
       brand: this.state.form.brand.value,
       pictures: this.state.pic,
       description,
+      section: this.state.section,
       uid: this.props.user.uid,
       user: this.props.user.username,
       isAvailable: true,
@@ -663,6 +661,8 @@ class AddItemScreen extends React.Component {
       timestamp: firebase.database.ServerValue.TIMESTAMP,
     }
 
+    console.log(postProductData)
+
     let updates = {}
 
     updates['/products/' + this.state.key] = postProductData
@@ -670,10 +670,10 @@ class AddItemScreen extends React.Component {
       '/productsByOwners/' + this.props.user.uid + '/' + this.state.key
     ] = postProductByOwnerData
 
-    return firebase
-      .database()
-      .ref()
-      .update(updates)
+    // return firebase
+    //   .database()
+    //   .ref()
+    //   .update(updates)
   }
 
   render() {
@@ -706,9 +706,9 @@ class AddItemScreen extends React.Component {
                 <View style={{ flex: 3 }} />
                 <TouchableOpacity
                   onPress={() => this.submit()}
-                  style={styles.submitButtonContainer}
+                  style={[styles.submitButtonContainer]}
                 >
-                  <Text style={styles.submitButtonTxt}>OKAY</Text>
+                  <Text style={[styles.submitButtonTxt]}>List</Text>
                 </TouchableOpacity>
                 <View style={{ height: 50 }} />
               </View>

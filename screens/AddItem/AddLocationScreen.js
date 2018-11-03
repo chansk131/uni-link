@@ -10,18 +10,17 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import ValidationRules from '../../components/forms/validationRules'
 import * as firebase from 'firebase'
 
-export default class AddPriceScreen extends React.Component {
+export default class AddLocationScreen extends React.Component {
   state = {
     uid: null,
     key: null,
     section: null,
     form: {
-      price: {
+      location: {
         value: '',
         valid: false,
         rules: {
           isRequired: true,
-          isNumber: true,
         },
       },
     },
@@ -32,9 +31,9 @@ export default class AddPriceScreen extends React.Component {
     const uid = navigation.getParam('uid') || null
     const key = navigation.getParam('key') || null
     const section = navigation.getParam('section') || null
-    const price = navigation.getParam('price') || ''
-    if (price != '') {
-      this.updateInput('price', price)
+    const location = navigation.getParam('location') || ''
+    if (location != '') {
+      this.updateInput('location', location)
     }
     this.setState({ uid, key, section })
   }
@@ -57,7 +56,7 @@ export default class AddPriceScreen extends React.Component {
 
   submit = () => {
     if (
-      this.state.form.price.valid &&
+      this.state.form.location.valid &&
       this.state.key != null &&
       this.state.uid != null
     ) {
@@ -66,31 +65,26 @@ export default class AddPriceScreen extends React.Component {
       } catch (e) {
         console.log(e)
       } finally {
-        this.props.navigation.navigate('AddItem', {
-          price: this.state.form.price.value,
-          section: this.state.section,
-        })
+        this.navigateBack()
       }
     } else {
-      alert('Please add correct price')
+      alert('Please add title')
     }
   }
 
+  navigateBack = () => {
+    this.props.navigation.navigate('AddItem', {
+      location: this.state.form.location.value,
+      section: this.state.section,
+    })
+  }
+
   addToDatabase = () => {
-    const price = this.state.form.price.value
     let updates = {}
-    updates['/products/' + this.state.key + '/price'] = price
+    updates[
+      '/products/' + this.state.key + '/location'
+    ] = this.state.form.location.value
     updates['/products/' + this.state.key + '/isAvailable'] = false
-    updates[
-      '/productsByOwners/' + this.state.uid + '/' + this.state.key + '/price'
-    ] = price
-    updates[
-      '/productsByOwners/' +
-        this.state.uid +
-        '/' +
-        this.state.key +
-        '/isAvailable'
-    ] = false
 
     return firebase
       .database()
@@ -99,6 +93,8 @@ export default class AddPriceScreen extends React.Component {
   }
 
   render() {
+    var placeholder =
+      'Enter location you preferred to sell this ' + this.state.section
     return (
       <View
         style={{
@@ -108,25 +104,14 @@ export default class AddPriceScreen extends React.Component {
           paddingTop: 10,
         }}
       >
-        <Label label={'Pricing'} required={true} />
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text
-            style={{
-              fontSize: 14,
-              marginTop: 10,
-            }}
-          >
-            £
-          </Text>
-          <TextInput
-            autoFocus
-            style={styles.txtInput}
-            onChangeText={value => this.updateInput('price', value)}
-            value={this.state.form.price.value}
-            placeholder="50.00"
-            keyboardType="number-pad"
-          />
-        </View>
+        <Label label={'Prefered Location'} required={true} />
+        <TextInput
+          autoFocus
+          style={styles.txtInput}
+          onChangeText={value => this.updateInput('location', value)}
+          value={this.state.form.location.value}
+          placeholder={placeholder}
+        />
         <View style={{ flexDirection: 'row' }}>
           <View style={{ flex: 3 }} />
           <TouchableOpacity
