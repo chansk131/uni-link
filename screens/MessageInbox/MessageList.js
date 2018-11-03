@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import * as firebase from 'firebase'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
@@ -9,8 +10,15 @@ import {
   Text
 } from 'react-native'
 import ListItem from './ListItem'
+import { SignInModal } from '../../components'
 
 class MessageList extends Component {
+  constructor(props) {
+    super(props)
+
+    this.signInModalOnPress = this.signInModalOnPress.bind(this)
+  }
+
   keyExtractor = (item, index) => item.id
 
   renderItem({ item }) {
@@ -25,29 +33,39 @@ class MessageList extends Component {
     )
   }
 
+  signInModalOnPress(e) {
+    this.props.navigation.navigate('Signin')
+  }
+
   render() {
     return (
-      <View style={styles.root}>
-        <View style={styles.btnContainer}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('AddUser')}
-            style={styles.btnSettingContainer}
-          >
-            <Text style={styles.btnText}>Create Group</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('AddUser')}
-            style={styles.btnMessageContainer}
-          >
-            <Text style={styles.btnText}>Create Chat</Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={this.props.chats}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
+      <React.Fragment>
+        <SignInModal
+          auth={firebase.auth().currentUser ? true : false}
+          onPress={this.signInModalOnPress}
         />
-      </View>
+        <View style={styles.root}>
+          <View style={styles.btnContainer}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('AddUser')}
+              style={styles.btnSettingContainer}
+            >
+              <Text style={styles.btnText}>Create Group</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('AddUser')}
+              style={styles.btnMessageContainer}
+            >
+              <Text style={styles.btnText}>Create Chat</Text>
+            </TouchableOpacity>
+          </View>
+          <FlatList
+            data={this.props.chats}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+          />
+        </View>
+      </React.Fragment>
     )
   }
 }
