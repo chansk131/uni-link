@@ -106,19 +106,27 @@ class AddItemScreen extends React.Component {
     // check is it product or service page
     const { navigation } = this.props
     const section = navigation.getParam('section')
+    let key = navigation.getParam('key')
     this.setState({ section })
     // let general = { ...this.state.general }
     // general.section = section
 
     // this.setState({ general }, console.log(this.state.general))
 
-    const newPostKey = firebase
-      .database()
-      .ref()
-      .child('posts')
-      .push().key
-    this.setState({ key: newPostKey })
     this.checkAuth()
+    if (!key) {
+      console.log('create new key')
+      key = firebase
+        .database()
+        .ref()
+        .child('posts')
+        .push().key
+    } else if (key && !section) {
+      this.fetchItemDetail(key)
+    } else {
+      console.log('other cases?')
+    }
+    this.setState({ key })
     this._onFocusListener = this.props.navigation.addListener(
       'didFocus',
       payload => {
@@ -143,6 +151,30 @@ class AddItemScreen extends React.Component {
         }
       })
     }
+  }
+
+  fetchItemDetail = key => {
+    console.log(`key is ${key}`)
+    return firebase
+      .database()
+      .ref('/products/' + key)
+      .once('value')
+      .then(snapshot => {
+        const product = snapshot.val()
+        const section = product.section
+        console.log(`section is ${section}`)
+        this.setState({ section })
+        this.updateInput('name', product.name)
+        this.updateInput('condition', product.condition)
+        this.updateInput('price', product.price)
+        this.updateInput('category', product.category)
+        this.updateInput('type', product.type)
+        this.updateInput('brand', product.brand)
+        this.updateInput('location', product.location)
+        this.updateInput('qualification', product.qualification)
+        // description
+        // pic
+      })
   }
 
   updateInput = (field, value) => {
