@@ -20,6 +20,7 @@ import {
   BuyButton,
   MessageSellerButton,
   WishListButton,
+  EditButton,
 } from '../../components/itemDetail/Buttons'
 import { Divider } from '../../components/itemDetail/Divider'
 import { ContentHeader } from '../../components/itemDetail/ContentHeader'
@@ -30,7 +31,7 @@ import { ProductCard } from '../../components/productCard/ProductCard'
 
 const { width, height } = Dimensions.get('window')
 
-class SellingDetailScreen extends React.Component {
+class UnsoldDetailScreen extends React.Component {
   constructor(props) {
     super(props)
 
@@ -215,21 +216,13 @@ class SellingDetailScreen extends React.Component {
     }
     return this.state.itemLoaded && product && aboutArr ? (
       <View>
-        <BuyButton />
-        <CartButton />
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-evenly',
+        <EditButton
+          onEdit={() => {
+            this.props.navigation.navigate('AddItem', {
+              key: this.state.objectID,
+            })
           }}
-        >
-          <MessageSellerButton
-            onPress={this.onMessageSellerButtonPress}
-            disabled={messageSellerButtonDisable}
-          />
-          <WishListButton onPress={() => this.addWishList(product)} />
-        </View>
+        />
         <Divider />
         <ContentHeader text={'About this item'} />
         <View style={{ marginHorizontal: '8%' }}>
@@ -321,26 +314,9 @@ class SellingDetailScreen extends React.Component {
             <Text style={[styles.headerTxt, { fontWeight: 'bold' }]}>
               £{products.price}
             </Text>
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate('Seller', {
-                  sellerId: products.uid,
-                  sellerName: products.user,
-                })
-              }
-            >
-              <Text style={styles.headerTxt}>By {products.user}</Text>
-            </TouchableOpacity>
           </View>
           {this.renderDetail()}
           <View style={{ height: 20, width: '100%' }} />
-
-          {/* 
-          <TouchableOpacity onPress={() => this.addWishList(products)}>
-            <Text>ADD TO WISHLIST</Text>
-          </TouchableOpacity>
-          
-           */}
         </ScrollView>
       </View>
     )
@@ -374,4 +350,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { createChat }
-)(SellingDetailScreen)
+)(UnsoldDetailScreen)

@@ -32,7 +32,20 @@ class AddItemScreen extends React.Component {
     section: null,
     uid: null,
     key: null,
-    pic: null,
+    pic: {
+      pic1: '',
+      pic2: '',
+      pic3: '',
+      pic4: '',
+      pic5: '',
+      pic6: '',
+      pic7: '',
+      pic8: '',
+      pic9: '',
+      pic10: '',
+      pic11: '',
+      pic12: '',
+    },
     description: [],
     form: {
       condition: {
@@ -162,7 +175,6 @@ class AddItemScreen extends React.Component {
       .then(snapshot => {
         const product = snapshot.val()
         const section = product.section
-        console.log(`section is ${section}`)
         this.setState({ section })
         this.updateInput('name', product.name)
         this.updateInput('condition', product.condition)
@@ -172,7 +184,19 @@ class AddItemScreen extends React.Component {
         this.updateInput('brand', product.brand)
         this.updateInput('location', product.location)
         this.updateInput('qualification', product.qualification)
-        // description
+        let description = []
+        Object.entries(product.description).forEach((val, key) => {
+          description.push({ key: val[0], value: val[1] })
+        })
+        this.setState({ description })
+        let pic = product.pictures
+        for (i = 1; i <= 12; i++) {
+          let picKey = 'pic' + i
+          if (!pic[picKey]) {
+            pic[picKey] = ''
+          }
+        }
+        this.setState({ pic })
         // pic
       })
   }
@@ -244,7 +268,7 @@ class AddItemScreen extends React.Component {
   checkPic = () => {
     const { navigation } = this.props
     const pic = navigation.getParam('pic')
-    if (pic != undefined) {
+    if (pic && pic.pic1) {
       console.log(`pic is ${pic}`)
       this.updateInput('pic', pic.pic1)
       let pictures = {}
@@ -279,12 +303,16 @@ class AddItemScreen extends React.Component {
 
   renderPic = () => {
     const { navigation } = this.props
-    const pic = navigation.getParam('pic')
+    let pic = navigation.getParam('pic')
+    if (!pic && this.state.pic) {
+      pic = this.state.pic
+    }
+    console.log(pic)
     return (
       <View>
         <Label label={'Photos'} required={true} />
         <View style={styles.photoSectionContainer}>
-          {pic ? (
+          {pic && pic.pic1 != '' ? (
             <Image
               style={{
                 width: screenWidth * 0.6,
@@ -337,7 +365,10 @@ class AddItemScreen extends React.Component {
 
   renderCondition = () => {
     const { navigation } = this.props
-    const condition = navigation.getParam('condition')
+    let condition = navigation.getParam('condition')
+    if (!condition && this.state.form.condition.value != '') {
+      condition = this.state.form.condition.value
+    }
     return this.state.section == 'product' ? (
       <View>
         <Label label={'Condition'} required={true} />
@@ -417,9 +448,11 @@ class AddItemScreen extends React.Component {
 
   renderCategory = () => {
     const { navigation } = this.props
-    let categorySmall = navigation.getParam('category')
-    if (categorySmall) {
-      let category = toUpperFirst(categorySmall)
+    let category = navigation.getParam('category')
+    if (!category && this.state.form.category.value != '') {
+      category = this.state.form.category.value
+    }
+    if (category) {
       return (
         <View>
           <Label label={'Category'} required={true} />
@@ -525,7 +558,13 @@ class AddItemScreen extends React.Component {
 
   renderDescription = () => {
     const { navigation } = this.props
-    const description = navigation.getParam('description')
+    let description = navigation.getParam('description')
+    if (
+      (description == null || description.length == 0) &&
+      this.state.description.length != 0
+    ) {
+      description = this.state.description
+    }
     if (description == null || description.length == 0) {
       return (
         <View>
@@ -548,6 +587,7 @@ class AddItemScreen extends React.Component {
         </View>
       )
     } else {
+      // console.log(description)
       return (
         <View>
           <Label label={'Description'} required={false} />

@@ -35,10 +35,7 @@ class SellingScreen extends React.Component {
         console.log(e)
       }
     }
-    // if (this.props.user.uid != null) {
-    //   this.fetchUnSoldData()
-    //   this.fetchSoldData()
-    // }
+    ß
   }
 
   checkAuth = () => {
@@ -93,56 +90,14 @@ class SellingScreen extends React.Component {
       })
   }
 
-  fetchUnSoldData = async () => {
-    var userId = firebase.auth().currentUser.uid
-    return firebase
-      .database()
-      .ref('/productsByOwners/' + userId)
-      .once('value')
-      .then(snapshot => {
-        var results = snapshot.val()
-        let resultsArr = []
-        if (results) {
-          Object.keys(results).forEach(function(key) {
-            resultsArr.push({ key: key, objectID: key, ...results[key] })
-          })
-          this.setState({
-            products: { ...this.state.products, unSold: resultsArr },
-            itemLoaded: true,
-          })
-          // console.log(this.state)
-        }
-      })
-  }
-
-  fetchSoldData = async () => {
-    var userId = firebase.auth().currentUser.uid
-    return firebase
-      .database()
-      .ref('/productsByOwners/' + userId)
-      .orderByChild('isAvailable')
-      .equalTo(false)
-      .once('value')
-      .then(snapshot => {
-        var results = snapshot.val()
-        let resultsArr = []
-        if (results) {
-          Object.keys(results).forEach(function(key) {
-            resultsArr.push({ key: key, objectID: key, ...results[key] })
-          })
-          this.setState({
-            products: { ...this.state.products, sold: resultsArr },
-            itemLoaded: true,
-          })
-        }
-        // console.log(this.state)
-      })
-  }
-
   pressItem = item => {
     console.log(item)
-    if (this.state.selected == 'Unsold') {
-      this.props.navigation.navigate('SellingDetail', {
+    if (this.state.selected == 'Sold') {
+      this.props.navigation.navigate('SoldDetail', {
+        products: item,
+      })
+    } else if (this.state.selected == 'Unsold') {
+      this.props.navigation.navigate('UnsoldDetail', {
         products: item,
       })
     } else if (this.state.selected == 'Draft') {

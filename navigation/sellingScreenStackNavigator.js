@@ -7,7 +7,7 @@ import {
   LogoHeader,
   MessageHeader,
 } from '../components/header/HeaderIcons'
-import SellingDetailScreen from '../screens/Selling/SellingDetailScreen'
+import SellingDetailScreen from '../screens/Selling/SoldDetailScreen'
 import AddItemScreen from '../screens/AddItem/AddItemScreen'
 import AddTitleScreen from '../screens/AddItem/AddTitleScreen'
 import AddPriceScreen from '../screens/AddItem/AddPriceScreen'
@@ -21,6 +21,8 @@ import AboutItemScreen from '../screens/AddItem/AboutItemScreen'
 import PhotoUploadScreen from '../screens/AddItem/PhotoUploadScreen'
 import DescriptionScreen from '../screens/AddItem/DescriptionScreen'
 import QualificationScreen from '../screens/AddItem/QualificationScreen'
+import SoldDetailScreen from '../screens/Selling/SoldDetailScreen'
+import UnsoldDetailScreen from '../screens/Selling/UnsoldDetailScreen'
 
 export const SellingScreenStackNavigator = createStackNavigator({
   SellingContent: {
@@ -40,8 +42,21 @@ export const SellingScreenStackNavigator = createStackNavigator({
       headerRight: <MessageHeader navigation={navigation} />,
     }),
   },
-  SellingDetail: {
-    screen: SellingDetailScreen,
+  SoldDetail: {
+    screen: SoldDetailScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeader />,
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
+  UnsoldDetail: {
+    screen: UnsoldDetailScreen,
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
         backgroundColor: 'white',
