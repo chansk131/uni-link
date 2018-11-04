@@ -24,10 +24,12 @@ class WishListScreen extends React.Component {
       .then(snapshot => {
         var results = snapshot.val()
         let resultsArr = []
-        Object.keys(results).forEach(function(key) {
-          resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
-        })
-        this.setState({ products: resultsArr })
+        if (results) {
+          Object.keys(results).forEach(function(key) {
+            resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
+          })
+          this.setState({ products: resultsArr })
+        }
       })
   }
 
