@@ -15,6 +15,7 @@ import * as firebase from 'firebase'
 export default class PhotoUploadScreen extends React.Component {
   state = {
     key: null,
+    uid: null,
     chosenImage: null,
     firstFreeKey: 'pic1',
     uploading: false,
@@ -39,9 +40,10 @@ export default class PhotoUploadScreen extends React.Component {
     const key = navigation.getParam('key')
     const section = navigation.getParam('section')
     const pic = navigation.getParam('pic')
+    const uid = navigation.getParam('uid')
     pic != null
-      ? this.setState({ key, pictures: pic, section })
-      : this.setState({ key })
+      ? this.setState({ key, uid, pictures: pic, section })
+      : this.setState({ key, uid })
     console.log(key)
   }
 
@@ -114,6 +116,7 @@ export default class PhotoUploadScreen extends React.Component {
       try {
         this.addToDatabase(form)
       } catch (err) {
+        console.log('fail')
         console.log(err)
       }
       this.setState({ uploading: false, pictures: form, firstFreeKey })
@@ -131,12 +134,9 @@ export default class PhotoUploadScreen extends React.Component {
       '/productsByOwners/' + this.state.uid + '/' + this.state.key + '/pic'
     ] = form.pic1
     updates[
-      '/productsByOwners/' +
-        this.state.uid +
-        '/' +
-        this.state.key +
-        '/isAvailable'
-    ] = false
+      '/productsByOwners/' + this.state.uid + '/' + this.state.key + '/status'
+    ] = 'draft'
+    console.log(updates)
     return firebase
       .database()
       .ref()

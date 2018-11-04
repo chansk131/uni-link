@@ -343,6 +343,7 @@ class AddItemScreen extends React.Component {
             onPress={() => {
               this.props.navigation.navigate('PhotoUpload', {
                 key: this.state.key,
+                uid: this.state.uid,
                 pic,
               })
             }}
