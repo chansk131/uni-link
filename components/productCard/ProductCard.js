@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native'
 import { Card } from 'react-native-elements'
+import { months } from '../../utils/months'
 
 export const ProductCard = props => {
   // shorten long name
@@ -73,6 +74,7 @@ export const ProductOrderedCard = props => {
 }
 
 export const ProductPurchasedCard = props => {
+  let timestamp = new Date(props.timestamp)
   // shorten long name
   var name = props.name
   if (name.length > 45) {
@@ -101,7 +103,9 @@ export const ProductPurchasedCard = props => {
               </View>
               <View style={{ marginLeft: 2 }}>
                 <Text style={[styles.txt, { fontWeight: 'bold' }]}>
-                  {props.timestamp}
+                  {`${timestamp.getDate()} ${
+                    months[timestamp.getMonth()]
+                  } ${timestamp.getFullYear()}`}
                 </Text>
                 <Text style={[styles.txt, { fontWeight: 'bold' }]}>
                   £{props.price}
