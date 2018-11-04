@@ -84,7 +84,7 @@ const listenToUsernameChanges = dispatch => {
     .on('value', snapshot => {
       dispatch({
         type: UPDATE_USER,
-        payload: { username: snapshot.val() },
+        payload: { username: snapshot.val() || 'username' },
       })
     })
 }
@@ -129,7 +129,7 @@ const listenToLocationChanges = dispatch => {
     .on('value', snapshot => {
       dispatch({
         type: UPDATE_USER,
-        payload: { location: snapshot.val() },
+        payload: { location: snapshot.val() || 'N/A' },
       })
     })
 }
@@ -142,7 +142,7 @@ const listenToFollowerChanges = dispatch => {
     .on('value', snapshot => {
       dispatch({
         type: UPDATE_USER,
-        payload: { followers: snapshot.val() },
+        payload: { followers: snapshot.val() || 0 },
       })
     })
 }
@@ -155,7 +155,7 @@ const listenToFollowingChanges = dispatch => {
     .on('value', snapshot => {
       dispatch({
         type: UPDATE_USER,
-        payload: { following: snapshot.val() },
+        payload: { following: snapshot.val() || 0 },
       })
     })
 }
