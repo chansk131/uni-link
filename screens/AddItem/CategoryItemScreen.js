@@ -95,6 +95,7 @@ export default class CategoryItemScreen extends React.Component {
     let updates = {}
     updates['/products/' + this.state.key + '/category'] = this.state.checked
     updates['/products/' + this.state.key + '/status'] = 'draft'
+    updates['/products/' + this.state.key + '/section'] = this.state.section
 
     return firebase
       .database()

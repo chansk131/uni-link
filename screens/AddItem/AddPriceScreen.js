@@ -87,6 +87,7 @@ export default class AddPriceScreen extends React.Component {
     updates[
       '/productsByOwners/' + this.state.uid + '/' + this.state.key + '/status'
     ] = 'draft'
+    updates['/products/' + this.state.key + '/section'] = this.state.section
 
     return firebase
       .database()

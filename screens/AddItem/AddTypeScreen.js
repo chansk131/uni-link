@@ -86,6 +86,7 @@ export default class AddTypeScreen extends React.Component {
         '/products/' + this.state.key + '/type'
       ] = this.state.form.type.value
       updates['/products/' + this.state.key + '/status'] = 'draft'
+      updates['/products/' + this.state.key + '/section'] = this.state.section
 
       return firebase
         .database()
