@@ -71,14 +71,26 @@ class WishListScreen extends React.Component {
       )
     }
 
-    return false
+    return (
+      <View
+        style={{
+          margin: 20,
+          alignContent: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Text style={{ fontSize: 20, color: 'lightgrey', fontWeight: 'bold' }}>
+          No Product Wishlist Found
+        </Text>
+      </View>
+    )
   }
 
   renderWishlistServices = props => {
-    if (props !== null) {
+    if (props) {
       var result = Object.values(props)
       console.log(result.length)
-      if (0) {
+      if (result.length) {
         return (
           <View style={{ flex: 1 }}>
             <FlatList
@@ -109,13 +121,26 @@ class WishListScreen extends React.Component {
           <Text
             style={{ fontSize: 20, color: 'lightgrey', fontWeight: 'bold' }}
           >
-            No Product Wishlist Found
+            No Service Wishlist Found
           </Text>
         </View>
       )
     }
 
-    return false
+    return (
+      <View
+        style={{
+          margin: 20,
+          alignContent: 'center',
+          justifyContent: 'center',
+          flex: 1,
+        }}
+      >
+        <Text style={{ fontSize: 20, color: 'lightgrey', fontWeight: 'bold' }}>
+          No Service Wishlist Found
+        </Text>
+      </View>
+    )
   }
 
   render() {
