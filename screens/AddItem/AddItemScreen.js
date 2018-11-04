@@ -143,7 +143,6 @@ class AddItemScreen extends React.Component {
         }
       })
     }
-    console.log(`user is ${this.props.user}`)
   }
 
   updateInput = (field, value) => {
