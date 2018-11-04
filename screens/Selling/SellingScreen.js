@@ -35,7 +35,6 @@ class SellingScreen extends React.Component {
         console.log(e)
       }
     }
-    ß
   }
 
   checkAuth = () => {
