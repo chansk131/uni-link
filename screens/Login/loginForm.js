@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   KeyboardAvoidingView,
-  Platform
+  Platform,
 } from 'react-native'
 import ValidationRules from '../../components/forms/validationRules'
 import * as firebase from 'firebase'
@@ -28,18 +28,18 @@ class LoginForm extends React.Component {
         valid: false,
         rules: {
           isRequired: true,
-          isEmail: true
-        }
+          isEmail: true,
+        },
       },
       password: {
         value: '',
         valid: false,
         rules: {
           isRequired: true,
-          minLength: 6
-        }
-      }
-    }
+          minLength: 6,
+        },
+      },
+    },
   }
 
   componentDidMount = () => {
@@ -76,7 +76,7 @@ class LoginForm extends React.Component {
 
     // store input in state
     this.setState({
-      form: formCopy
+      form: formCopy,
     })
   }
 
@@ -91,7 +91,7 @@ class LoginForm extends React.Component {
     }
 
     if (isformValid) {
-      console.log(formToSubmit)
+      // console.log(formToSubmit)
       this.signIn(formToSubmit.email, formToSubmit.password)
     } else {
       this.setState({ hasErrors: true })
@@ -101,7 +101,7 @@ class LoginForm extends React.Component {
   }
 
   signIn = (email, password) => {
-    console.log(email, password)
+    // console.log(email, password)
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -140,7 +140,7 @@ class LoginForm extends React.Component {
               flex: 5,
               justifyContent: 'flex-start',
               width: '100%',
-              padding: '20%'
+              padding: '20%',
             }}
           >
             <TextInput
@@ -168,7 +168,7 @@ class LoginForm extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'flex-end',
                 flexDirection: 'row',
-                marginTop: 10
+                marginTop: 10,
               }}
             >
               {this.state.isSubmitting ? (
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   txtInputContainer: {
     marginLeft: 0,
     paddingHorizontal: '10%',
-    marginBottom: 5
+    marginBottom: 5,
   },
   txtInput: {
     width: '100%',
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eaeaea',
     fontSize: 14,
     padding: 5,
-    marginBottom: 20
+    marginBottom: 20,
   },
   bntContainer: {
     backgroundColor: 'white',
@@ -211,10 +211,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowColor: 'grey',
     shadowOpacity: 0.5,
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   btnTxt: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   errorContainer: {
     // marginBottom: 20,
@@ -222,8 +222,8 @@ const styles = StyleSheet.create({
   },
   errorLabel: {
     color: 'red',
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 })
 
 export default connect(
