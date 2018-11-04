@@ -11,7 +11,7 @@ import MyAccountScreen from '../screens/User/MyAccountScreen'
 import AboutScreen from '../screens/AboutScreen'
 import {
   AddUserHeader,
-  LogoHeaderWithText
+  LogoHeaderWithText,
 } from '../components/header/HeaderIcons'
 
 const CustomDrawerComponent = props => (
@@ -22,7 +22,7 @@ const CustomDrawerComponent = props => (
           alignItems: 'center',
           justifyContent: 'center',
           height: 50,
-          backgroundColor: 'black'
+          backgroundColor: 'black',
         }}
       >
         <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>
@@ -39,20 +39,20 @@ export const DrawerNavigator = createDrawerNavigator(
     Home: {
       screen: TabNavigator,
       navigationOptions: {
-        drawerLabel: 'HOME'
-      }
+        drawerLabel: 'HOME',
+      },
     },
     MyAccount: {
       screen: MyAccountScreen,
       navigationOptions: {
-        drawerLabel: 'MY ACCOUNT'
-      }
+        drawerLabel: 'MY ACCOUNT',
+      },
     },
     MyOrder: {
       screen: MyOrderScreen,
       navigationOptions: {
-        drawerLabel: 'MY ORDER'
-      }
+        drawerLabel: 'MY ORDER',
+      },
     },
     Messaging: {
       screen: MessageListScreen,
@@ -62,34 +62,35 @@ export const DrawerNavigator = createDrawerNavigator(
         headerStyle: {
           backgroundColor: 'white',
           borderBottomWidth: 0,
-          elevation: 3
+          elevation: 3,
         },
         headerTitle: <LogoHeaderWithText text="Messenger" />,
-        headerRight: <AddUserHeader navigation={navigation} />
-      })
+        headerRight: <AddUserHeader navigation={navigation} />,
+      }),
     },
     About: {
       screen: AboutScreen,
       navigationOptions: {
-        drawerLabel: 'ABOUT'
-      }
+        drawerLabel: 'ABOUT',
+      },
     },
     Help: {
       screen: HelpScreenStackNavigator,
       navigationOptions: {
-        drawerLabel: 'HELP / FAQ'
-      }
-    }
+        drawerLabel: 'HELP / FAQ',
+      },
+    },
   },
   {
+    drawerLockMode: 'locked-closed',
     contentComponent: CustomDrawerComponent,
     contentOptions: {
       labelStyle: { fontWeight: 'bold', fontSize: 15, textAlign: 'center' },
       itemStyle: {
         borderColor: '#707070',
         borderBottomWidth: 0.5,
-        alignItems: 'center'
-      }
-    }
+        alignItems: 'center',
+      },
+    },
   }
 )
