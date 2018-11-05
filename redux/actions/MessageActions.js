@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { SQLite } from 'expo'
 import * as firebase from 'firebase'
 import { FETCH_MESSAGE_SUCCESS, CLEAR_MESSAGE } from './types'
@@ -5,7 +6,40 @@ import { FETCH_MESSAGE_SUCCESS, CLEAR_MESSAGE } from './types'
 // open presist database (or create one and open if it doesn't already exists).
 const db = SQLite.openDatabase('db.db')
 
-export const fetchMessage = chatId => dispatch => {
+export const fetchMessage = chatId => (dispatch, getState) => {
+  // if there's data in cache
+  if (
+    !_.isEmpty(getState().message) &&
+    !_.isEmpty(getState().message[chatId])
+  ) {
+    // Fetch Message From Cache
+    fetchMessageFromCache(getState().message[chatId], chatId, dispatch)
+  } else {
+    // Fetch Message From Presist (or if no data from firebase)
+    fetchMessageFromPresist(chatId, dispatch)
+  }
+}
+
+/**
+ * Fetch Message From Cache
+ * @param {[]} messages
+ * @param {string} chatId
+ * @param {Function} dispatch
+ */
+const fetchMessageFromCache = (messages, chatId, dispatch) => {
+  let latestTimeStamp = 0
+  _.map(messages, (value, key) => {
+    if (key > latestTimeStamp) latestTimeStamp = key
+  })
+  listenToNewMessage(chatId, latestTimeStamp, dispatch)
+}
+
+/**
+ * Fetch Message From Presist (or if no data from firebase)
+ * @param {string} chatId
+ * @param {Function} dispatch
+ */
+const fetchMessageFromPresist = (chatId, dispatch) => {
   dispatch({ type: CLEAR_MESSAGE, payload: chatId })
 
   // create a table called {chatId} if the table doesn't already exists.
@@ -22,7 +56,7 @@ export const fetchMessage = chatId => dispatch => {
         // if there's data in presist database
         if (_array.length) {
           // dispatch from presist database to store listen to changes from firebase
-          presistDispatchListen(_array, chatId, dispatch)
+          presistListen(_array, chatId, dispatch)
         } else {
           // fetch all from firebase and listen to changes
           fetchAllListen(chatId, dispatch)
@@ -69,7 +103,7 @@ const fetchAllListen = (chatId, dispatch) => {
  * @param {string} chatId
  * @param {Function} dispatch
  */
-const presistDispatchListen = (_array, chatId, dispatch) => {
+const presistListen = (_array, chatId, dispatch) => {
   // dispatch to store
   _array
     .slice(0)
@@ -85,17 +119,27 @@ const presistDispatchListen = (_array, chatId, dispatch) => {
       })
     })
   // listen to changes on firebase
+  listenToNewMessage(chatId, _array[0].messageId, dispatch)
+}
+
+/**
+ * Listen to new message
+ * @param {string} chatId
+ * @param {number} latestTimeStamp
+ * @param {Function} dispatch
+ */
+const listenToNewMessage = (chatId, latestTimeStamp, dispatch) => {
   firebase
     .database()
     .ref(`messages/${chatId}`)
     .orderByKey()
-    .startAt(_array[0].messageId)
+    .startAt(latestTimeStamp)
     .on('child_added', snapshot => {
       const messageId = snapshot.key
       const sender = snapshot.val().name
       const message = snapshot.val().message
       // startAt is inclusive so we don't want to one just fetch from presist database
-      if (messageId != _array[0].messageId) {
+      if (messageId != latestTimeStamp) {
         // save to presist database
         saveMessageToPresistDb(chatId, messageId, sender, message)
 

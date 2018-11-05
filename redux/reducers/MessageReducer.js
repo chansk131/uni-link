@@ -10,6 +10,7 @@ export default (state = INITIAL_STATE, action) => {
       const messageObj = {}
       messageObj[action.payload.messageId] = action.payload.message
       return {
+        ...state,
         [action.payload.chatId]: {
           ...state[action.payload.chatId],
           ...messageObj
