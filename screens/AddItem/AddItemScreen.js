@@ -64,9 +64,9 @@ class AddItemScreen extends React.Component {
       },
       pic: {
         value: '',
-        valid: false,
+        valid: true,
         rules: {
-          isRequired: true,
+          // isRequired: true,
         },
       },
       name: {
@@ -86,9 +86,9 @@ class AddItemScreen extends React.Component {
       },
       session: {
         value: '',
-        valid: true,
+        valid: false,
         rules: {
-          isRequired: false,
+          isRequired: true,
         },
       },
       duration: {
@@ -225,6 +225,7 @@ class AddItemScreen extends React.Component {
             }
           }
           this.setState({ pic })
+          this.updateInput('pic', pic['pic1'])
         }
 
         if (section == 'skillshare') {
@@ -490,7 +491,7 @@ class AddItemScreen extends React.Component {
     return this.state.section == 'skillshare' ||
       this.state.section == 'freelance' ? (
       <View>
-        <Label label={'Number of session'} required={false} />
+        <Label label={'Number of session'} required={true} />
         <TextInput
           style={styles.txtInput}
           onFocus={() =>
@@ -544,7 +545,7 @@ class AddItemScreen extends React.Component {
               this.props.navigation.navigate('CategoryItem', {
                 uid: this.state.uid,
                 key: this.state.key,
-                category: categorySmall,
+                category,
                 section: this.state.section,
               })
             }}
@@ -746,8 +747,17 @@ class AddItemScreen extends React.Component {
     // check if form is valid
     let isformValid = true
     const formCopy = this.state.form
+    console.log(formCopy)
     for (let key in formCopy) {
-      isformValid = isformValid && formCopy[key].valid
+      if (
+        this.state.section == 'product' &&
+        key != 'duration' &&
+        key != 'session'
+      ) {
+        isformValid = isformValid && formCopy[key].valid
+      } else if (this.state.section != 'product' && key != 'condition') {
+        isformValid = isformValid && formCopy[key].valid
+      }
     }
     if (isformValid) {
       console.log('valid')
@@ -771,6 +781,7 @@ class AddItemScreen extends React.Component {
         })
       }
     } else {
+      console.log(formCopy)
       console.log('not valid')
     }
   }
@@ -784,16 +795,21 @@ class AddItemScreen extends React.Component {
       ]['value']
     }
 
+    let pictures = {}
+    for (let key in this.state.pic) {
+      if (this.state.pic[key] != '') {
+        pictures[key] = this.state.pic[key]
+      }
+    }
+
     let postProductData = {
-      condition: this.state.form.condition.value,
       category: this.state.form.category.value,
       pic: this.state.form.pic.value,
       name: this.state.form.name.value,
       price: this.state.form.price.value,
       location: this.state.form.location.value,
       type: this.state.form.type.value,
-      brand: this.state.form.brand.value,
-      pictures: this.state.pic,
+      pictures,
       description,
       section: this.state.section,
       uid: this.props.user.uid,
@@ -801,6 +817,15 @@ class AddItemScreen extends React.Component {
       isAvailable: true,
       status: 'unsold',
       timestamp: firebase.database.ServerValue.TIMESTAMP,
+    }
+
+    if (this.state.section == 'product') {
+      postProductData['condition'] = this.state.form.condition.value
+      postProductData['brand'] = this.state.form.brand.value
+    } else {
+      postProductData['duration'] = this.state.form.duration.value
+      postProductData['session'] = this.state.form.session.value
+      postProductData['qualification'] = this.state.form.qualification.value
     }
 
     let postProductByOwnerData = {
@@ -821,10 +846,10 @@ class AddItemScreen extends React.Component {
       '/productsByOwners/' + this.props.user.uid + '/' + this.state.key
     ] = postProductByOwnerData
 
-    // return firebase
-    //   .database()
-    //   .ref()
-    //   .update(updates)
+    return firebase
+      .database()
+      .ref()
+      .update(updates)
   }
 
   render() {

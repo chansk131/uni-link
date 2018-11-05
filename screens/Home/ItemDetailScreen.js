@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   Dimensions,
-  FlatList
+  FlatList,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 import Swiper from 'react-native-swiper'
@@ -19,7 +19,7 @@ import {
   CartButton,
   BuyButton,
   MessageSellerButton,
-  WishListButton
+  WishListButton,
 } from '../../components/itemDetail/Buttons'
 import { Divider } from '../../components/itemDetail/Divider'
 import { ContentHeader } from '../../components/itemDetail/ContentHeader'
@@ -40,7 +40,7 @@ class ItemDetail extends React.Component {
       product: null,
       itemLoaded: false,
       similarItemLoaded: false,
-      messageSellerButtonDisable: false
+      messageSellerButtonDisable: false,
     }
   }
 
@@ -48,6 +48,14 @@ class ItemDetail extends React.Component {
     const { navigation } = this.props
     const product = navigation.getParam('products')
     this.fetchDetail(product.objectID)
+    if (
+      this.state.product &&
+      this.state.product.type &&
+      this.state.product.type != '' &&
+      this.state.product.uid !== this.props.user.uid
+    ) {
+      this.saveViewingHistory(this.state.product.type, product.objectID)
+    }
   }
 
   fetchDetail = objectID => {
@@ -70,7 +78,7 @@ class ItemDetail extends React.Component {
             product: product,
             itemLoaded: true,
             pictures: picsArr,
-            objectID: objectID
+            objectID: objectID,
           })
 
           this.fetchSimilarItems(objectID)
@@ -80,6 +88,21 @@ class ItemDetail extends React.Component {
         // console.log(snapshot.val())
         // ...
       })
+  }
+
+  saveViewingHistory = (type, objectID) => {
+    let productCard = {
+      name: this.state.product.name,
+      pic: this.state.product.pic,
+      price: this.state.product.price,
+      user: this.state.product.user,
+    }
+    let updates = {}
+    updates['recentView/' + this.props.user.uid + '/' + objectID] = productCard
+    return firebase
+      .database()
+      .ref()
+      .update(updates)
   }
 
   fetchSimilarItems = objectID => {
@@ -100,7 +123,7 @@ class ItemDetail extends React.Component {
           })
           this.setState({
             similarItems: similarArr,
-            similarItemLoaded: true
+            similarItemLoaded: true,
           })
         }
       })
@@ -221,7 +244,7 @@ class ItemDetail extends React.Component {
           style={{
             flexDirection: 'row',
             width: '100%',
-            justifyContent: 'space-evenly'
+            justifyContent: 'space-evenly',
           }}
         >
           <MessageSellerButton
@@ -233,9 +256,23 @@ class ItemDetail extends React.Component {
         <Divider />
         <ContentHeader text={'About this item'} />
         <View style={{ marginHorizontal: '8%' }}>
-          <AboutItem label={'Condition'} text={product.condition} />
+          {product.section != 'product' ? (
+            <AboutItem label={'Sessions/course'} text={product.session} />
+          ) : null}
+          {product.section != 'product' ? (
+            <AboutItem label={'Prefered date'} text={product.duration} />
+          ) : null}
+          {product.section == 'product' ? (
+            <AboutItem label={'Condition'} text={product.condition} />
+          ) : null}
+
           <AboutItem label={'Type'} text={product.type} />
-          <AboutItem label={'Brand'} text={product.brand} />
+          {product.section == 'product' ? (
+            <AboutItem label={'Brand'} text={product.brand} />
+          ) : null}
+          {product.section != 'product' ? (
+            <AboutItem label={'Qualification'} text={product.qualification} />
+          ) : null}
           {aboutArr.map(about => (
             <AboutItem key={about.key} label={about.key} text={about.value} />
           ))}
@@ -269,7 +306,7 @@ class ItemDetail extends React.Component {
       var postData = {
         name: products.name,
         pic: products.pic,
-        price: products.price
+        price: products.price,
       }
       // Write the new post's data simultaneously in the posts list and the user's post list.
       var updates = {}
@@ -293,7 +330,7 @@ class ItemDetail extends React.Component {
       <View
         style={{
           flex: 1,
-          backgroundColor: 'white'
+          backgroundColor: 'white',
         }}
       >
         <SearchButton
@@ -304,7 +341,7 @@ class ItemDetail extends React.Component {
 
         <ScrollView
           style={{
-            flex: 1
+            flex: 1,
             // backgroundColor: 'white',
           }}
         >
@@ -325,7 +362,7 @@ class ItemDetail extends React.Component {
               onPress={() =>
                 this.props.navigation.navigate('Seller', {
                   sellerId: products.uid,
-                  sellerName: products.user
+                  sellerName: products.user,
                 })
               }
             >
@@ -355,21 +392,21 @@ const styles = StyleSheet.create({
     aspectRatio: 16 / 9,
     resizeMode: 'contain',
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   paginationStyle: {
     position: 'absolute',
     bottom: -15,
     left: 0,
-    right: 0
+    right: 0,
   },
   headerTxt: {
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 })
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
 })
 export default connect(
   mapStateToProps,
