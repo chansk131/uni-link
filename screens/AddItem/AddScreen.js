@@ -32,7 +32,7 @@ export default class AddScreen extends React.Component {
             style={styles.menuContainer}
             onPress={() =>
               this.props.navigation.navigate('AddItem', {
-                section: 'freelance service',
+                section: 'freelance',
               })
             }
           >

@@ -23,6 +23,8 @@ import DescriptionScreen from '../screens/AddItem/DescriptionScreen'
 import QualificationScreen from '../screens/AddItem/QualificationScreen'
 import SoldDetailScreen from '../screens/Selling/SoldDetailScreen'
 import UnsoldDetailScreen from '../screens/Selling/UnsoldDetailScreen'
+import AddSessionScreen from '../screens/AddItem/AddSessionScreen'
+import AddDurationScreen from '../screens/AddItem/AddDurationScreen'
 
 export const SellingScreenStackNavigator = createStackNavigator({
   SellingContent: {
@@ -101,6 +103,36 @@ export const SellingScreenStackNavigator = createStackNavigator({
   },
   AddPrice: {
     screen: AddPriceScreen,
+    headerLayoutPreset: 'left',
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      headerTitle: <LogoHeader />,
+    }),
+  },
+  AddSession: {
+    screen: AddSessionScreen,
+    headerLayoutPreset: 'left',
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'grey',
+        shadowOpacity: 0.5,
+        elevation: 3,
+      },
+      headerTitle: <LogoHeader />,
+    }),
+  },
+  AddDuration: {
+    screen: AddDurationScreen,
     headerLayoutPreset: 'left',
     navigationOptions: ({ navigation }) => ({
       headerStyle: {

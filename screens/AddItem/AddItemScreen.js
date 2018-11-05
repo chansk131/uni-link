@@ -84,6 +84,20 @@ class AddItemScreen extends React.Component {
           isNumber: true,
         },
       },
+      session: {
+        value: '',
+        valid: true,
+        rules: {
+          isRequired: false,
+        },
+      },
+      duration: {
+        value: '',
+        valid: true,
+        rules: {
+          isRequired: false,
+        },
+      },
       location: {
         value: '',
         valid: false,
@@ -175,28 +189,48 @@ class AddItemScreen extends React.Component {
       .then(snapshot => {
         const product = snapshot.val()
         const section = product.section
+        const name = (product && product.name) || ''
+        const condition = (product && product.condition) || ''
+        const price = (product && product.price) || ''
+        const category = (product && product.category) || ''
+        const type = (product && product.type) || ''
+        const brand = (product && product.brand) || ''
+        const location = (product && product.location) || ''
+        const qualification = (product && product.qualification) || ''
+        const session = (product && product.session) || ''
+        const duration = (product && product.duration) || ''
+        console.log(`session is ${session}`)
         this.setState({ section })
-        this.updateInput('name', product.name)
-        this.updateInput('condition', product.condition)
-        this.updateInput('price', product.price)
-        this.updateInput('category', product.category)
-        this.updateInput('type', product.type)
-        this.updateInput('brand', product.brand)
-        this.updateInput('location', product.location)
-        this.updateInput('qualification', product.qualification)
+        this.updateInput('name', name)
+        this.updateInput('condition', condition)
+        this.updateInput('price', price)
+        this.updateInput('category', category)
+        this.updateInput('type', type)
+        this.updateInput('brand', brand)
+        this.updateInput('location', location)
+        this.updateInput('qualification', qualification)
         let description = []
-        Object.entries(product.description).forEach((val, key) => {
-          description.push({ key: val[0], value: val[1] })
-        })
-        this.setState({ description })
-        let pic = product.pictures
-        for (i = 1; i <= 12; i++) {
-          let picKey = 'pic' + i
-          if (!pic[picKey]) {
-            pic[picKey] = ''
-          }
+        if (product.description) {
+          Object.entries(product.description).forEach((val, key) => {
+            description.push({ key: val[0], value: val[1] })
+          })
+          this.setState({ description })
         }
-        this.setState({ pic })
+        if (product.pictures) {
+          let pic = product.pictures
+          for (i = 1; i <= 12; i++) {
+            let picKey = 'pic' + i
+            if (!pic[picKey]) {
+              pic[picKey] = ''
+            }
+          }
+          this.setState({ pic })
+        }
+
+        if (section == 'skillshare') {
+          this.updateInput('session', session)
+          this.updateInput('duration', duration)
+        }
         // pic
       })
   }
@@ -243,6 +277,16 @@ class AddItemScreen extends React.Component {
     if (type != undefined) {
       console.log(`type is ${type}`)
       this.updateInput('type', type)
+    }
+    const session = navigation.getParam('session')
+    if (session != undefined) {
+      console.log(`session is ${session}`)
+      this.updateInput('session', session)
+    }
+    const duration = navigation.getParam('duration')
+    if (duration != undefined) {
+      console.log(`duration is ${duration}`)
+      this.updateInput('duration', duration)
     }
     const brand = navigation.getParam('brand')
     if (brand != undefined) {
@@ -307,7 +351,6 @@ class AddItemScreen extends React.Component {
     if (!pic && this.state.pic) {
       pic = this.state.pic
     }
-    console.log(pic)
     return (
       <View>
         <Label label={'Photos'} required={true} />
@@ -444,7 +487,41 @@ class AddItemScreen extends React.Component {
   }
 
   renderUnit = () => {
-    return this.state.section == 'skillshare' ? <Text>UNIT</Text> : null
+    return this.state.section == 'skillshare' ||
+      this.state.section == 'freelance' ? (
+      <View>
+        <Label label={'Number of session'} required={false} />
+        <TextInput
+          style={styles.txtInput}
+          onFocus={() =>
+            this.props.navigation.navigate('AddSession', {
+              uid: this.state.uid,
+              key: this.state.key,
+              section: this.state.section,
+              session: this.state.form.session.value,
+            })
+          }
+          onChangeText={value => this.updateInput('Session', value)}
+          value={this.state.form.session.value}
+          placeholder={`e.g. 4`}
+        />
+        <Label label={'Prefered timeslot'} required={false} />
+        <TextInput
+          style={styles.txtInput}
+          onFocus={() =>
+            this.props.navigation.navigate('AddDuration', {
+              uid: this.state.uid,
+              key: this.state.key,
+              section: this.state.section,
+              duration: this.state.form.duration.value,
+            })
+          }
+          onChangeText={value => this.updateInput('duration', value)}
+          value={this.state.form.duration.value}
+          placeholder={`e.g. 1hr/week every sunday`}
+        />
+      </View>
+    ) : null
   }
 
   renderCategory = () => {
