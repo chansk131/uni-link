@@ -48,13 +48,8 @@ class ItemDetail extends React.Component {
     const { navigation } = this.props
     const product = navigation.getParam('products')
     this.fetchDetail(product.objectID)
-    if (
-      this.state.product &&
-      this.state.product.type &&
-      this.state.product.type != '' &&
-      this.state.product.uid !== this.props.user.uid
-    ) {
-      this.saveViewingHistory(this.state.product.type, product.objectID)
+    if (this.state.product) {
+      console.log('save recent view')
     }
   }
 
@@ -87,6 +82,16 @@ class ItemDetail extends React.Component {
         // var product = (snapshot.val() && snapshot.val().username) || 'Anonymous'
         // console.log(snapshot.val())
         // ...
+      })
+      .then(() => {
+        if (
+          this.state.product &&
+          this.state.product.type &&
+          this.state.product.type != '' &&
+          this.state.product.uid !== this.props.user.uid
+        ) {
+          this.saveViewingHistory(this.state.product.type, objectID)
+        }
       })
   }
 
