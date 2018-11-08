@@ -6,6 +6,7 @@ import {
   MessageHeader,
   AddUserHeader,
   LogoHeaderWithText,
+  LogoHeader
 } from '../components/header/HeaderIcons'
 import LoginPanel from '../screens/Login/loginPanel'
 import LoginForm from '../screens/Login/loginForm'
@@ -24,6 +25,7 @@ import MyRequestedOrderScreen from '../screens/User/MyRequestedOrderScreen'
 import MyAcceptedOrderScreen from '../screens/User/MyAcceptedOrderScreen'
 import MyPurchasedOrderScreen from '../screens/User/MyPurchasedScreen'
 import FeedbackScreen from '../screens/User/FeedbackScreen'
+import ItemDetailScreen from '../screens/Home/ItemDetailScreen';
 
 export const UserScreenStackNavigator = createStackNavigator({
   UserContent: {
@@ -45,6 +47,19 @@ export const UserScreenStackNavigator = createStackNavigator({
       },
       // headerLeft: <HamburgerHeader navigation={navigation} />,
       headerTitle: <LogoHeaderWithText text={'Wishlist'} />,
+      headerRight: <MessageHeader navigation={navigation} />,
+    }),
+  },
+  ItemDetail: {
+    screen: ItemDetailScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0,
+        elevation: 3,
+      },
+      // headerLeft: <HamburgerHeader navigation={navigation} />,
+      headerTitle: <LogoHeader />,
       headerRight: <MessageHeader navigation={navigation} />,
     }),
   },

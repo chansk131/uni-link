@@ -4,7 +4,8 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  ScrollView,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Constants } from 'expo'
@@ -26,7 +27,7 @@ class UserScreen extends React.Component {
 
     this.state = {
       modalVisible: false,
-      profilePicUrl: null
+      profilePicUrl: null,
     }
   }
 
@@ -80,7 +81,7 @@ class UserScreen extends React.Component {
         style={{
           flex: 1,
           backgroundColor: 'white',
-          paddingTop: Constants.statusBarHeight
+          paddingTop: Constants.statusBarHeight,
         }}
       >
         <SignInModal
@@ -92,7 +93,7 @@ class UserScreen extends React.Component {
             height: 180,
             borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            padding: '7%'
+            padding: '7%',
           }}
         >
           <View style={{ flexDirection: 'row' }}>
@@ -110,7 +111,7 @@ class UserScreen extends React.Component {
             height: 40,
             borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            flexDirection: 'row'
+            flexDirection: 'row',
           }}
         >
           <TouchableOpacity
@@ -132,42 +133,44 @@ class UserScreen extends React.Component {
             <Text style={styles.btnText}>MESSAGE</Text>
           </TouchableOpacity>
         </View>
-        <MenuButton
-          goto={'WishList'}
-          navigation={this.props.navigation}
-          name={'Wishlist'}
-        />
-        <MenuButton
-          goto={'MyOrder'}
-          navigation={this.props.navigation}
-          name={'My Order'}
-        />
-        <MenuButton
-          goto={'InviteFriends'}
-          navigation={this.props.navigation}
-          name={'Invite Friends?'}
-        />
-        <MenuButton
-          goto={'Selling'}
-          navigation={this.props.navigation}
-          name={'Selling'}
-        />
-        <MenuButton
-          goto={'Payment'}
-          navigation={this.props.navigation}
-          name={'Payment'}
-        />
-        <MenuButton
-          goto={'Help'}
-          navigation={this.props.navigation}
-          name={'FAQ'}
-        />
-        <MenuButton
-          goto={'Signin'}
-          navigation={this.props.navigation}
-          name={'LOGOUT'}
-          handlePress={() => firebase.auth().signOut()}
-        />
+        <ScrollView>
+          <MenuButton
+            goto={'WishList'}
+            navigation={this.props.navigation}
+            name={'Wishlist'}
+          />
+          <MenuButton
+            goto={'MyOrder'}
+            navigation={this.props.navigation}
+            name={'My Order'}
+          />
+          <MenuButton
+            goto={'InviteFriends'}
+            navigation={this.props.navigation}
+            name={'Invite Friends?'}
+          />
+          <MenuButton
+            goto={'Selling'}
+            navigation={this.props.navigation}
+            name={'Selling'}
+          />
+          <MenuButton
+            goto={'Payment'}
+            navigation={this.props.navigation}
+            name={'Payment'}
+          />
+          <MenuButton
+            goto={'Help'}
+            navigation={this.props.navigation}
+            name={'FAQ'}
+          />
+          <MenuButton
+            goto={'Signin'}
+            navigation={this.props.navigation}
+            name={'LOGOUT'}
+            handlePress={() => firebase.auth().signOut()}
+          />
+        </ScrollView>
       </View>
     )
   }
@@ -184,7 +187,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   btnMessageContainer: {
     flex: 1,
@@ -194,15 +197,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   btnSmallText: {
     fontWeight: 'bold',
-    fontSize: 15
-  }
+    fontSize: 15,
+  },
 })
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
 })
 export default connect(mapStateToProps)(UserScreen)

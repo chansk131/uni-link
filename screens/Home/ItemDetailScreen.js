@@ -312,6 +312,7 @@ class ItemDetail extends React.Component {
         name: products.name,
         pic: products.pic,
         price: products.price,
+        user: products.user,
       }
       // Write the new post's data simultaneously in the posts list and the user's post list.
       var updates = {}

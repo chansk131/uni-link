@@ -67,11 +67,13 @@ class Home extends React.Component {
       .then(snapshot => {
         let results = snapshot.val()
         let resultsArr = []
-        Object.keys(results).forEach(function(key) {
-          resultsArr.push({ key: key, objectID: key, ...results[key] })
-        })
-        console.log(results)
-        this.setState({ products: resultsArr, itemLoaded: true })
+        if (results) {
+          Object.keys(results).forEach(function(key) {
+            resultsArr.push({ key: key, objectID: key, ...results[key] })
+          })
+          console.log(results)
+          this.setState({ products: resultsArr, itemLoaded: true })
+        }
       })
   }
 

@@ -26,7 +26,7 @@ class WishListScreen extends React.Component {
         let resultsArr = []
         if (results) {
           Object.keys(results).forEach(function(key) {
-            resultsArr.push({ key: key, keyFirebase: key, ...results[key] })
+            resultsArr.push({ key: key, objectID: key, ...results[key] })
           })
           this.setState({ products: resultsArr })
         }
@@ -49,7 +49,7 @@ class WishListScreen extends React.Component {
               }}
               // ListFooterComponent={<View style={{ margin: 10 }} />}
               renderItem={({ item }) => (
-                <ProductCard key={item.key} {...item} />
+                <ProductCard navigation={this.props.navigation} key={item.key} {...item} />
               )}
               data={result}
             />
