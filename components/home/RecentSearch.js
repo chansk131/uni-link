@@ -5,7 +5,17 @@ import { ProductCard } from '../productCard/ProductCard'
 
 export const RecentSearch = props => (
   <View>
-    <Text style={styles.recentFont}>RECENT SEARCH</Text>
+        <Text style={styles.recentFont}>PICKS OF THE DAY</Text>
+    <FlatList
+      style={{ height: 240, paddingLeft: '5%' }}
+      ListFooterComponent={<View style={{ margin: 10 }} />}
+      horizontal={true}
+      renderItem={({ item }) => (
+        <ProductCard navigation={props.navigation} key={item.key} {...item} />
+      )}
+      data={props.allProducts}
+    />
+    <Text style={styles.recentFont}>RECENT SEARCHES</Text>
     <FlatList
       style={{ height: 240, paddingLeft: '5%' }}
       ListFooterComponent={<View style={{ margin: 10 }} />}
@@ -15,6 +25,7 @@ export const RecentSearch = props => (
       )}
       data={props.products}
     />
+
   </View>
 )
 

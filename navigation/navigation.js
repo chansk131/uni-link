@@ -13,6 +13,7 @@ import {
   AddUserHeader,
   LogoHeaderWithText,
 } from '../components/header/HeaderIcons'
+import { UserScreenStackNavigator } from './userScreenStackNavigator';
 
 const CustomDrawerComponent = props => (
   <SafeAreaView style={{ flex: 1 }}>
@@ -42,12 +43,12 @@ export const DrawerNavigator = createDrawerNavigator(
         drawerLabel: 'HOME',
       },
     },
-    MyAccount: {
-      screen: MyAccountScreen,
-      navigationOptions: {
-        drawerLabel: 'MY ACCOUNT',
-      },
-    },
+    // MyAccount: {
+    //   screen: UserScreenStackNavigator,
+    //   navigationOptions: {
+    //     drawerLabel: 'MY ACCOUNT',
+    //   },
+    // },
     MyOrder: {
       screen: MyOrderScreen,
       navigationOptions: {

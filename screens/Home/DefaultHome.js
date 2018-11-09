@@ -11,7 +11,7 @@ export const DefaultHome = props => (
       {props.signIn ? null : (
         <Button
           onPress={() => props.navigation.navigate('Login')}
-          title={'signIn for more customised experience'}
+          title={'JUST A TESTING BUTTON'}
         />
       )}
       <HomeTitle />

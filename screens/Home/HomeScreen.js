@@ -60,6 +60,7 @@ class Home extends React.Component {
   }
 
   fetchRecentView = uid => {
+    this.setState({itemLoaded: false})
     return firebase
       .database()
       .ref('/recentView/' + uid)
@@ -77,12 +78,32 @@ class Home extends React.Component {
       })
   }
 
+  fetchProducts = () => {
+    this.setState({itemLoaded: false})
+    return firebase
+      .database()
+      .ref('/products/')
+      .once('value')
+      .then(snapshot => {
+        let results = snapshot.val()
+        let resultsArr = []
+        if (results) {
+          Object.keys(results).forEach(function(key) {
+            resultsArr.push({ key: key, objectID: key, ...results[key] })
+          })
+          console.log(results)
+          this.setState({ allProducts: resultsArr, itemLoaded: true })
+        }
+      })
+  }
+
   listenForAuth = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user != null) {
         // User is signed in.
         this.props.updateUser({ uid: user.uid })
         this.fetchRecentView(user.uid)
+        this.fetchProducts()
       } else {
         console.log('Signed out')
         this.props.updateUser()

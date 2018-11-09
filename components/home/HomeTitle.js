@@ -8,9 +8,8 @@ export const HomeTitle = () => (
     <View style={styles.horizontalLine} />
     <View style={{ marginBottom: 23 }}>
       <Text style={styles.detailFont}>
-        We will help you improve your living
+        We'll optimise your student life.
       </Text>
-      <Text style={styles.detailFont}>experience while your are studying</Text>
     </View>
   </View>
 );

@@ -65,27 +65,30 @@ class SellingScreen extends React.Component {
         let draftArr = []
         let unsoldArr = []
         let soldArr = []
-        Object.keys(productsObj).forEach(key => {
-          switch (productsObj[key].status) {
-            case 'draft':
-              draftArr.push({ key: key, objectID: key, ...productsObj[key] })
-              break
-            case 'unsold':
-              unsoldArr.push({ key: key, objectID: key, ...productsObj[key] })
-              break
-            case 'sold':
-              soldArr.push({ key: key, objectID: key, ...productsObj[key] })
-              break
-            default:
-              console.log('no status')
-          }
-        })
-        this.setState({
-          draft: draftArr,
-          unsold: unsoldArr,
-          sold: soldArr,
-          loading: false,
-        })
+        if (productsObj) {
+
+          Object.keys(productsObj).forEach(key => {
+            switch (productsObj[key].status) {
+              case 'draft':
+                draftArr.push({ key: key, objectID: key, ...productsObj[key] })
+                break
+              case 'unsold':
+                unsoldArr.push({ key: key, objectID: key, ...productsObj[key] })
+                break
+              case 'sold':
+                soldArr.push({ key: key, objectID: key, ...productsObj[key] })
+                break
+              default:
+                console.log('no status')
+            }
+          })
+          this.setState({
+            draft: draftArr,
+            unsold: unsoldArr,
+            sold: soldArr,
+            loading: false,
+          })
+        }
       })
   }
 
