@@ -8,6 +8,7 @@ import {
   ScrollView,
   FlatList,
   Dimensions,
+  RefreshControl
 } from 'react-native'
 import { connect } from 'react-redux'
 import * as firebase from 'firebase'
@@ -19,6 +20,7 @@ import { ProfilePic } from '../../components/ProfilePic'
 
 class SellingScreen extends React.Component {
   state = {
+    refreshing: false,
     selected: 'Unsold',
     uid: null,
     draft: [],
@@ -35,6 +37,13 @@ class SellingScreen extends React.Component {
         console.log(e)
       }
     }
+  }
+
+  onRefresh = () => {
+    this.setState({ refreshing: true })
+    this.fetchData(this.props.user.uid).then(() => {
+      this.setState({ refreshing: false })
+    })
   }
 
   checkAuth = () => {
@@ -162,11 +171,17 @@ class SellingScreen extends React.Component {
 
   render() {
     return (
-      <View
+      <ScrollView
         style={{
           flex: 1,
           backgroundColor: 'white',
         }}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh}
+          />
+        }
       >
         <View
           style={{
@@ -226,7 +241,7 @@ class SellingScreen extends React.Component {
             </ScrollView>
           ) : null} */}
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }
