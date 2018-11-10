@@ -28,6 +28,7 @@ class Categories extends React.Component {
   componentDidMount() {
     console.log(this.props)
     this.fetchCategories()
+    this.fetchItems()
   }
 
   fetchCategories = () => {
@@ -56,7 +57,12 @@ class Categories extends React.Component {
           key={category.key}
           text={category.txt}
           onPress={() => {
-            this.fetchItemsInCategory(category.name)
+            if (category.name != "foryou") {
+
+              this.fetchItemsInCategory(category.name)
+            } else {
+              this.fetchItems()
+            }
           }}
         />
       ))
@@ -89,6 +95,33 @@ class Categories extends React.Component {
             products: null,
             itemIsLoading: false,
             chosenCategory: chosenCategory,
+          })
+        }
+      })
+  }
+
+  fetchItems = () => {
+    this.setState({ itemIsLoading: true })
+    return firebase
+      .database()
+      .ref('/products/')
+      .once('value')
+      .then(snapshot => {
+        var results = snapshot.val()
+        if (results !== null) {
+          let resultsArr = []
+          Object.keys(results).forEach(function(key) {
+            resultsArr.push({ key: key, ...results[key] })
+          })
+          this.setState({
+            products: resultsArr,
+            itemIsLoading: false,
+          })
+          console.log(this.state)
+        } else {
+          this.setState({
+            products: null,
+            itemIsLoading: false,
           })
         }
       })
