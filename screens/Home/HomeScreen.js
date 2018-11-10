@@ -7,8 +7,30 @@ import * as firebase from 'firebase'
 import Search from '../../components/header/Search'
 import { DefaultHome } from './DefaultHome'
 import SearchButton from '../../components/header/SearchButton'
+import {
+  LogoHeader,
+  LogoHeaderWithText,
+  HamburgerHeader,
+  MessageHeader,
+  LogoHeaderWithTextButton,
+} from '../../components/header/HeaderIcons'
 
 class Home extends React.Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerStyle: {
+      backgroundColor: 'white',
+      borderBottomWidth: 0,
+      elevation: 3,
+    },
+    headerLeft: <HamburgerHeader navigation={navigation} />,
+    headerTitle: navigation.getParam('signIn') ? (
+      <LogoHeader />
+    ) : (
+      <LogoHeaderWithTextButton text={'Sign in'} navigation={navigation} />
+    ),
+    headerRight: <MessageHeader navigation={navigation} />,
+  })
+
   state = {
     refreshing: false,
     uid: '',
@@ -63,7 +85,9 @@ class Home extends React.Component {
   onRefresh = () => {
     console.log(`state = ${this.state.uid}`)
     this.setState({ refreshing: true })
-    this.fetchRecentView(this.state.uid)
+    if (this.state.uid) {
+      this.fetchRecentView(this.state.uid)
+    }
     this.fetchProducts().then(() => {
       this.setState({ refreshing: false })
     })
@@ -112,13 +136,17 @@ class Home extends React.Component {
       if (user != null) {
         // User is signed in.
         console.log(user)
-        this.props.updateUser({ uid: user.uid })
-        this.setState({uid: user.uid})
-        this.fetchRecentView(user.uid)
+
         this.fetchProducts()
+        this.fetchRecentView(user.uid)
+        this.props.navigation.setParams({ signIn: true })
+        this.props.updateUser({ uid: user.uid })
+        this.setState({ uid: user.uid })
       } else {
         console.log('Signed out')
+        this.fetchProducts()
         this.props.updateUser()
+        this.props.navigation.setParams({ signIn: false })
       }
     })
   }

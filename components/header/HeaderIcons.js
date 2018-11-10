@@ -75,3 +75,33 @@ export const LogoHeaderWithText = props => (
     </View>
   </View>
 )
+
+export const LogoHeaderWithTextButton = props => (
+  <View style={{ flex: 1, flexDirection: 'row' }}>
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+      }}
+    >
+      <Image
+        style={{ width: 36, height: 36 }}
+        source={require('../../assets/images/LogoULinks-small.jpeg')}
+      />
+    </View>
+    <View style={{flex: 4}}/>
+    <TouchableOpacity
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      onPress = {()=>props.navigation.navigate("Signin")}
+    >
+      <Text style={{ fontWeight: 'bold', fontSize: 10 }}>{props.text}</Text>
+    </TouchableOpacity>
+  </View>
+)

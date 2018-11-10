@@ -16,16 +16,16 @@ export const HomeScreenStackNavigator = createStackNavigator({
   HomeContent: {
     screen: HomeScreenContent,
     headerLayoutPreset: 'left',
-    navigationOptions: ({ navigation }) => ({
-      headerStyle: {
-        backgroundColor: 'white',
-        borderBottomWidth: 0,
-        elevation: 3
-      },
-      headerLeft: <HamburgerHeader navigation={navigation} />,
-      headerTitle: <LogoHeader />,
-      headerRight: <MessageHeader navigation={navigation} />
-    })
+    // navigationOptions: ({ navigation }) => ({
+    //   headerStyle: {
+    //     backgroundColor: 'white',
+    //     borderBottomWidth: 0,
+    //     elevation: 3
+    //   },
+    //   headerLeft: <HamburgerHeader navigation={navigation} />,
+    //   headerTitle: <LogoHeader />,
+    //   headerRight: <MessageHeader navigation={navigation} />
+    // })
   },
   SearchScreen: {
     screen: SearchScreen,

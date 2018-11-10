@@ -1,5 +1,12 @@
 import React from 'react'
-import { Text, View, FlatList, Image } from 'react-native'
+import {
+  Text,
+  View,
+  FlatList,
+  Image,
+  RefreshControl,
+  ScrollView,
+} from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux'
 import * as firebase from 'firebase'
@@ -7,12 +14,20 @@ import { ProductCard } from '../../components/productCard/ProductCard'
 
 class WishListScreen extends React.Component {
   state = {
+    refreshing: false,
     itemLoaded: false,
     products: null,
   }
 
   componentDidMount() {
     this.fetchWishlist()
+  }
+
+  onRefresh = () => {
+    this.setState({ refreshing: true })
+    this.fetchWishlist().then(() => {
+      this.setState({ refreshing: false })
+    })
   }
 
   fetchWishlist = () => {
@@ -49,7 +64,11 @@ class WishListScreen extends React.Component {
               }}
               // ListFooterComponent={<View style={{ margin: 10 }} />}
               renderItem={({ item }) => (
-                <ProductCard navigation={this.props.navigation} key={item.key} {...item} />
+                <ProductCard
+                  navigation={this.props.navigation}
+                  key={item.key}
+                  {...item}
+                />
               )}
               data={result}
             />
