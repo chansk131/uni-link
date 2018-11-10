@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView, StyleSheet } from 'react-native'
+import { View, ScrollView, StyleSheet, RefreshControl } from 'react-native'
 import { connect } from 'react-redux'
 import { updateUser, fetchUser } from '../../redux/actions'
 import * as firebase from 'firebase'
@@ -10,6 +10,7 @@ import SearchButton from '../../components/header/SearchButton'
 
 class Home extends React.Component {
   state = {
+    refreshing: false,
     uid: '',
     signedIn: false,
     products: null,
@@ -59,8 +60,17 @@ class Home extends React.Component {
     this.listenForAuth()
   }
 
+  onRefresh = () => {
+    console.log(`state = ${this.state.uid}`)
+    this.setState({ refreshing: true })
+    this.fetchRecentView(this.state.uid)
+    this.fetchProducts().then(() => {
+      this.setState({ refreshing: false })
+    })
+  }
+
   fetchRecentView = uid => {
-    this.setState({itemLoaded: false})
+    this.setState({ itemLoaded: false })
     return firebase
       .database()
       .ref('/recentView/' + uid)
@@ -68,18 +78,19 @@ class Home extends React.Component {
       .then(snapshot => {
         let results = snapshot.val()
         let resultsArr = []
+        console.log(results)
         if (results) {
           Object.keys(results).forEach(function(key) {
             resultsArr.push({ key: key, objectID: key, ...results[key] })
           })
-          console.log(results)
+          console.log(resultsArr)
           this.setState({ products: resultsArr, itemLoaded: true })
         }
       })
   }
 
   fetchProducts = () => {
-    this.setState({itemLoaded: false})
+    this.setState({ itemLoaded: false })
     return firebase
       .database()
       .ref('/products/')
@@ -91,7 +102,6 @@ class Home extends React.Component {
           Object.keys(results).forEach(function(key) {
             resultsArr.push({ key: key, objectID: key, ...results[key] })
           })
-          console.log(results)
           this.setState({ allProducts: resultsArr, itemLoaded: true })
         }
       })
@@ -101,7 +111,9 @@ class Home extends React.Component {
     firebase.auth().onAuthStateChanged(user => {
       if (user != null) {
         // User is signed in.
+        console.log(user)
         this.props.updateUser({ uid: user.uid })
+        this.setState({uid: user.uid})
         this.fetchRecentView(user.uid)
         this.fetchProducts()
       } else {
@@ -119,7 +131,15 @@ class Home extends React.Component {
             this.props.navigation.navigate('SearchScreen')
           }}
         />
-        <ScrollView style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.onRefresh}
+            />
+          }
+        >
           <DefaultHome
             data={this.state}
             navigation={this.props.navigation}
