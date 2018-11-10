@@ -8,6 +8,7 @@ import {
   Dimensions,
   FlatList,
 } from 'react-native'
+import ActionSheet from 'react-native-actionsheet'
 import Expo from 'expo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import * as firebase from 'firebase'
@@ -63,8 +64,38 @@ export default class PhotoUploadScreen extends React.Component {
     }
 
     let img = await Expo.ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [10, 3],
+      quality: 0.8
+    })
+    console.log(img.uri)
+    const manipResult = await Expo.ImageManipulator.manipulate(
+      img.uri,
+      [{ resize: { width: 1080 } }],
+      { format: 'jpeg', compress: 0.8 }
+    )
+    console.log(manipResult)
+    img.uri = manipResult.uri
+    if (!img.cancelled) {
+      this.setState({ chosenImage: img })
+      this.handleImagePicked(img, this.state.key)
+    }
+  }
+
+  launchCameraAsync = async () => {
+    let { status } = await Expo.Permissions.askAsync(
+      Expo.Permissions.CAMERA
+    )
+    if (status != 'granted') {
+      console.error('Camera roll perms not granted')
+      return
+    }
+
+    if (this.state.pictures.pic12 != '') {
+      console.log('Cannot upload more images')
+      alert('Maximum number of photos reached')
+      return
+    }
+
+    let img = await Expo.ImagePicker.launchCameraAsync({
       quality: 0.8
     })
     console.log(img.uri)
@@ -195,11 +226,28 @@ export default class PhotoUploadScreen extends React.Component {
             alignItems: 'center',
           }}
           onPress={() => {
-            this.launchCameraRollAsync()
+            this.ActionSheet.show()
           }}
         >
           <Text>Select photo to upload</Text>
         </TouchableOpacity>
+        <ActionSheet
+            ref={o => (this.ActionSheet = o)}
+            title={'Select image source'}
+            options={['Camera', 'Camera Roll', 'Cancel']}
+            cancelButtonIndex={2}
+            // destructiveButtonIndex={2}
+            onPress={index => {
+              /* do something */
+              if (index === 0) {
+                // launch camera
+                this.launchCameraAsync()
+              } else if (index === 1) {
+                // launch camera roll
+                this.launchCameraRollAsync()
+              }
+            }}
+          />
         {this.renderPhotoGrid()}
 
         <TouchableOpacity

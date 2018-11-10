@@ -239,6 +239,25 @@ class RegisterForm extends React.Component {
     this.setState({ chosenImage: imageObj })
   }
 
+  launchCameraAsync = async () => {
+    let { status } = await Expo.Permissions.askAsync(
+      Expo.Permissions.CAMERA
+    )
+    if (status != 'granted') {
+      console.error('Camera roll perms not granted')
+      return
+    }
+
+    let img = await Expo.ImagePicker.launchCameraAsync()
+    const manipResult = await ImageManipulator.manipulate(
+      img.uri,
+      [{ resize: { width: 100, height: 100 } }],
+      { format: 'jpeg', compress: 0.8 }
+    )
+    const imageObj = { ...manipResult, cancelled: img.cancelled }
+    this.setState({ chosenImage: imageObj })
+  }
+
   /**
    * @param {image} pickerResult - image picked
    * @param {string} imgId - id of image (which is the user's id)
@@ -463,6 +482,7 @@ class RegisterForm extends React.Component {
               /* do something */
               if (index === 0) {
                 // launch camera
+                this.launchCameraAsync()
               } else if (index === 1) {
                 // launch camera roll
                 this.launchCameraRollAsync()
