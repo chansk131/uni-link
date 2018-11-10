@@ -62,7 +62,11 @@ export default class PhotoUploadScreen extends React.Component {
       return
     }
 
-    let img = await Expo.ImagePicker.launchImageLibraryAsync()
+    let img = await Expo.ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [10, 3],
+      quality: 0.8
+    })
     console.log(img.uri)
     const manipResult = await Expo.ImageManipulator.manipulate(
       img.uri,
@@ -78,6 +82,7 @@ export default class PhotoUploadScreen extends React.Component {
   }
 
   handleImagePicked = async (pickerResult, imgId) => {
+    console.log(pickerResult)
     try {
       this.setState({ uploading: true })
       let form = this.state.pictures
@@ -237,12 +242,14 @@ const styles = StyleSheet.create({
 
 async function uploadImageAsync(uri, imgId, index) {
   try {
+    const type = uri.split(".")[1]
+    console.log(type)
     const response = await fetch(uri)
     const blob = await response.blob()
     const ref = firebase
       .storage()
       .ref()
-      .child('products/' + imgId + '/' + index)
+      .child('products/' + imgId + '/' + index + '.' + type)
 
     const snapshot = await ref.put(blob)
     const url = await ref.getDownloadURL()
