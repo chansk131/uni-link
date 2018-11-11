@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Dimensions,
   FlatList,
+  ScrollView,
 } from 'react-native'
 import ActionSheet from 'react-native-actionsheet'
 import Expo from 'expo'
@@ -64,7 +65,7 @@ export default class PhotoUploadScreen extends React.Component {
     }
 
     let img = await Expo.ImagePicker.launchImageLibraryAsync({
-      quality: 0.8
+      quality: 0.8,
     })
     console.log(img.uri)
     const manipResult = await Expo.ImageManipulator.manipulate(
@@ -81,9 +82,7 @@ export default class PhotoUploadScreen extends React.Component {
   }
 
   launchCameraAsync = async () => {
-    let { status } = await Expo.Permissions.askAsync(
-      Expo.Permissions.CAMERA
-    )
+    let { status } = await Expo.Permissions.askAsync(Expo.Permissions.CAMERA)
     if (status != 'granted') {
       console.error('Camera roll perms not granted')
       return
@@ -96,7 +95,7 @@ export default class PhotoUploadScreen extends React.Component {
     }
 
     let img = await Expo.ImagePicker.launchCameraAsync({
-      quality: 0.8
+      quality: 0.8,
     })
     console.log(img.uri)
     const manipResult = await Expo.ImageManipulator.manipulate(
@@ -179,6 +178,31 @@ export default class PhotoUploadScreen extends React.Component {
       .update(updates)
   }
 
+  deletePhoto = key => {
+    let keyNum = key.slice(3)
+    console.log(keyNum)
+    let pictureForm = this.state.pictures
+    while (keyNum < 12 && pictureForm['pic' + (parseInt(keyNum) + 1)] != '') {
+      console.log(`deleting ${'pic' + (keyNum + 1)}`)
+      pictureForm['pic' + keyNum] = pictureForm['pic' + (parseInt(keyNum) + 1)]
+      keyNum = parseInt(keyNum) + 1
+    }
+    pictureForm['pic' + keyNum] = pictureForm['pic' + (parseInt(keyNum) + 1)]
+    console.log(pictureForm)
+
+    this.setState({ pictures: pictureForm })
+    try {
+      this.addToDatabase(pictureForm)
+      //TODO: delete from storage
+    } catch (err) {
+      console.log('fail')
+      console.log(err)
+    }
+    this.setState({ uploading: false, pictures: pictureForm, firstFreeKey })
+    console.log('success')
+    return true
+  }
+
   renderPhotoGrid = () => {
     let picsArr = []
     Object.keys(this.state.pictures).forEach(key => {
@@ -186,9 +210,9 @@ export default class PhotoUploadScreen extends React.Component {
     })
 
     return (
-      <View style={{ marginHorizontal: '5%', marginTop: 10 }}>
+      <View style={{ marginHorizontal: '1%', marginTop: 10 }}>
         <FlatList
-          numColumns={4}
+          numColumns={3}
           data={picsArr}
           renderItem={({ item }) =>
             item.pics == '' ? (
@@ -196,13 +220,29 @@ export default class PhotoUploadScreen extends React.Component {
                 style={[styles.imgContainer, { backgroundColor: 'lightgrey' }]}
               />
             ) : (
-              <Image
-                key={item.key}
-                style={styles.imgContainer}
-                source={
-                  { uri: item.pics } // show uploading actionindicator
-                }
-              />
+              <View key={item.key}>
+                <Image
+                  key={item.key}
+                  style={styles.imgContainer}
+                  source={
+                    { uri: item.pics } // show uploading actionindicator
+                  }
+                />
+
+                <TouchableOpacity
+                  onPress={() => this.deletePhoto(item.key)}
+                  style={{
+                    position: 'absolute',
+                    right: 5,
+                    top: 5,
+                    backgroundColor: '#eaeaea',
+                    borderRadius: 2,
+                    paddingHorizontal: 2,
+                  }}
+                >
+                  <Ionicons name={'md-trash'} size={16} color={'black'} />
+                </TouchableOpacity>
+              </View>
             )
           }
         />
@@ -212,7 +252,7 @@ export default class PhotoUploadScreen extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
         <Text style={styles.txtLabel}>Upload photo of the product/service</Text>
 
         <TouchableOpacity
@@ -221,8 +261,8 @@ export default class PhotoUploadScreen extends React.Component {
             borderWidth: 1,
             borderColor: 'lightgrey',
             padding: 10,
-            width: '90%',
-            marginHorizontal: '5%',
+            width: '98%',
+            marginHorizontal: '1%',
             alignItems: 'center',
           }}
           onPress={() => {
@@ -232,22 +272,22 @@ export default class PhotoUploadScreen extends React.Component {
           <Text>Select photo to upload</Text>
         </TouchableOpacity>
         <ActionSheet
-            ref={o => (this.ActionSheet = o)}
-            title={'Select image source'}
-            options={['Camera', 'Camera Roll', 'Cancel']}
-            cancelButtonIndex={2}
-            // destructiveButtonIndex={2}
-            onPress={index => {
-              /* do something */
-              if (index === 0) {
-                // launch camera
-                this.launchCameraAsync()
-              } else if (index === 1) {
-                // launch camera roll
-                this.launchCameraRollAsync()
-              }
-            }}
-          />
+          ref={o => (this.ActionSheet = o)}
+          title={'Select image source'}
+          options={['Camera', 'Camera Roll', 'Cancel']}
+          cancelButtonIndex={2}
+          // destructiveButtonIndex={2}
+          onPress={index => {
+            /* do something */
+            if (index === 0) {
+              // launch camera
+              this.launchCameraAsync()
+            } else if (index === 1) {
+              // launch camera roll
+              this.launchCameraRollAsync()
+            }
+          }}
+        />
         {this.renderPhotoGrid()}
 
         <TouchableOpacity
@@ -256,8 +296,8 @@ export default class PhotoUploadScreen extends React.Component {
             borderWidth: 1,
             borderColor: 'lightgrey',
             padding: 10,
-            width: '90%',
-            marginHorizontal: '5%',
+            width: '98%',
+            marginHorizontal: '1%',
             alignItems: 'center',
           }}
           onPress={() => {
@@ -268,13 +308,13 @@ export default class PhotoUploadScreen extends React.Component {
         >
           <Text>Done</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     )
   }
 }
 
 const screenWidth = Dimensions.get('window').width
-const imgWidth = (screenWidth * 0.9 - 5) * 0.25
+const imgWidth = (screenWidth * 0.98 - 4) / 3
 const styles = StyleSheet.create({
   txtLabel: {
     fontSize: 20,
@@ -290,7 +330,7 @@ const styles = StyleSheet.create({
 
 async function uploadImageAsync(uri, imgId, index) {
   try {
-    const type = uri.split(".")[1]
+    const type = uri.split('.')[1]
     console.log(type)
     const response = await fetch(uri)
     const blob = await response.blob()
