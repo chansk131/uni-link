@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView, StyleSheet, RefreshControl } from 'react-native'
+import { View, ScrollView, StyleSheet, RefreshControl, TouchableOpacity, Text } from 'react-native'
 import { connect } from 'react-redux'
 import { updateUser, fetchUser } from '../../redux/actions'
 import * as firebase from 'firebase'
@@ -14,6 +14,9 @@ import {
   MessageHeader,
   LogoHeaderWithTextButton,
 } from '../../components/header/HeaderIcons'
+import { HomeTitle } from '../../components/home/HomeTitle'
+import { PopularSearch } from '../../components/home/PopularSearch'
+import { RecentSearch } from '../../components/home/RecentSearch'
 
 class Home extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -33,6 +36,7 @@ class Home extends React.Component {
 
   state = {
     refreshing: false,
+    section: 'marketplace',
     uid: '',
     signedIn: false,
     products: null,
@@ -118,6 +122,8 @@ class Home extends React.Component {
     return firebase
       .database()
       .ref('/products/')
+      .orderByChild('status')
+      .equalTo('unsold')
       .once('value')
       .then(snapshot => {
         let results = snapshot.val()
@@ -151,6 +157,14 @@ class Home extends React.Component {
     })
   }
 
+  changeSection = () => {
+    if (this.state.section == 'marketplace') {
+      this.setState({section: 'services'})
+    } else {
+      this.setState({section: 'marketplace'})
+    }
+  }
+
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -168,11 +182,13 @@ class Home extends React.Component {
             />
           }
         >
-          <DefaultHome
-            data={this.state}
-            navigation={this.props.navigation}
-            signIn={this.props.user.uid}
-          />
+          <HomeTitle section={this.state.section} />
+          <TouchableOpacity onPress={()=>this.changeSection()} ><Text>Change Section</Text></TouchableOpacity>
+          <PopularSearch navigation={this.props.navigation} {...this.state} />
+
+          {this.state.itemLoaded ? (
+            <RecentSearch navigation={this.props.navigation} {...this.state} />
+          ) : null}
           <View style={{ height: 50 }} />
         </ScrollView>
       </View>

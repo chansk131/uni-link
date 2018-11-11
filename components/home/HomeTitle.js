@@ -2,9 +2,10 @@ import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Constants } from "expo";
 
-export const HomeTitle = () => (
+export const HomeTitle = ({section}) => (
   <View style={{ paddingHorizontal: "5%" }}>
-    <Text style={styles.welcomeFont}>WELCOME</Text>
+    <Text style={styles.welcomeFont}>WELCOME to </Text>
+    <Text style={styles.welcomeFont}>{`unilink ${section}`}</Text>
     <View style={styles.horizontalLine} />
     <View style={{ marginBottom: 23 }}>
       <Text style={styles.detailFont}>

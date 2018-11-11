@@ -11,12 +11,6 @@ import { Card } from 'react-native-elements'
 import { months } from '../../utils/months'
 
 export const ProductCard = props => {
-  // shorten long name
-  var name = props.name
-  if (name == undefined) return null
-  if (name.length > 45) {
-    name = name.substring(0, 45) + '...'
-  }
   return (
     <TouchableOpacity
       onPress={() =>
@@ -28,8 +22,11 @@ export const ProductCard = props => {
       <Card containerStyle={styles.cardContainer}>
         <Image style={styles.imageContainer} source={{ uri: props.pic }} />
         <View>
-          <Text style={styles.txt}>{name}</Text>
-          {name.length > 45 ? null : <Text />}
+          <View style={{ width: '100%', height: 30 }}>
+            <Text ellipsizeMode="tail" numberOfLines={2} style={styles.txt}>
+              {props.name}
+            </Text>
+          </View>
           <Text style={[styles.txt, { fontWeight: 'bold' }]}>
             £{props.price}
           </Text>
@@ -41,11 +38,6 @@ export const ProductCard = props => {
 }
 
 export const ProductOrderedCard = props => {
-  // shorten long name
-  var name = props.name
-  if (name.length > 45) {
-    name = name.substring(0, 45) + '...'
-  }
   return (
     <TouchableOpacity
       onPress={() =>
@@ -62,8 +54,11 @@ export const ProductOrderedCard = props => {
       >
         <Image style={styles.imageOrderContainer} source={{ uri: props.pic }} />
         <View>
-          <Text style={styles.txt}>{name}</Text>
-          {name.length > 45 ? null : <Text />}
+          <View style={{ width: '100%', height: 30 }}>
+            <Text ellipsizeMode="tail" numberOfLines={2} style={styles.txt}>
+              {props.name}
+            </Text>
+          </View>
           <Text style={[styles.txt, { fontWeight: 'bold' }]}>
             £{props.price}
           </Text>
@@ -75,11 +70,6 @@ export const ProductOrderedCard = props => {
 
 export const ProductPurchasedCard = props => {
   let timestamp = new Date(props.timestamp)
-  // shorten long name
-  var name = props.name
-  if (name.length > 45) {
-    name = name.substring(0, 45) + '...'
-  }
   return (
     <TouchableOpacity
       style={{ justifyContent: 'center', width: screenWidth }}
@@ -90,8 +80,11 @@ export const ProductPurchasedCard = props => {
       }
     >
       <View style={styles.cardFeedbackContainer}>
-        <Text style={styles.txtFeedback}>{name}</Text>
-        {name.length > 45 ? null : <Text />}
+        <View style={{ width: '100%', height: 30 }}>
+          <Text ellipsizeMode="tail" numberOfLines={2} style={styles.txt}>
+            {props.name}
+          </Text>
+        </View>
         <View style={{ flexDirection: 'row' }}>
           <Image style={styles.imageContainer} source={{ uri: props.pic }} />
           <View>

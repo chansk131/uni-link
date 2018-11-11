@@ -57,8 +57,7 @@ class Categories extends React.Component {
           key={category.key}
           text={category.txt}
           onPress={() => {
-            if (category.name != "foryou") {
-
+            if (category.name != 'foryou') {
               this.fetchItemsInCategory(category.name)
             } else {
               this.fetchItems()
@@ -178,10 +177,10 @@ class Categories extends React.Component {
 }
 
 const ListedItem = props => {
-  var name = props.name
-  if (props.name.length > 10) {
-    name = props.name.substring(0, 10) + '...'
-  }
+  // var name = props.name
+  // if (props.name.length > 10) {
+  //   name = props.name.substring(0, 10) + '...'
+  // }
   return (
     <View style={{ alignContent: 'flex-start', marginBottom: 5 }}>
       <Image
@@ -197,7 +196,9 @@ const ListedItem = props => {
         source={{ uri: props.pic }}
       />
       <View>
-        <Text>{name}</Text>
+        <Text ellipsizeMode="tail" numberOfLines={2} style={{width: 100}}>
+          {props.name}
+        </Text>
         <Text style={{ fontWeight: 'bold' }}>£{props.price}</Text>
         <Text>By: {props.user}</Text>
       </View>
