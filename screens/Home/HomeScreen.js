@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, ScrollView, StyleSheet, RefreshControl, TouchableOpacity, Text } from 'react-native'
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  RefreshControl,
+  TouchableOpacity,
+  Text,
+} from 'react-native'
 import { connect } from 'react-redux'
 import { updateUser, fetchUser } from '../../redux/actions'
 import * as firebase from 'firebase'
@@ -112,7 +119,7 @@ class Home extends React.Component {
             resultsArr.push({ key: key, objectID: key, ...results[key] })
           })
           console.log(resultsArr)
-          this.setState({ products: resultsArr, itemLoaded: true })
+          this.setState({ recentItems: resultsArr, itemLoaded: true })
         }
       })
   }
@@ -127,12 +134,21 @@ class Home extends React.Component {
       .once('value')
       .then(snapshot => {
         let results = snapshot.val()
-        let resultsArr = []
+        let productsArr = []
+        let servicesArr = []
         if (results) {
           Object.keys(results).forEach(function(key) {
-            resultsArr.push({ key: key, objectID: key, ...results[key] })
+            if (results[key].section == 'product') {
+              productsArr.push({ key: key, objectID: key, ...results[key] })
+            } else {
+              servicesArr.push({ key: key, objectID: key, ...results[key] })
+            }
           })
-          this.setState({ allProducts: resultsArr, itemLoaded: true })
+          this.setState({
+            products: productsArr,
+            services: servicesArr,
+            itemLoaded: true,
+          })
         }
       })
   }
@@ -159,9 +175,9 @@ class Home extends React.Component {
 
   changeSection = () => {
     if (this.state.section == 'marketplace') {
-      this.setState({section: 'services'})
+      this.setState({ section: 'services' })
     } else {
-      this.setState({section: 'marketplace'})
+      this.setState({ section: 'marketplace' })
     }
   }
 
@@ -183,11 +199,21 @@ class Home extends React.Component {
           }
         >
           <HomeTitle section={this.state.section} />
-          <TouchableOpacity onPress={()=>this.changeSection()} ><Text>Change Section</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => this.changeSection()}>
+            <Text style={{marginHorizontal: '5%', color: '#818080', marginBottom: 10}}>Switch to unilink services?</Text>
+          </TouchableOpacity>
           <PopularSearch navigation={this.props.navigation} {...this.state} />
 
           {this.state.itemLoaded ? (
-            <RecentSearch navigation={this.props.navigation} {...this.state} />
+            <RecentSearch
+              navigation={this.props.navigation}
+              recentItems={this.state.recentItems}
+              items={
+                this.state.section == 'marketplace'
+                  ? this.state.products
+                  : this.state.services
+              }
+            />
           ) : null}
           <View style={{ height: 50 }} />
         </ScrollView>

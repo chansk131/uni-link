@@ -13,7 +13,7 @@ export const RecentSearch = props => (
       renderItem={({ item }) => (
         <ProductCard navigation={props.navigation} key={item.key} {...item} />
       )}
-      data={props.allProducts}
+      data={props.items}
     />
     <Text style={styles.recentFont}>RECENT SEARCHES</Text>
     <FlatList
@@ -23,7 +23,7 @@ export const RecentSearch = props => (
       renderItem={({ item }) => (
         <ProductCard navigation={props.navigation} key={item.key} {...item} />
       )}
-      data={props.products}
+      data={props.recentItems}
     />
 
   </View>

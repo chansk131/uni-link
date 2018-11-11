@@ -4,7 +4,7 @@ import { Constants } from "expo";
 
 export const HomeTitle = ({section}) => (
   <View style={{ paddingHorizontal: "5%" }}>
-    <Text style={styles.welcomeFont}>WELCOME to </Text>
+    <Text style={[styles.welcomeFont, {marginBottom: 10}]}>WELCOME to </Text>
     <Text style={styles.welcomeFont}>{`unilink ${section}`}</Text>
     <View style={styles.horizontalLine} />
     <View style={{ marginBottom: 23 }}>
