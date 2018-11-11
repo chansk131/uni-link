@@ -4,7 +4,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  StyleSheet,
+  StyleSheet
 } from 'react-native'
 import { connect } from 'react-redux'
 import * as firebase from 'firebase'
@@ -20,7 +20,7 @@ import { RecentFeedback } from '../../components/RecentFeedback'
 class SellerScreen extends React.Component {
   state = {
     itemLoaded: false,
-    seller: null,
+    seller: null
   }
 
   componentDidMount() {
@@ -61,7 +61,7 @@ class SellerScreen extends React.Component {
             key: key,
             keyFirebase: key,
             user: userName,
-            ...results[key],
+            ...results[key]
           })
         })
         this.setState({ products: resultsArr, itemLoaded: true })
@@ -84,6 +84,12 @@ class SellerScreen extends React.Component {
           <View style={styles.profileContainer}>
             <View style={styles.profilePicContainer}>
               {this.renderProfilePic()}
+              <TouchableOpacity
+                style={styles.btnContainer}
+                underlayColor="#fff"
+              >
+                <Text style={styles.btnText}>FOLLOW</Text>
+              </TouchableOpacity>
             </View>
             <View>
               {this.state.seller ? <Username user={this.state.seller} /> : null}
@@ -118,7 +124,7 @@ class SellerScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'white'
   },
   profileContainer: { flexDirection: 'row', marginTop: 20 },
   profilePicContainer: { width: '40%', alignItems: 'center' },
@@ -126,16 +132,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginRight: 10,
-    marginLeft: 20,
+    marginLeft: 20
   },
   recentFeedbackContainer: {
     flexDirection: 'column',
     marginRight: 25,
-    marginLeft: 25,
+    marginLeft: 25
   },
+  btnContainer: {
+    marginHorizontal: 2,
+    marginTop: 2,
+    paddingHorizontal: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: '#EBEBEB',
+    borderRadius: 10,
+    borderWidth: 0
+  },
+  btnText: {
+    fontSize: 10,
+    color: 'black'
+  }
 })
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user
 })
 export default connect(mapStateToProps)(SellerScreen)

@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   DeviceEventEmitter,
-  ScrollView,
+  ScrollView
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Constants } from 'expo'
@@ -27,15 +27,18 @@ class UserScreen extends React.Component {
 
     this.state = {
       modalVisible: false,
-      profilePicUrl: null,
+      profilePicUrl: null
     }
+  }
+
+  componentWillReceiveProps() {
+    this.checkAuth()
   }
 
   async componentWillMount() {
     DeviceEventEmitter.addListener('checkAuth', e => {
       this.checkAuth()
     })
-    this.checkAuth()
 
     const profilePicRef = firebase
       .storage()
@@ -81,7 +84,7 @@ class UserScreen extends React.Component {
         style={{
           flex: 1,
           backgroundColor: 'white',
-          paddingTop: Constants.statusBarHeight,
+          paddingTop: Constants.statusBarHeight
         }}
       >
         <SignInModal
@@ -93,7 +96,7 @@ class UserScreen extends React.Component {
             height: 180,
             borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            padding: '7%',
+            padding: '7%'
           }}
         >
           <View style={{ flexDirection: 'row' }}>
@@ -111,7 +114,7 @@ class UserScreen extends React.Component {
             height: 40,
             borderBottomColor: '#707070',
             borderBottomWidth: 0.5,
-            flexDirection: 'row',
+            flexDirection: 'row'
           }}
         >
           <TouchableOpacity
@@ -187,7 +190,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   btnMessageContainer: {
     flex: 1,
@@ -197,15 +200,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   btnSmallText: {
     fontWeight: 'bold',
-    fontSize: 15,
-  },
+    fontSize: 15
+  }
 })
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user
 })
 export default connect(mapStateToProps)(UserScreen)

@@ -5,7 +5,7 @@ import {
   StyleSheet,
   RefreshControl,
   TouchableOpacity,
-  Text,
+  Text
 } from 'react-native'
 import { connect } from 'react-redux'
 import { updateUser, fetchUser } from '../../redux/actions'
@@ -19,7 +19,7 @@ import {
   LogoHeaderWithText,
   HamburgerHeader,
   MessageHeader,
-  LogoHeaderWithTextButton,
+  LogoHeaderWithTextButton
 } from '../../components/header/HeaderIcons'
 import { HomeTitle } from '../../components/home/HomeTitle'
 import { PopularSearch } from '../../components/home/PopularSearch'
@@ -30,15 +30,19 @@ class Home extends React.Component {
     headerStyle: {
       backgroundColor: 'white',
       borderBottomWidth: 0,
-      elevation: 3,
+      elevation: 3
     },
     headerLeft: <HamburgerHeader navigation={navigation} />,
     headerTitle: navigation.getParam('signIn') ? (
       <LogoHeader />
     ) : (
-      <LogoHeaderWithTextButton text={'Sign in'} navigation={navigation} />
+      <LogoHeaderWithTextButton
+        text={'Sign in'}
+        navigation={navigation}
+        params={{ from: 'homeScreen' }}
+      />
     ),
-    headerRight: <MessageHeader navigation={navigation} />,
+    headerRight: <MessageHeader navigation={navigation} />
   })
 
   state = {
@@ -51,33 +55,33 @@ class Home extends React.Component {
     populars: [
       {
         key: 1,
-        name: 'Accommodation',
+        name: 'Accommodation'
       },
       {
         key: 2,
-        name: 'Jewelry',
+        name: 'Jewelry'
       },
       {
         key: 3,
-        name: 'Engineering',
+        name: 'Engineering'
       },
       {
         key: 4,
-        name: 'Kitchen Supplies',
+        name: 'Kitchen Supplies'
       },
       {
         key: 5,
-        name: 'Gloves',
+        name: 'Gloves'
       },
       {
         key: 6,
-        name: 'Textbooks',
+        name: 'Textbooks'
       },
       {
         key: 7,
-        name: 'Furniture',
-      },
-    ],
+        name: 'Furniture'
+      }
+    ]
   }
 
   componentWillMount() {
@@ -147,7 +151,7 @@ class Home extends React.Component {
           this.setState({
             products: productsArr,
             services: servicesArr,
-            itemLoaded: true,
+            itemLoaded: true
           })
         }
       })
@@ -204,7 +208,7 @@ class Home extends React.Component {
               style={{
                 marginHorizontal: '5%',
                 color: '#818080',
-                marginBottom: 10,
+                marginBottom: 10
               }}
             >{`Switch to unilink ${
               this.state.section == 'marketplace' ? 'services' : 'marketplace'
@@ -233,13 +237,13 @@ class Home extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 18,
-  },
+    paddingTop: 18
+  }
 })
 
 const mapStateToProps = state => ({
   search: state.search.searchTxt,
-  user: state.user,
+  user: state.user
 })
 
 export default connect(

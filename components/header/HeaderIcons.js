@@ -5,7 +5,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  StyleSheet,
+  StyleSheet
 } from 'react-native'
 import { Card, Button, SearchBar } from 'react-native-elements'
 import { Constants } from 'expo'
@@ -55,7 +55,7 @@ export const LogoHeaderWithText = props => (
         flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-start',
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-start'
       }}
     >
       <Image
@@ -68,7 +68,7 @@ export const LogoHeaderWithText = props => (
         flex: 6,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
       }}
     >
       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{props.text}</Text>
@@ -83,7 +83,7 @@ export const LogoHeaderWithTextButton = props => (
         flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-start',
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-start'
       }}
     >
       <Image
@@ -91,15 +91,15 @@ export const LogoHeaderWithTextButton = props => (
         source={require('../../assets/images/LogoULinks-small.jpeg')}
       />
     </View>
-    <View style={{flex: 4}}/>
+    <View style={{ flex: 4 }} />
     <TouchableOpacity
       style={{
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
       }}
-      onPress = {()=>props.navigation.navigate("Signin")}
+      onPress={() => props.navigation.navigate('Signin')}
     >
       <Text style={{ fontWeight: 'bold', fontSize: 10 }}>{props.text}</Text>
     </TouchableOpacity>
