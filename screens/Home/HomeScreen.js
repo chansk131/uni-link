@@ -200,7 +200,15 @@ class Home extends React.Component {
         >
           <HomeTitle section={this.state.section} />
           <TouchableOpacity onPress={() => this.changeSection()}>
-            <Text style={{marginHorizontal: '5%', color: '#818080', marginBottom: 10}}>Switch to unilink services?</Text>
+            <Text
+              style={{
+                marginHorizontal: '5%',
+                color: '#818080',
+                marginBottom: 10,
+              }}
+            >{`Switch to unilink ${
+              this.state.section == 'marketplace' ? 'services' : 'marketplace'
+            }?`}</Text>
           </TouchableOpacity>
           <PopularSearch navigation={this.props.navigation} {...this.state} />
 
